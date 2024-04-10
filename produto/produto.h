@@ -10,12 +10,12 @@
 
 // Estrutura para nó da árvore B*
 typedef struct indice_node {
-    int prox_livre;     // Posição do próximo registro livre
-    int num_chaves;     // Número de chaves presentes no nó
-    int is_leaf;        // Indica se é um nó folha (1) ou não (0)
     int chave[ORDEM];   // Chaves
+    int pt_dados[ORDEM]; // Posições dos registros de dados no arquivo
     int filho[ORDEM+1]; // Ponteiros para os filhos
-    long int dados_pos[ORDEM]; // Posições dos registros de dados no arquivo
+    int is_leaf;        // Indica se é um nó folha (1) ou não (0)
+    int num_chaves;     // Número de chaves presentes no nó
+    int prox_livre;     // Posição do próximo registro livre
 } ARVOREB;
 
 // Estrutura para os dados do produto
