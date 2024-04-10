@@ -14,7 +14,10 @@ PRODUTO_DATA ler_produto();
 void imprimir_produto(PRODUTO_DATA produto);
 
 // Função para cadastrar um produto sem nós livres
-void cadastrar_produto_sem_nos_livres();
+void cadastrar_produto_sem_nos_livres(ARQUIVOS files);
+
+// Função para cadastrar um produto sem nós livres
+void cadastrar_produto_com_nos_livres(ARQUIVOS files);
 
 // Função para cadastrar um produto
 void cadastrar_produto(ARQUIVOS files);

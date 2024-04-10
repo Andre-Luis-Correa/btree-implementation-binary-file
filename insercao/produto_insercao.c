@@ -39,7 +39,11 @@ void imprimir_produto(PRODUTO_DATA produto) {
     printf("Preco: R$ %.2f\n", produto.preco);
 }
 
-void cadastrar_produto_sem_nos_livres(){
+void cadastrar_produto_com_nos_livres(ARQUIVOS files){
+
+}
+
+void cadastrar_produto_sem_nos_livres(ARQUIVOS files){
 
 }
 
@@ -54,6 +58,6 @@ void cadastrar_produto(ARQUIVOS files){
     }else{
         // Realizar a inserção verificando se o novo produto pode ser inserido em uma das posições livres
         printf("A insercao sera realizada considerando que ha nos livres\n");
+        cadastrar_produto_com_nos_livres(files);
     }
-
 }
