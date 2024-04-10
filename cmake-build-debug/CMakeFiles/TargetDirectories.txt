@@ -1,0 +1,3 @@
+C:/Users/andre/CLionProjects/trabalho_aed_3_bruna_andre/cmake-build-debug/CMakeFiles/trabalho_aed_3_bruna_andre.dir
+C:/Users/andre/CLionProjects/trabalho_aed_3_bruna_andre/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/andre/CLionProjects/trabalho_aed_3_bruna_andre/cmake-build-debug/CMakeFiles/rebuild_cache.dir
