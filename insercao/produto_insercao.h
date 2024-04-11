@@ -2,8 +2,8 @@
 // Created by andre on 09/04/2024.
 //
 
-#ifndef TRABALHO_AED_3_BRUNA_ANDRE_PRODUTO_INSERCAO_H
-#define TRABALHO_AED_3_BRUNA_ANDRE_PRODUTO_INSERCAO_H
+#ifndef PRODUTO_INSERCAO_H
+#define PRODUTO_INSERCAO_H
 
 #include "../produto/produto.h"
 
@@ -36,4 +36,6 @@ void adiciona_direita (ARVOREB * r, int pos, int codigo, int pt_dados, int p);
 
 int overflow (ARVOREB * r);
 
-#endif //TRABALHO_AED_3_BRUNA_ANDRE_PRODUTO_INSERCAO_H
+int split (ARQUIVOS files, ARVOREB * x, int pos, int * m, int * pos_meio);
+
+#endif //PRODUTO_INSERCAO_H
