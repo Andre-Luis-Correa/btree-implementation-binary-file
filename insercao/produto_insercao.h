@@ -22,7 +22,7 @@ void cadastrar_produto(ARQUIVOS files);
 void cadastrar_produto_files(ARQUIVOS files, PRODUTO_DATA * produto);
 void cria_no(ARVOREB * r, int codigo, int pos_dados);
 void cria_registro(DADOS_REGISTRO * dados, PRODUTO_DATA * produto);
-int split(ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio);
+int split(ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio, CABECALHO_INDICES * cab_indices);
 void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, int pos);
 int busca_pos(ARVOREB * r, int codigo, int * pos);
 void adiciona_direita(ARVOREB * r, int pos, int codigo, int pt_dados, int p);
