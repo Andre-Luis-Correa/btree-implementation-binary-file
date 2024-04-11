@@ -11,7 +11,7 @@ PRODUTO_DATA * ler_produto() {
     PRODUTO_DATA * produto = (PRODUTO_DATA*) malloc(sizeof (PRODUTO_DATA));
 
     printf("\n--> CADASTRO DE PRODUTO: \n");
-    printf("Insira o código do produto: ");
+    printf("Insira o codigo do produto: ");
     scanf("%d", &produto->codigo);
     printf("Insira o nome do produto: ");
     scanf(" %[^\n]", produto->nome);
@@ -21,7 +21,7 @@ PRODUTO_DATA * ler_produto() {
     scanf(" %[^\n]", produto->categoria);
     printf("Insira a quantidade em estoque do produto: ");
     scanf("%d", &produto->estoque);
-    printf("Insira o preço do produto: ");
+    printf("Insira o preco do produto: ");
     scanf("%f", &produto->preco);
 
     return produto;
