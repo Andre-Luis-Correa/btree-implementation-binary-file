@@ -27,5 +27,7 @@ int busca_pos(ARVOREB * r, int codigo, int * pos);
 void adiciona_direita(ARVOREB * r, int pos, int codigo, int pt_dados, int p);
 void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int pos_atual);
 void cadastrar_produto_com_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, int pos);
+void imprimir_no(ARVOREB *r);
+int eh_folha(ARVOREB * r);
 
 #endif //PRODUTO_INSERCAO_H

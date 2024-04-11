@@ -13,7 +13,6 @@ typedef struct indice_node {
     int chave[ORDEM];   // Chaves
     int pt_dados[ORDEM]; // Posições dos registros de dados no arquivo
     int filho[ORDEM+1]; // Ponteiros para os filhos
-    int eh_folha;        // Indica se é um nó folha (1) ou não (0)
     int num_chaves;     // Número de chaves presentes no nó
     int prox_livre;     // Posição do próximo registro livre
 } ARVOREB;

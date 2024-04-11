@@ -50,14 +50,14 @@ ARVOREB * ler_no (FILE * file_indices, int pos){
 
 // Função para escrever um nó no arquivo de índices
 void escreve_no (FILE * file_indices, ARVOREB * no, int pos){
-    fseek (file_indices, sizeof (CABECALHO_INDICES ) + pos * sizeof (ARVOREB), SEEK_SET);
+    fseek (file_indices, sizeof (CABECALHO_INDICES) + pos * sizeof (ARVOREB), SEEK_SET);
     fwrite (no, sizeof (ARVOREB), 1, file_indices);
 }
 
 // Função para ler um registro de dados de um produto no arquivo de dados
 DADOS_REGISTRO * ler_registro(FILE * file_dados, int pos){
     DADOS_REGISTRO * registro = (DADOS_REGISTRO*) malloc(sizeof (DADOS_REGISTRO));
-    fseek (file_dados, sizeof (CABECALHO_DADOS ) + pos * sizeof (DADOS_REGISTRO), SEEK_SET);
+    fseek (file_dados, sizeof (CABECALHO_DADOS) + pos * sizeof (DADOS_REGISTRO), SEEK_SET);
     fread (registro, sizeof (DADOS_REGISTRO), 1, file_dados);
     return registro;
 }
@@ -162,10 +162,9 @@ void cadastrar_produto_files(ARQUIVOS files, PRODUTO_DATA * produto) {
 void cria_no(ARVOREB * r, int codigo, int pos_dados) {
     r->chave[0] = codigo;
     r->num_chaves = 1;
-    r->eh_folha = 0;
     r->prox_livre = -1;
     r->pt_dados[0] = pos_dados;
-    for(int i = 0; i < ORDEM + 1; i++)
+    for(int i = 0; i < r->num_chaves; i++)
         r->filho[i] = -1;
 }
 
@@ -185,30 +184,53 @@ void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, in
 
     if (pos == -1) { // pos -> pos_raiz == -1 árvore vazia ou a função recebeu uma posição (pos) vazia
         printf("-> Insercao em arvore vazia!");
+
+        // Atualiza a poisção da cabeça
         cab_indices->pos_raiz = 0;
-        cria_no(r, produto->codigo, cab_dados->pos_topo);
-        escreve_no(files.file_indices, r, cab_indices->pos_topo);
+
+        // Escreve no arquivo de dados as informações do produto a ser inserido
         cria_registro(dados, produto);
         escreve_registro(files.file_dados, dados, cab_dados->pos_topo);
+
+        // Cria a raiz com as informações: código do produto e o ponteiro de dados do arquivo de dados
+        cria_no(r, produto->codigo, cab_dados->pos_topo);
+        escreve_no(files.file_indices, r, cab_indices->pos_topo);
+
+        // Atualiza os cabeçalhos de AMBOS arquivos
         cab_indices->pos_topo++;
         cab_dados->pos_topo++;
         escreve_cabecalho_indices(files.file_indices, cab_indices);
         escreve_cabecalho_dados(files.file_dados, cab_dados);
+
+        // Teste: Imprimir cabeçalhos para visualizar a atualização que ocorreu
         imprimir_cabecalho_indices(cab_indices);
+        imprimir_cabecalho_dados(cab_dados)
     } else { // árvore não vazia
+
         printf("-> Insercao em arvore com elementos!");
+
+        // Lê a raiz da árvore
         ARVOREB * raiz = ler_no(files.file_indices, cab_indices->pos_raiz);
-        DADOS_REGISTRO * dados_novos = (DADOS_REGISTRO *) malloc(sizeof (DADOS_REGISTRO));
+
+        // Cria um registro e escreve no arquivo de dados
+        DADOS_REGISTRO * dados_novos = (DADOS_REGISTRO*) malloc(sizeof (DADOS_REGISTRO));
         cria_registro(dados_novos, produto);
         escreve_registro(files.file_dados, dados_novos, cab_dados->pos_topo);
 
+        // Guarda a informação de onde o novo registro foi inserido no arquivo de dados
         int pt_dados_atual = cab_dados->pos_topo;
+
+        // Atualiza o cabecalho do ARQUIVO de DADOS
         cab_dados->pos_topo++;
         escreve_cabecalho_dados(files.file_dados, cab_dados);
 
+        // Chama a função auxiliar de inserção
+        // Os parâmetros são: Os arquivos (AMBOS), código do produto, ponteiro de dado do produto, posição da raiz
         cadastrar_aux (files, raiz, produto->codigo, pt_dados_atual, cab_indices->pos_raiz);
 
+        // Lê o cabeçalho atual do arquivo de índices
         CABECALHO_INDICES * cab_indices_atual = le_cabecalho_indices(files.file_indices);
+        imprimir_cabecalho_indices(cab_indices_atual);
 
         if(overflow(raiz)){
             int meio;
@@ -242,35 +264,82 @@ void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, in
 }
 
 int busca_pos (ARVOREB * r, int codigo, int * pos){
+    // O loop busca pela posição onde a nova chave (codigo) deveria entrar
     for ((*pos) = 0 ; (*pos) < r->num_chaves ; (*pos)++){
         if (codigo == r->chave[(*pos)]){
+            printf("\nO codigo %d é igual a chave %d. E a pos é: %d\n", codigo, r->chave[*pos], *pos);
             return 1;
         }
         else if (codigo < r->chave[(*pos)]){
+            printf("\nO codigo %d é menor que a chave %d. E a pos é: %d\n", codigo, r->chave[*pos], *pos);
             break;
         }
     }
+
+    printf("\nO codigo %d é maior que a chave %d. E a pos é: %d\n", codigo, r->chave[*pos], *pos);
     return 0;
 }
 
 void adiciona_direita (ARVOREB * r, int pos, int codigo, int pt_dados, int p){
     int i;
+
+    // Desloca todas as chaves e pt_dados e filhos para frente da pos encontrada, deixondo-a livre
     for (i = r->num_chaves ; i > pos ; i--){
         r->chave [i] = r->chave[i-1];
         r->pt_dados[i] = r->pt_dados[i-1];
         r->filho[i+1] = r->filho[i];
     }
+
+    // A nova chave (codigo) é inserida na posição livre
     r->chave[pos] = codigo;
+
+    // O ponteiro de dados da nova chave tambpem é inserido na posição livre, após deslocamento
     r->pt_dados[pos] = pt_dados;
+
+
     r->filho[pos+1] = p;
     r->num_chaves++;
 }
 
+void imprimir_no(ARVOREB *r) {
+    printf("O nó analisado foi: \n");
+
+    printf("Chaves: ");
+    for(int i = 0; i < r->num_chaves; i++){
+        printf("%d ", r->chave[i]);
+    }
+
+    printf("\nPt. Dados: ");
+    for(int i = 0; i < r->num_chaves; i++){
+        printf("%d ", r->pt_dados[i]);
+    }
+
+    printf("\nFilhos: ");
+    for(int i = 0; i <= r->num_chaves; i++){
+        printf("%d ", r->filho[i]);
+    }
+}
+
+int eh_folha(ARVOREB * r){
+    return r->filho[0] == -1;
+}
+
+// Os parâmetros são: Os arquivos (AMBOS), código do produto, ponteiro de dado do produto, posição da raiz (Na 1° chamada)
 void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int pos_atual){
+    // Variável para armazenar a posiçao na qual uma determinada chave deveria entrar
     int pos;
 
+    // O trecho de código abaixo é responsável por printar a pos encontrada e o nó analisado em relação a essa pos
+    printf("Essa é a pos: %d para o código: %d\n", pos, codigo);
+    imprimir_no(r);
+
     if(!busca_pos(r, codigo, &pos)){
-        if (r->eh_folha){
+        // A função eh-folha verifica se o nó r é folha
+        if (eh_folha(r)){
+            // Caso o nó seja uma folha a inserção é feita nele mesmo: EM UMA ÁRVORE B A INSERÇÃO É SEMPRE NA FOLHA
+            // Os parâmetros da função adiciona_direita são: o nó r, a pos onde o novo código deveria ser inserido
+            // pt_dados indicando os dados relacionados ao código no arquivo de dados
+            // p = -1 quando é uma folha, pois os filhos são sempre nulos, no caso de arquivo "-1"
             adiciona_direita(r, pos, codigo, pt_dados, -1);
             escreve_no(files.file_indices, r, pos_atual);
         } else{
