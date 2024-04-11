@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "menu.h"
 #include "../insercao/produto_insercao.h"
+#include "../impressao//produto_impressao.h"
 
 // Exibe o cabeçalho do menu
 // Pré-condições: Nenhuma
@@ -56,8 +57,10 @@ void atualizarEstoque() {
 // Imprime as informações de um produto específico
 // Pré-condições: Nenhuma
 // Pós-condição: As informações do produto são impressas no console
-void imprimirInformacoes() {
+void imprimirInformacoes(ARQUIVOS files) {
     printf("Operacao: Imprimir Informacoes de um Produto\n");
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    imprimir_arvore(files.file_indices, cab_indices->pos_raiz);
     // Implemente a lógica para imprimir as informações de um produto
 }
 
@@ -126,7 +129,7 @@ void menu_principal(ARQUIVOS files){
                 atualizarEstoque();
                 break;
             case 5:
-                imprimirInformacoes();
+                imprimirInformacoes(files);
                 break;
             case 6:
                 imprimirListaProdutos();

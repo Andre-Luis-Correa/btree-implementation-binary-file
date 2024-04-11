@@ -88,6 +88,33 @@ int buscar_no(FILE * file_indices, int codigo, int pos){
     return buscar_no(file_indices, codigo, r->filho[i]);
 }
 
+int overflow (ARVOREB * r){
+    return r->num_chaves == ORDEM;
+}
+
+int split (ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio){
+    ARVOREB* y = (ARVOREB*) malloc (sizeof(ARVOREB));
+    int q = x->num_chaves/2;
+    y->num_chaves = x->num_chaves - q - 1;
+    x->num_chaves = q;
+    escreve_no(files.file_indices, x, pos);
+    *meio = x->chave[q];
+    *pos_meio = q;
+    int i = 0;
+    y->filho[0] = x->filho[q+1];
+    for (i = 0 ; i < y->num_chaves ; i++){
+        y->chave[i] = x->chave[q+i+1];
+        y->pt_dados[i] = x->pt_dados[q+i+1];
+        y->filho[i+1] = x->filho[q+i+2];
+    }
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    int pos_y = cab_indices->pos_topo;
+    escreve_no(files.file_indices, y, cab_indices->pos_topo);
+    cab_indices->pos_topo++;
+    escreve_cabecalho_indices(files.file_indices, cab_indices);
+    return pos_y;
+}
+
 void imprimir_cabecalho_indices(CABECALHO_INDICES * cab){
     printf("\nCABECALHO DE INDICES: raiz: %d topo: %d livre: %d\n", cab->pos_raiz, cab->pos_topo, cab->pos_livre);
 }
@@ -196,6 +223,7 @@ void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, in
     free(dados);
     free(cab_indices);
     free(cab_dados);
+    printf("\nInsercao realizada com sucesso!\n");
 }
 
 int busca_pos (ARVOREB * r, int codigo, int * pos){
@@ -208,33 +236,6 @@ int busca_pos (ARVOREB * r, int codigo, int * pos){
         }
     }
     return 0;
-}
-
-int overflow (ARVOREB * r){
-    return r->num_chaves == ORDEM;
-}
-
-int split (ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio){
-    ARVOREB* y = (ARVOREB*) malloc (sizeof(ARVOREB));
-    int q = x->num_chaves/2;
-    y->num_chaves = x->num_chaves - q - 1;
-    x->num_chaves = q;
-    escreve_no(files.file_indices, x, pos);
-    *meio = x->chave[q];
-    *pos_meio = q;
-    int i = 0;
-    y->filho[0] = x->filho[q+1];
-    for (i = 0 ; i < y->num_chaves ; i++){
-        y->chave[i] = x->chave[q+i+1];
-        y->pt_dados[i] = x->pt_dados[q+i+1];
-        y->filho[i+1] = x->filho[q+i+2];
-    }
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-    int pos_y = cab_indices->pos_topo;
-    escreve_no(files.file_indices, y, cab_indices->pos_topo);
-    cab_indices->pos_topo++;
-    escreve_cabecalho_indices(files.file_indices, cab_indices);
-    return pos_y;
 }
 
 void adiciona_direita (ARVOREB * r, int pos, int codigo, int pt_dados, int p){
@@ -275,3 +276,4 @@ void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int po
 void cadastrar_produto_com_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, int pos){
 
 }
+

@@ -31,7 +31,7 @@ void atualizarEstoque();
 // Imprime as informações de um produto específico
 // Pré-condições: O produto cujas informações serão impressas deve existir no cadastro
 // Pós-condições: As informações do produto são impressas no console
-void imprimirInformacoes();
+void imprimirInformacoes(ARQUIVOS files);
 
 // Imprime a lista de todos os produtos cadastrados
 // Pré-condições: Nenhuma

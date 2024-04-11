@@ -7,4 +7,6 @@
 
 #include "../produto/produto.h"
 
+void imprimir_arvore(FILE * file_indices, int pos);
+
 #endif //PRODUTO_IMPRESSAO_H
