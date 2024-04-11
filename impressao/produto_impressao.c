@@ -10,7 +10,6 @@
 // Function to print the contents of an ARVOREB tree
 void imprimir_arvore(FILE * file_indices, int pos) {
     if (pos == -1) {
-        printf("Arvore vazia.\n");
         return;
     }
 
@@ -20,6 +19,13 @@ void imprimir_arvore(FILE * file_indices, int pos) {
     for (int i = 0; i < no->num_chaves; i++) {
         printf("%d ", no->chave[i]);
     }
+    printf("\n");
+
+    printf("Pt. Dados: ");
+    for (int i = 0; i < no->num_chaves; i++) {
+        printf("%d ", no->pt_dados[i]);
+    }
+
     printf("\n");
 
     printf("Filhos: ");
