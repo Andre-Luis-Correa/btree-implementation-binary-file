@@ -28,10 +28,12 @@ void cria_no(ARVOREB * r, int codigo, int pos_dados);
 
 void cria_registro(DADOS_REGISTRO * dados, PRODUTO_DATA * produto);
 
-void cadastra_aux(ARQUIVOS files, ARVOREB * no, PRODUTO_DATA * dados);
+void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int pos_atual);
 
 int busca_pos (ARVOREB * r, int codigo, int * pos);
 
-void adiciona_ireita (ARVOREB * r, int pos, int codigo, ARVOREB * p);
+void adiciona_direita (ARVOREB * r, int pos, int codigo, int pt_dados, int p);
+
+int overflow (ARVOREB * r);
 
 #endif //TRABALHO_AED_3_BRUNA_ANDRE_PRODUTO_INSERCAO_H

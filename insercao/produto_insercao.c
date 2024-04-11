@@ -156,12 +156,21 @@ void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, in
     } else { // árvore não vazia
 
         ARVOREB * raiz = ler_no(files.file_indices, cab_indices->pos_raiz);
-        cadastra_aux (files, raiz, produto);
+        DADOS_REGISTRO * dados_novos = (DADOS_REGISTRO *) malloc(sizeof (DADOS_REGISTRO));
+        cria_registro(dados_novos, produto);
+        escreve_registro(files.file_dados, dados_novos, cab_dados->pos_topo);
 
+        int pt_dados_atual = cab_dados->pos_topo;
+        cab_dados->pos_topo++;
+
+        escreve_cabecalho_dados(files.file_dados, cab_dados);
+
+        cadastrar_aux (files, raiz, produto->codigo, pt_dados_atual, cab_indices->pos_raiz);
+
+        free(raiz);
     }
 
     free(r);
-    free(raiz);
     free(dados);
     free(cab_indices);
     free(cab_dados);
@@ -179,40 +188,54 @@ int busca_pos (ARVOREB * r, int codigo, int * pos){
     return 0;
 }
 
-void adiciona_ireita (ARVOREB * r, int pos, int codigo, ARVOREB * p){
+void adiciona_direita (ARVOREB * r, int pos, int codigo, int pt_dados, int p){
     int i;
-    for (i = r->numChaves ; i > pos ; i--){
+    for (i = r->num_chaves ; i > pos ; i--){
         r->chave [i] = r->chave[i-1];
+        r->pt_dados[i] = r->pt_dados[i-1];
         r->filho[i+1] = r->filho[i];
     }
     r->chave[pos] = codigo;
+    r->pt_dados[pos] = pt_dados;
     r->filho[pos+1] = p;
-    r->numChaves++;
+    r->num_chaves++;
 }
 
-void cadastra_aux(ARQUIVOS files, ARVOREB * r, PRODUTO_DATA * produto){
-    int pos;
+int overflow (ARVOREB * r){
+    return r->num_chaves == ORDEM;
+}
 
-    if(!busca_pos(r, produto->codigo, &pos)){
-        if (r->eh_folha){
-            adiciona_direita(r, pos, produto->codigo, NULL);
-        }
+arvoreB* split (arvoreB* x, int * m){
+    arvoreB* y = (arvoreB*) malloc (sizeof(arvoreB));
+    int q = x->numChaves/2;
+    y->numChaves = x->numChaves - q - 1;
+    x->numChaves = q;
+    *m = x->chave[q];
+    int i = 0;
+    y->filho[0] = x->filho[q+1];
+    for (i = 0 ; i < y->numChaves ; i++){
+        y->chave[i] = x->chave[q+i+1];
+        y->filho[i+1] = x->filho[q+i+2];
     }
+    return y;
 }
 
-void insere_aux (arvoreB * r, int info){
+void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int pos_atual){
     int pos;
-    if (!buscaPos (r, info, &pos)){
-        if (eh_folha(r)){
-            adicionaDireita(r, pos, info, NULL);
-        }
-        else{
-            insere_aux(r->filho[pos], info);
-            if (overflow(r->filho[pos])){
-                int m;
-                arvoreB* aux = split(r->filho[pos], &m);
-                adicionaDireita(r, pos, m, aux);
+
+    if(!busca_pos(r, codigo, &pos)){
+        if (r->eh_folha){
+            adiciona_direita(r, pos, codigo, pt_dados, -1);
+            escreve_no(files.file_indices, r, pos_atual);
+        } else{
+            ARVOREB * filho = ler_no(files.file_indices, r->filho[pos]);
+            cadastrar_aux(files, filho, codigo, pt_dados, pos);
+            if(overflow(r)){
+                int meio;
+                int pos_no_pos_split = split(files, filho, pos, &meio);
+                adiciona_direita(r, pos, codigo, meio, pos_no_pos_split);
             }
+            free(filho);
         }
     }
 }
