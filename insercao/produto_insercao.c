@@ -406,7 +406,7 @@ void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int po
                 imprimir_cabecalho_indices(cab_indices);
                 adiciona_direita(r, pos, meio, pos_meio, posicao_no_pos_split);
                 printf("\nEsse e a nova raiz (r) pos split:");
-                imprimir_no(filho);
+                imprimir_no(r);
                 escreve_no(files.file_indices, r, pos_atual);
 
                 escreve_cabecalho_indices(files.file_indices, cab_indices);
