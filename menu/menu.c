@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "menu.h"
 #include "../insercao/produto_insercao.h"
 #include "../impressao//produto_impressao.h"
@@ -60,7 +61,10 @@ void atualizarEstoque() {
 void imprimirInformacoes(ARQUIVOS files) {
     printf("Operacao: Imprimir Informacoes de um Produto\n");
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    printf("\n Impressao: \n");
+    imprimir_cabecalho_indices(cab_indices);
     imprimir_arvore(files.file_indices, cab_indices->pos_raiz);
+    free(cab_indices);
     // Implemente a lógica para imprimir as informações de um produto
 }
 

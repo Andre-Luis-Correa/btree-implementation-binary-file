@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "produto_insercao.h"
-#include "../cabecalho/cabecalho_indices.h"
-#include "../cabecalho/cabecalho_dados.h"
 
 // Função para ler os dados de um produto
 PRODUTO_DATA * ler_produto() {
@@ -27,6 +25,14 @@ PRODUTO_DATA * ler_produto() {
     scanf("%f", &produto->preco);
 
     return produto;
+}
+
+int overflow (ARVOREB * r){
+    return r->num_chaves == ORDEM;
+}
+
+int eh_folha(ARVOREB * r){
+    return r->filho[0] == -1;
 }
 
 // Função para imprimir os dados de um produto
@@ -88,33 +94,6 @@ int buscar_no(FILE * file_indices, int codigo, int pos){
     return buscar_no(file_indices, codigo, r->filho[i]);
 }
 
-int overflow (ARVOREB * r){
-    return r->num_chaves == ORDEM;
-}
-
-int split (ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio){
-    ARVOREB* y = (ARVOREB*) malloc (sizeof(ARVOREB));
-    int q = x->num_chaves/2;
-    y->num_chaves = x->num_chaves - q - 1;
-    x->num_chaves = q;
-    escreve_no(files.file_indices, x, pos);
-    *meio = x->chave[q];
-    *pos_meio = q;
-    int i = 0;
-    y->filho[0] = x->filho[q+1];
-    for (i = 0 ; i < y->num_chaves ; i++){
-        y->chave[i] = x->chave[q+i+1];
-        y->pt_dados[i] = x->pt_dados[q+i+1];
-        y->filho[i+1] = x->filho[q+i+2];
-    }
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-    int pos_y = cab_indices->pos_topo;
-    escreve_no(files.file_indices, y, cab_indices->pos_topo);
-    cab_indices->pos_topo++;
-    escreve_cabecalho_indices(files.file_indices, cab_indices);
-    return pos_y;
-}
-
 void imprimir_cabecalho_indices(CABECALHO_INDICES * cab){
     printf("\nCABECALHO DE INDICES: raiz: %d topo: %d livre: %d\n", cab->pos_raiz, cab->pos_topo, cab->pos_livre);
 }
@@ -164,13 +143,39 @@ void cria_no(ARVOREB * r, int codigo, int pos_dados) {
     r->num_chaves = 1;
     r->prox_livre = -1;
     r->pt_dados[0] = pos_dados;
-    for(int i = 0; i < r->num_chaves; i++)
+    for(int i = 0; i <= r->num_chaves; i++)
         r->filho[i] = -1;
 }
 
 void cria_registro(DADOS_REGISTRO * dados, PRODUTO_DATA * produto){
     dados->produto = *produto;
     dados->prox_livre = -1;
+}
+
+int split (ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio){
+    ARVOREB* y = (ARVOREB*) malloc (sizeof(ARVOREB));
+    int q = x->num_chaves/2;
+    y->num_chaves = x->num_chaves - q - 1;
+    x->num_chaves = q;
+    escreve_no(files.file_indices, x, pos);
+    *meio = x->chave[q];
+    *pos_meio = x->pt_dados[q];
+    int i;
+    y->filho[0] = x->filho[q+1];
+    for (i = 0 ; i < y->num_chaves ; i++){
+        y->chave[i] = x->chave[q+i+1];
+        y->pt_dados[i] = x->pt_dados[q+i+1];
+        y->filho[i+1] = x->filho[q+i+2];
+    }
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    printf("Antes do split: "); imprimir_cabecalho_indices(cab_indices);
+    int pos_y = cab_indices->pos_topo;
+    escreve_no(files.file_indices, y, cab_indices->pos_topo);
+    cab_indices->pos_topo++;
+    escreve_cabecalho_indices(files.file_indices, cab_indices);
+    printf("Depois do split: "); imprimir_cabecalho_indices(cab_indices);
+    free(cab_indices);
+    return pos_y;
 }
 
 void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, int pos){
@@ -204,10 +209,10 @@ void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, in
 
         // Teste: Imprimir cabeçalhos para visualizar a atualização que ocorreu
         imprimir_cabecalho_indices(cab_indices);
-        imprimir_cabecalho_dados(cab_dados)
+        imprimir_cabecalho_dados(cab_dados);
     } else { // árvore não vazia
 
-        printf("-> Insercao em arvore com elementos!");
+        printf("-> Insercao em arvore com elementos!\n");
 
         // Lê a raiz da árvore
         ARVOREB * raiz = ler_no(files.file_indices, cab_indices->pos_raiz);
@@ -233,9 +238,16 @@ void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, in
         imprimir_cabecalho_indices(cab_indices_atual);
 
         if(overflow(raiz)){
+            imprimir_no(raiz);
             int meio;
+            printf("\nOverflow na função CADASTRAR SEM NOS LIVRES\n");
             int pos_meio;
-            int arvore_x = split(files, r, cab_indices_atual->pos_raiz ,&meio, &pos_meio);
+            int arvore_x = split(files, raiz, cab_indices_atual->pos_raiz, &meio, &pos_meio);
+
+            imprimir_no(raiz);
+            ARVOREB * teste_x = (ARVOREB*) malloc(sizeof (ARVOREB));
+            teste_x = ler_no(files.file_indices, arvore_x);
+            imprimir_no(teste_x);
 
             ARVOREB * nova_raiz = (ARVOREB*) malloc(sizeof (ARVOREB));
             nova_raiz->chave[0] = meio;
@@ -250,7 +262,10 @@ void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, in
             cab_indices_atual->pos_raiz = cab_indices_atual->pos_topo;
             cab_indices_atual->pos_topo++;
             escreve_cabecalho_indices(files.file_indices, cab_indices_atual);
+            printf("\nImprimir cabecalho pos split: ");
+            imprimir_cabecalho_indices(cab_indices_atual);
             free(nova_raiz);
+            free(teste_x);
         }
         free(raiz);
         free(cab_indices_atual);
@@ -296,13 +311,15 @@ void adiciona_direita (ARVOREB * r, int pos, int codigo, int pt_dados, int p){
     // O ponteiro de dados da nova chave tambpem é inserido na posição livre, após deslocamento
     r->pt_dados[pos] = pt_dados;
 
-
+    // O filho à direita da chave na posição os recebe a pos "p"
     r->filho[pos+1] = p;
+
+    // Incrementa o número de chaves, devido a inserção do novo código
     r->num_chaves++;
 }
 
 void imprimir_no(ARVOREB *r) {
-    printf("O nó analisado foi: \n");
+    printf("O no analisado foi: \n");
 
     printf("Chaves: ");
     for(int i = 0; i < r->num_chaves; i++){
@@ -318,10 +335,7 @@ void imprimir_no(ARVOREB *r) {
     for(int i = 0; i <= r->num_chaves; i++){
         printf("%d ", r->filho[i]);
     }
-}
-
-int eh_folha(ARVOREB * r){
-    return r->filho[0] == -1;
+    printf("\n");
 }
 
 // Os parâmetros são: Os arquivos (AMBOS), código do produto, ponteiro de dado do produto, posição da raiz (Na 1° chamada)
@@ -329,11 +343,10 @@ void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int po
     // Variável para armazenar a posiçao na qual uma determinada chave deveria entrar
     int pos;
 
-    // O trecho de código abaixo é responsável por printar a pos encontrada e o nó analisado em relação a essa pos
-    printf("Essa é a pos: %d para o código: %d\n", pos, codigo);
-    imprimir_no(r);
-
     if(!busca_pos(r, codigo, &pos)){
+        // O trecho de código abaixo é responsável por printar a pos encontrada e o nó analisado em relação a essa pos
+        printf("Essa e a pos: %d para o codigo: %d\n", pos, codigo);
+        imprimir_no(r);
         // A função eh-folha verifica se o nó r é folha
         if (eh_folha(r)){
             // Caso o nó seja uma folha a inserção é feita nele mesmo: EM UMA ÁRVORE B A INSERÇÃO É SEMPRE NA FOLHA
@@ -341,11 +354,18 @@ void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int po
             // pt_dados indicando os dados relacionados ao código no arquivo de dados
             // p = -1 quando é uma folha, pois os filhos são sempre nulos, no caso de arquivo "-1"
             adiciona_direita(r, pos, codigo, pt_dados, -1);
+
+            // Teste: Essa immpressão é somente para teste para verificar se o nó R realmente foi atualizado
+            imprimir_no(r);
+            // Após ter feito o deslocamento e inserção, escreve o nó atualizado no arquivo
             escreve_no(files.file_indices, r, pos_atual);
         } else{
+            // O trecho de código abaixo é responsável por fazer a inserção a partir de um nó interno
             ARVOREB * filho = ler_no(files.file_indices, r->filho[pos]);
             cadastrar_aux(files, filho, codigo, pt_dados, pos);
+
             if(overflow(filho)){
+                printf("\nOverflow na função CADASTRAR AUX\n");
                 int meio;
                 int pos_meio;
                 int posicao_no_pos_split = split(files, filho, pos, &meio, &pos_meio);
