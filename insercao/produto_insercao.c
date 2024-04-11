@@ -384,18 +384,32 @@ void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int po
         } else{
             // O trecho de código abaixo é responsável por fazer a inserção a partir de um nó interno
             ARVOREB * filho= ler_no(files.file_indices, r->filho[pos]);
-            cadastrar_aux(files, filho, codigo, pt_dados, pos);
+            cadastrar_aux(files, filho, codigo, pt_dados, r->filho[pos]);
 
             if(overflow(filho)){
                 printf("\nOverflow na função CADASTRAR AUX\n");
                 int meio;
                 int pos_meio;
-                int posicao_no_pos_split = split(files, filho, pos, &meio, &pos_meio, cab_indices);
-                printf("Esse e o nó filho:");
+
+                printf("\nEsse e o nó filho antes do split:");
                 imprimir_no(filho);
-                escreve_cabecalho_indices(files.file_indices, cab_indices);
-                adiciona_direita(r, pos, codigo, meio, posicao_no_pos_split);
+
+                int posicao_no_pos_split = split(files, filho, pos, &meio, &pos_meio, cab_indices);
+                printf("\nEsse e o nó filho depois do split:");
+                imprimir_no(filho);
+
+                printf("\nEsse e o nó criado pelo split:");
+                ARVOREB * novo_no = ler_no(files.file_indices, posicao_no_pos_split);
+                imprimir_no(novo_no);
+
+                printf("\n");
+                imprimir_cabecalho_indices(cab_indices);
+                adiciona_direita(r, pos, meio, pos_meio, posicao_no_pos_split);
+                printf("\nEsse e a nova raiz (r) pos split:");
+                imprimir_no(filho);
                 escreve_no(files.file_indices, r, pos_atual);
+
+                escreve_cabecalho_indices(files.file_indices, cab_indices);
             }
             free(filho);
         }
