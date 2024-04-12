@@ -20,6 +20,7 @@ void header_menu(){
     printf("8. Imprimir Lista de Livres do Arquivo de Indices\n");
     printf("9. Imprimir Lista de Livres do Arquivo de Dados\n");
     printf("10. Realizar Operacoes em Lote\n");
+    printf("11. Imprimir infos dos nós\n");
     printf("0. Sair\n");
 }
 
@@ -116,6 +117,12 @@ void realizarOperacoesEmLote() {
     // Implemente a lógica para realizar operações em lote
 }
 
+void imprimir_info_nos(ARQUIVOS files){
+    printf("\n----> Impressao de infos no nno: \n");
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    imprimir_info_nos_chaves(files, cab_indices->pos_raiz);
+}
+
 // Exibe o menu principal e processa a escolha do usuário
 // Pré-condições: Nenhuma
 // Pós-condição: O usuário escolhe uma opção do menu e a operação correspondente é executada
@@ -157,6 +164,9 @@ void menu_principal(ARQUIVOS files){
                 break;
             case 10:
                 realizarOperacoesEmLote();
+                break;
+            case 11:
+                imprimir_info_nos(files);
                 break;
             case 0:
                 printf("Saindo do programa. Ate mais!\n");

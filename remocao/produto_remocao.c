@@ -6,32 +6,9 @@
 #include <stdlib.h>
 #include "produto_remocao.h"
 #include "../insercao/produto_insercao.h"
+#include "../impressao/produto_impressao.h"
 
-int vazia(ARVOREB * r){
-    return r->num_chaves == 0;
-}
-
-int eh_raiz(ARVOREB * r){
-    int is_raiz = 1;
-
-    for(int i = 0; i < r->num_chaves; i++){
-        if(r->filho[i] != -1){
-            is_raiz = 0;
-            return is_raiz;
-        }
-    }
-
-    return is_raiz;
-}
-
-int underflow(ARVOREB * r){
-    if (!vazia(r)){
-        if (r->num_chaves < ORDEM/2 && !eh_raiz(r))
-            return 1;
-        return 0;
-    }
-    return 0;
-}
+#define MIN (ORDEM/2 + ORDEM%2 - 1)
 
 void remover_produto(ARQUIVOS files){
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
@@ -53,58 +30,84 @@ void remover_produto(ARQUIVOS files){
         return;
     }
 
+    printf("---> Iniciando a remocao da chave %d!\n", codigo);
     ARVOREB * raiz = ler_no(files.file_indices, cab_indices->pos_raiz);
-    pos_raiz = cab_indices->pos_raiz;
-    pos_esq = ;
-    pos_dir = ;
-    remover(files, raiz, pos_raiz, pos_esq, pos_dir, codigo);
+    remover(files, codigo, cab_indices->pos_raiz, pos_codigo);
 
     free(raiz);
     free(cab_indices);
 }
 
-int pode_emprestar(ARVOREB * r){
-    if (r != NULL){
-        if (r->num_chaves > ORDEM/2)
-            return 1;
-        return 0;
+void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+
+    // Buscar o nó que possui a chave a ser removida a ser removido
+    ARVOREB * no_a_remover = ler_no(files.file_indices, pos_remocao);
+
+    // 1° CASO: a remoção é feita em um nó folha com número de chaves maior que o mínimo (ORDEM/2)
+    if(mais_chaves_que_min(no_a_remover) ){
+        // Logo, apenas remove a chave do nó, realizando as alterações necessárias e gravando novamente no arquivo
+        remover_caso1(files, no_a_remover, codigo, pos_remocao);
     }
-    return 0;
+
+
+    free(cab_indices);
 }
 
-ARVOREB * find_irmao_esq(FILE* file_indices, ARVOREB * filho){
-    return NULL;
+int mais_chaves_que_min(ARVOREB * r){
+    return r->num_chaves > MIN;
 }
 
-ARVOREB * find_irmao_dir(FILE *pIobuf, ARVOREB *pNode) {
-    return NULL;
-}
+int bus_pos_chave(ARVOREB * r, int codigo){
+    int pos_codigo;
 
-int is_emprestimo(FILE* file_indices, ARVOREB * r){
-
-    ARVOREB * esq = find_irmao_esq(file_indices,r);
-    ARVOREB * dir = find_irmao_dir(file_indices,r);
-
-    if (pode_emprestar(esq) || pode_emprestar(dir))
-    {
-        free(esq);
-        free(dir);
-        return 1;
+    // Encontra a pos dentro do nó
+    for(pos_codigo = 0; pos_codigo < r->num_chaves; pos_codigo++){
+        if( r->chave[pos_codigo] == codigo)
+            return pos_codigo;
     }
-    free(esq);
-    free(dir);
-    return 0;
 
+    return -1;
 }
 
-void realizar_balanceamento(ARQUIVOS files, ARVOREB * r){
-    if (is_emprestimo(files.file_indices, r)){//se pode emprestar, faz a redistribuição
-        redistribuir(arqArv, r);
-    } else {//nao da pra emprestar, faz concatenação
-        concatenar(arqArv, r);
+void atualiza_no_remocao_folha(ARQUIVOS files, ARVOREB * folha, int pos_remocao, int pos_codigo){
+    CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
+
+    // A posição dos dados no arq de dados deve ser atualizado
+    // folha->pt_dados[pos_codigo] => posição dos dados no file de dados
+    int pos_registro = folha->pt_dados[pos_codigo];
+    cab_dados->pos_livre = pos_registro;
+
+    printf("\n ---> CASO 1 - ANTES ATT - REMOCAO: \n");
+    imprimir_no(folha);
+
+    // Atualiza o cab_dados com a posição livre
+    escreve_cabecalho_dados(files.file_dados, cab_dados);
+
+    // Agora realizar a atualização do nó folha
+    int i;
+    for(i = pos_codigo; i < folha->num_chaves-1; i++){
+        folha->chave[i] = folha->chave[i+1];
+        folha->pt_dados[i] = folha->pt_dados[i+1];
+        folha->filho[i] = folha->filho[i+1];
     }
+
+    // Atualiza o último fiilho
+    folha->filho[i] = folha->filho[folha->num_chaves];
+    folha->num_chaves--;
+
+    printf("\n ---> CASO 1 - DEPOIS ATT - REMOCAO: \n");
+    imprimir_no(folha);
+
+    escreve_no(files.file_indices, folha, pos_remocao);
+    free(cab_dados);
 }
 
-void remover(ARQUIVOS files, int pos_raiz, int pos_esq, int pos_dir, int codigo){
+// 1° CASO: a remoção é feita em um nó folha com número de chaves maior que o mínimo (ORDEM/2)
+void remover_caso1(ARQUIVOS files, ARVOREB * no_a_remover, int codigo, int pos_remocao){
+    int pos_codigo, i;
 
+    // Encontra a pos dentro do nó
+    pos_codigo = bus_pos_chave(no_a_remover, codigo);
+    atualiza_no_remocao_folha(files, no_a_remover, pos_remocao, pos_codigo);
 }

@@ -26,7 +26,6 @@ int split(ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio, CABE
 void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, int pos);
 int busca_pos(ARVOREB * r, int codigo, int * pos);
 void adiciona_direita(ARVOREB * r, int pos, int codigo, int pt_dados, int p);
-void imprimir_no(ARVOREB * r);
 void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int pos_atual);
 void cadastrar_produto_com_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, int pos);
 

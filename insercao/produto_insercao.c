@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "produto_insercao.h"
+#include "../impressao/produto_impressao.h"
 
 // Função para ler os dados de um produto
 PRODUTO_DATA * ler_produto() {
@@ -359,26 +360,6 @@ void adiciona_direita (ARVOREB * r, int pos, int codigo, int pt_dados, int p){
 
     // Incrementa o número de chaves, devido a inserção do novo código
     r->num_chaves++;
-}
-
-void imprimir_no(ARVOREB *r) {
-    printf("O no analisado foi: \n");
-
-    printf("Chaves: ");
-    for(int i = 0; i < r->num_chaves; i++){
-        printf("%d ", r->chave[i]);
-    }
-
-    printf("\nPt. Dados: ");
-    for(int i = 0; i < r->num_chaves; i++){
-        printf("%d ", r->pt_dados[i]);
-    }
-
-    printf("\nFilhos: ");
-    for(int i = 0; i <= r->num_chaves; i++){
-        printf("%d ", r->filho[i]);
-    }
-    printf("\n");
 }
 
 // Os parâmetros são: Os arquivos (AMBOS), código do produto, ponteiro de dado do produto, posição da raiz (Na 1° chamada)

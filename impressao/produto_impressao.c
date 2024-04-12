@@ -55,3 +55,45 @@ void imprimir_informacoes_produto(ARQUIVOS files, int codigo){
 
     free(cab_indices);
 }
+
+void imprimir_no(ARVOREB *r) {
+    printf("\n-----------------------------\n");
+    printf("    O no analisado foi: \n");
+
+    printf("Chaves: ");
+    for(int i = 0; i < r->num_chaves; i++){
+        printf("%d ", r->chave[i]);
+    }
+    printf("\n");
+    printf("Pt. Dados: ");
+    for(int i = 0; i < r->num_chaves; i++){
+        printf("%d ", r->pt_dados[i]);
+    }
+    printf("\n");
+    printf("Filhos: ");
+    for(int i = 0; i <= r->num_chaves; i++){
+        printf("%d ", r->filho[i]);
+    }
+    printf("\n-----------------------------\n");
+}
+
+
+void imprimir_info_nos_chaves(ARQUIVOS files, int pos){
+    CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
+
+    if (pos == -1) {
+        //printf("Arvore vazia!\n");
+        free(cab_indices);
+        return;
+    }else{
+        ARVOREB * no = ler_no(files.file_indices, pos);
+        imprimir_no(no);
+
+        for(int i = 0; i <= no->num_chaves; i++){
+            imprimir_info_nos_chaves(files, no->filho[i]);
+        }
+
+        free(no);
+        free(cab_indices);
+    }
+}

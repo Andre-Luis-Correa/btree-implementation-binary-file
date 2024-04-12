@@ -58,6 +58,8 @@ void imprimirListaLivresDados();
 // Pós-condições: As operações em lote são executadas
 void realizarOperacoesEmLote();
 
+void imprimir_info_nos(ARQUIVOS files);
+
 // Exibe o menu principal e processa a escolha do usuário
 // Pré-condições: Nenhuma
 // Pós-condições: O usuário escolhe uma opção do menu e a operação correspondente é executada
