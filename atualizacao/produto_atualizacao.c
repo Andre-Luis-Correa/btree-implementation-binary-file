@@ -59,7 +59,7 @@ void atualizar_preco_produto(ARQUIVOS files, int codigo_produto){
 }
 
 // Função para atualizar o estoque de um produto a partir do seu código
-void atualizar_estoque(ARQUIVOS files, int codigo_produto) {
+void atualizar_estoque_produto(ARQUIVOS files, int codigo_produto) {
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
     CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
 

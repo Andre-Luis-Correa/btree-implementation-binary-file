@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="trabalho_aed_3_bruna_andre"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="trabalho_aed_3_bruna_andre">
+				<Option output="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/trabalho_aed_3_bruna_andre" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 trabalho_aed_3_bruna_andre"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="trabalho_aed_3_bruna_andre/fast">
+				<Option output="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/trabalho_aed_3_bruna_andre" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 trabalho_aed_3_bruna_andre/fast"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/atualizacao/produto_atualizacao.c">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/atualizacao/produto_atualizacao.h">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cabecalho/cabecalho_dados.c">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cabecalho/cabecalho_dados.h">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cabecalho/cabecalho_indices.c">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/cabecalho/cabecalho_indices.h">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/file/file.c">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/file/file.h">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/impressao/produto_impressao.c">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/impressao/produto_impressao.h">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/insercao/produto_insercao.c">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/insercao/produto_insercao.h">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/lote/lote.c">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/lote/lote.h">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/main.c">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/menu/menu.c">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/menu/menu.h">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/produto/produto.h">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/remocao/produto_remocao.c">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/remocao/produto_remocao.h">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/utils/mainB.c">
+			<Option target="trabalho_aed_3_bruna_andre"/>
+		</Unit>
+		<Unit filename="/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

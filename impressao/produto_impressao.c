@@ -11,7 +11,6 @@ void imprimir_lista_produtos(ARQUIVOS files, int pos_atual) {
     CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
 
     if (pos_atual == -1) {
-        printf("Arvore vazia!\n");
         free(cab_indices);
         return;
     }else{

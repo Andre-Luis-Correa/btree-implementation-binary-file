@@ -14,16 +14,16 @@ PRODUTO_DATA * ler_produto() {
     printf("\n--> CADASTRO DE PRODUTO: \n");
     printf("Insira o codigo do produto: ");
     scanf("%d", &produto->codigo);
-//    printf("Insira o nome do produto: ");
-//    scanf(" %[^\n]", produto->nome);
-//    printf("Insira a marca do produto: ");
-//    scanf(" %[^\n]", produto->marca);
-//    printf("Insira a categoria do produto: ");
-//    scanf(" %[^\n]", produto->categoria);
-//    printf("Insira a quantidade em estoque do produto: ");
-//    scanf("%d", &produto->estoque);
-//    printf("Insira o preco do produto: ");
-//    scanf("%f", &produto->preco);
+    printf("Insira o nome do produto: ");
+    scanf(" %[^\n]", produto->nome);
+    printf("Insira a marca do produto: ");
+    scanf(" %[^\n]", produto->marca);
+    printf("Insira a categoria do produto: ");
+    scanf(" %[^\n]", produto->categoria);
+    printf("Insira a quantidade em estoque do produto: ");
+    scanf("%d", &produto->estoque);
+    printf("Insira o preco do produto: ");
+    scanf("%f", &produto->preco);
 
     return produto;
 }
@@ -116,11 +116,6 @@ void cadastrar_produto(ARQUIVOS files){
     imprimir_cabecalho_dados(cab_dados);
 
     PRODUTO_DATA * produto = ler_produto();
-    strcpy(produto->nome, "Produto A");
-    strcpy(produto->marca, "Marca A");
-    strcpy(produto->categoria, "Categoria A");
-    produto->estoque = 50;
-    produto->preco = 10.99;
     imprimir_produto(produto);
 
     if(buscar_no(files.file_indices, produto->codigo, cab_indices->pos_raiz) == -1){
