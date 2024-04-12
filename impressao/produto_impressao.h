@@ -7,6 +7,7 @@
 
 #include "../produto/produto.h"
 
-void imprimir_arvore(FILE * file_indices, int pos);
+void imprimir_lista_produtos(ARQUIVOS files, int pos_atual);
+void imprimir_informacoes_produto(ARQUIVOS files, int codido);
 
 #endif //PRODUTO_IMPRESSAO_H

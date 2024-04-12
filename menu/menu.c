@@ -59,19 +59,23 @@ void atualizarEstoque() {
 // Pré-condições: Nenhuma
 // Pós-condição: As informações do produto são impressas no console
 void imprimirInformacoes(ARQUIVOS files) {
-    printf("Operacao: Imprimir Informacoes de um Produto\n");
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-    printf("\n Impressao: \n");
-    imprimir_arvore(files.file_indices, cab_indices->pos_raiz);
-    free(cab_indices);
+    printf("Operacao: Imprimir informacoes de um produto\n");
+    int codigo;
+
+    printf("Digite o código desejado para busca-lo: ");
+    scanf("%d", &codigo);
+    imprimir_informacoes_produto(files, codigo);
 }
 
 // Imprime a lista de todos os produtos cadastrados
 // Pré-condições: Nenhuma
 // Pós-condição: A lista de todos os produtos é impressa no console
-void imprimirListaProdutos() {
-    printf("Operacao: Imprimir Lista de Todos os Produtos\n");
-    // Implemente a lógica para imprimir a lista de todos os produtos
+void imprimirListaProdutos(ARQUIVOS files) {
+    printf("Operacao: Imprimir Lista de Produtos\n");
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    printf("\n Impressao: \n");
+    imprimir_lista_produtos(files, cab_indices->pos_raiz);
+    free(cab_indices);
 }
 
 // Imprime a árvore de produtos
@@ -134,7 +138,7 @@ void menu_principal(ARQUIVOS files){
                 imprimirInformacoes(files);
                 break;
             case 6:
-                imprimirListaProdutos();
+                imprimirListaProdutos(files);
                 break;
             case 7:
                 imprimirArvore();

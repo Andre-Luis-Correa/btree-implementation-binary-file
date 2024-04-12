@@ -36,7 +36,7 @@ void imprimirInformacoes(ARQUIVOS files);
 // Imprime a lista de todos os produtos cadastrados
 // Pré-condições: Nenhuma
 // Pós-condições: A lista de todos os produtos é impressa no console
-void imprimirListaProdutos();
+void imprimirListaProdutos(ARQUIVOS files);
 
 // Imprime a árvore de produtos
 // Pré-condições: Nenhuma
