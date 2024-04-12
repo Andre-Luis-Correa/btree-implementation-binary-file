@@ -60,6 +60,8 @@ void atualizarEstoque() {
 // Pós-condição: As informações do produto são impressas no console
 void imprimirInformacoes(ARQUIVOS files) {
     printf("Operacao: Imprimir Informacoes de um Produto\n");
+//    ARVOREB  * b = ler_no(files.file_indices, 1);
+//    imprimir_no(b);
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
     printf("\n Impressao: \n");
     imprimir_cabecalho_indices(cab_indices);

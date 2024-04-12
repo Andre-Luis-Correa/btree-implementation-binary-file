@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "produto_insercao.h"
 
 // Função para ler os dados de um produto
@@ -13,16 +14,16 @@ PRODUTO_DATA * ler_produto() {
     printf("\n--> CADASTRO DE PRODUTO: \n");
     printf("Insira o codigo do produto: ");
     scanf("%d", &produto->codigo);
-    printf("Insira o nome do produto: ");
-    scanf(" %[^\n]", produto->nome);
-    printf("Insira a marca do produto: ");
-    scanf(" %[^\n]", produto->marca);
-    printf("Insira a categoria do produto: ");
-    scanf(" %[^\n]", produto->categoria);
-    printf("Insira a quantidade em estoque do produto: ");
-    scanf("%d", &produto->estoque);
-    printf("Insira o preco do produto: ");
-    scanf("%f", &produto->preco);
+//    printf("Insira o nome do produto: ");
+//    scanf(" %[^\n]", produto->nome);
+//    printf("Insira a marca do produto: ");
+//    scanf(" %[^\n]", produto->marca);
+//    printf("Insira a categoria do produto: ");
+//    scanf(" %[^\n]", produto->categoria);
+//    printf("Insira a quantidade em estoque do produto: ");
+//    scanf("%d", &produto->estoque);
+//    printf("Insira o preco do produto: ");
+//    scanf("%f", &produto->preco);
 
     return produto;
 }
@@ -110,6 +111,11 @@ void cadastrar_produto(ARQUIVOS files){
     imprimir_cabecalho_dados(cab_dados);
 
     PRODUTO_DATA * produto = ler_produto();
+    strcpy(produto->nome, "Produto A");
+    strcpy(produto->marca, "Marca A");
+    strcpy(produto->categoria, "Categoria A");
+    produto->estoque = 50;
+    produto->preco = 10.99;
     imprimir_produto(produto);
 
     if(buscar_no(files.file_indices, produto->codigo, cab_indices->pos_raiz) == -1){
@@ -159,7 +165,19 @@ int split (ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio, CAB
     int q = x->num_chaves/2;
     y->num_chaves = x->num_chaves - q - 1;
     x->num_chaves = q;
+
+    printf("\n----> Antes de escrever: ");
+    ARVOREB * teste = ler_no(files.file_indices, 1);
+    imprimir_no(teste);
+    free(teste);
+
     escreve_no(files.file_indices, x, pos);
+
+    printf("\n----> DEPOISde escrever: ");
+    teste = ler_no(files.file_indices, 1);
+    imprimir_no(teste);
+    free(teste);
+
     *meio = x->chave[q];
     *pos_meio = x->pt_dados[q];
     int i;
@@ -379,6 +397,7 @@ void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int po
 
             // Teste: Essa immpressão é somente para teste para verificar se o nó R realmente foi atualizado
             imprimir_no(r);
+
             // Após ter feito o deslocamento e inserção, escreve o nó atualizado no arquivo
             escreve_no(files.file_indices, r, pos_atual);
         } else{
@@ -387,6 +406,10 @@ void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int po
             cadastrar_aux(files, filho, codigo, pt_dados, r->filho[pos]);
 
             if(overflow(filho)){
+                printf("\nFILHOOOOOOO\n");
+                ARVOREB  * teste = ler_no(files.file_indices, 1);
+                imprimir_no(teste);
+
                 printf("\nOverflow na função CADASTRAR AUX\n");
                 int meio;
                 int pos_meio;
@@ -394,8 +417,13 @@ void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int po
                 printf("\nEsse e o nó filho antes do split:");
                 imprimir_no(filho);
 
-                int posicao_no_pos_split = split(files, filho, pos, &meio, &pos_meio, cab_indices);
+                int posicao_no_pos_split = split(files, filho, r->filho[pos], &meio, &pos_meio, cab_indices);
+                teste = ler_no(files.file_indices, 1);
+                imprimir_no(teste);
                 escreve_no(files.file_indices, filho, r->filho[pos]);
+
+                teste = ler_no(files.file_indices, 1);
+                imprimir_no(teste);
 
                 printf("\nEsse e o nó filho depois do split:");
                 imprimir_no(filho);
@@ -406,9 +434,15 @@ void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int po
 
                 printf("\n");
                 imprimir_cabecalho_indices(cab_indices);
+                printf("\n--------> POS para chamar adiciona direita: %d\n", pos);
                 adiciona_direita(r, pos, meio, pos_meio, posicao_no_pos_split);
+
+                teste = ler_no(files.file_indices, 1);
+                imprimir_no(teste);
+
                 printf("\nEsse e a nova raiz (r) pos split:");
                 imprimir_no(r);
+                printf("\n--------> POS RAIZ ATUAL : %d\n", pos_atual);
                 escreve_no(files.file_indices, r, pos_atual);
 
                 escreve_cabecalho_indices(files.file_indices, cab_indices);
