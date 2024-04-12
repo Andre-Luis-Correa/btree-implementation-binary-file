@@ -37,13 +37,16 @@ void imprimir_informacoes_produto(ARQUIVOS files, int codigo){
     CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
 
     int pos = buscar_no(files.file_indices, codigo, cab_indices->pos_raiz);
-    ARVOREB * r = ler_no(files.file_indices, pos);
-    printf("\ncodigo: %d\n", r->chave[pos]);
 
     if(pos != -1) {
         ARVOREB * r = ler_no(files.file_indices, pos);
-        imprimir_no(r);
-        DADOS_REGISTRO *informacoes_produto = ler_registro(files.file_dados, r->pt_dados[pos]);
+
+        int i;
+        for(i = 0; i < r->num_chaves; i++){
+            if(r->chave[i] == codigo) break;
+        }
+
+        DADOS_REGISTRO *informacoes_produto = ler_registro(files.file_dados, r->pt_dados[i]);
         printf("Codigo: %d, Nome: %s\n", informacoes_produto->produto.codigo, informacoes_produto->produto.nome);
         free(informacoes_produto);
     } else {
