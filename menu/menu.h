@@ -21,7 +21,7 @@ void removerProduto();
 // Atualiza o preço de um produto
 // Pré-condições: O produto a ser atualizado deve existir no cadastro
 // Pós-condições: O preço do produto é atualizado
-void atualizarPreco();
+void atualizarPreco(ARQUIVOS files);
 
 // Atualiza o estoque de um produto
 // Pré-condições: O produto a ser atualizado deve existir no cadastro

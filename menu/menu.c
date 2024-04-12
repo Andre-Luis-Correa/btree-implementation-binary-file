@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "menu.h"
+
+#include "../atualizacao/produto_atualizacao.h"
 #include "../insercao/produto_insercao.h"
 #include "../impressao//produto_impressao.h"
 
@@ -42,8 +44,12 @@ void removerProduto() {
 // Atualiza o preço de um produto
 // Pré-condições: Nenhuma
 // Pós-condição: O preço do produto é atualizado
-void atualizarPreco() {
+void atualizarPreco(ARQUIVOS files) {
     printf("Operacao: Atualizar Preco\n");
+    int cod;
+    printf("Digite o codigo do produto a ser atualizado:\n");
+    scanf("%d", &cod);
+    atualizar_preco_produto(files, cod);
     // Implemente a lógica para atualizar o preço de um produto
 }
 
@@ -129,7 +135,7 @@ void menu_principal(ARQUIVOS files){
                 removerProduto();
                 break;
             case 3:
-                atualizarPreco();
+                atualizarPreco(files);
                 break;
             case 4:
                 atualizarEstoque();
