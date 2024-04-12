@@ -85,14 +85,19 @@ int buscar_no(FILE * file_indices, int codigo, int pos){
 
     for(i = 0; i < r->num_chaves; i++){
         if(r->chave[i] == codigo ){
+            printf("%d    e   %d\n", codigo, r->chave[i]);
+            printf("\nPos: %d\n", pos);
             free(r);
             return pos;
         } else if (r->chave[i] > codigo ){
-            return buscar_no(file_indices, codigo, r->filho[i]);
+            int pos_atual = r->filho[i];
+            free(r);
+            return buscar_no(file_indices, codigo, pos_atual);
         }
     }
-
-    return buscar_no(file_indices, codigo, r->filho[i]);
+    int pos_atual = r->filho[i];
+    free(r);
+    return buscar_no(file_indices, codigo, pos_atual);
 }
 
 void imprimir_cabecalho_indices(CABECALHO_INDICES * cab){

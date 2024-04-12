@@ -42,6 +42,7 @@ void imprimir_informacoes_produto(ARQUIVOS files, int codigo){
 
     if(pos != -1) {
         ARVOREB * r = ler_no(files.file_indices, pos);
+        imprimir_no(r);
         DADOS_REGISTRO *informacoes_produto = ler_registro(files.file_dados, r->pt_dados[pos]);
         printf("Codigo: %d, Nome: %s\n", informacoes_produto->produto.codigo, informacoes_produto->produto.nome);
         free(informacoes_produto);
