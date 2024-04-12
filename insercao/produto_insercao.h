@@ -10,6 +10,8 @@
 #include "../cabecalho/cabecalho_dados.h"
 
 PRODUTO_DATA * ler_produto();
+int overflow (ARVOREB * r);
+int eh_folha(ARVOREB * r);
 void imprimir_produto(PRODUTO_DATA * produto);
 ARVOREB * ler_no(FILE * file_indices, int pos);
 void escreve_no(FILE * file_indices, ARVOREB * no, int pos);

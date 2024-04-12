@@ -38,22 +38,6 @@ void remover_produto(ARQUIVOS files){
     free(cab_indices);
 }
 
-void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-
-    // Buscar o nó que possui a chave a ser removida a ser removido
-    ARVOREB * no_a_remover = ler_no(files.file_indices, pos_remocao);
-
-    // 1° CASO: a remoção é feita em um nó folha com número de chaves maior que o mínimo (ORDEM/2)
-    if(mais_chaves_que_min(no_a_remover) ){
-        // Logo, apenas remove a chave do nó, realizando as alterações necessárias e gravando novamente no arquivo
-        remover_caso1(files, no_a_remover, codigo, pos_remocao);
-    }
-
-
-    free(cab_indices);
-}
-
 int mais_chaves_que_min(ARVOREB * r){
     return r->num_chaves > MIN;
 }
@@ -110,4 +94,20 @@ void remover_caso1(ARQUIVOS files, ARVOREB * no_a_remover, int codigo, int pos_r
     // Encontra a pos dentro do nó
     pos_codigo = bus_pos_chave(no_a_remover, codigo);
     atualiza_no_remocao_folha(files, no_a_remover, pos_remocao, pos_codigo);
+}
+
+void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+
+    // Buscar o nó que possui a chave a ser removida a ser removido
+    ARVOREB * no_a_remover = ler_no(files.file_indices, pos_remocao);
+
+    // 1° CASO: a remoção é feita em um nó folha com número de chaves maior que o mínimo (ORDEM/2)
+    if(mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover)){
+        // Logo, apenas remove a chave do nó, realizando as alterações necessárias e gravando novamente no arquivo
+        remover_caso1(files, no_a_remover, codigo, pos_remocao);
+    }
+
+
+    free(cab_indices);
 }
