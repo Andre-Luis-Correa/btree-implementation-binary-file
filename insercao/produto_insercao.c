@@ -395,7 +395,7 @@ void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int po
                 imprimir_no(filho);
 
                 int posicao_no_pos_split = split(files, filho, pos, &meio, &pos_meio, cab_indices);
-                escreve_no(files.file_indices, filho, pos);
+                escreve_no(files.file_indices, filho, r->filho[pos]);
 
                 printf("\nEsse e o nó filho depois do split:");
                 imprimir_no(filho);
