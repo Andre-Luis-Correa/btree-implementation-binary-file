@@ -16,7 +16,7 @@ void cadastrarProduto(ARQUIVOS files);
 // Remove um produto existente
 // Pré-condições: O produto a ser removido deve existir no cadastro
 // Pós-condições: O produto é removido do cadastro
-void removerProduto();
+void removerProduto(ARQUIVOS files);
 
 // Atualiza o preço de um produto
 // Pré-condições: O produto a ser atualizado deve existir no cadastro

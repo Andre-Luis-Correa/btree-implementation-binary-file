@@ -31,7 +31,7 @@ void fechar_arquivos(ARQUIVOS * files){
     fclose(files->file_indices);
     fclose(files->file_dados);
     printf("\nFECHANDO ARQUIVO DE INDICES...");
-    printf("\nFECHANDO ARQUIVO DE INDICES...\n");
+    printf("\nFECHANDO ARQUIVO DE DADOS...\n");
 }
 
 //Verifica se um arquivo está vazio ou não, isto é: se contem registros ou não

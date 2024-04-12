@@ -7,4 +7,10 @@
 
 #include "../produto/produto.h"
 
+int vazia(ARVOREB * r);
+int eh_raiz(ARVOREB * r);
+int underflow(ARVOREB * r);
+void remover_produto(ARQUIVOS files);
+ARVOREB * remover(ARQUIVOS files, ARVOREB * r, int codigo);
+
 #endif //PRODUTO_REMOCAO_H

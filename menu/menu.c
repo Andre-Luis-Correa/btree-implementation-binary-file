@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include "menu.h"
 #include "../insercao/produto_insercao.h"
-#include "../impressao//produto_impressao.h"
+#include "../impressao/produto_impressao.h"
+#include "../remocao/produto_remocao.h"
 
 // Exibe o cabeçalho do menu
 // Pré-condições: Nenhuma
@@ -34,8 +35,9 @@ void cadastrarProduto(ARQUIVOS files) {
 // Remove um produto existente
 // Pré-condições: Nenhuma
 // Pós-condição: O produto é removido do cadastro
-void removerProduto() {
+void removerProduto(ARQUIVOS files) {
     printf("Operacao: Remover Produto\n");
+    remover_produto(files);
     // Implemente a lógica para remover um produto
 }
 
@@ -73,8 +75,12 @@ void imprimirInformacoes(ARQUIVOS files) {
 void imprimirListaProdutos(ARQUIVOS files) {
     printf("Operacao: Imprimir Lista de Produtos\n");
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-    printf("\n Impressao: \n");
-    imprimir_lista_produtos(files, cab_indices->pos_raiz);
+    if(cab_indices->pos_raiz == -1) {
+        printf("\nNao ha elementos!: \n");
+    } else {
+        printf("\nImpressao: \n");
+        imprimir_lista_produtos(files, cab_indices->pos_raiz);
+    }
     free(cab_indices);
 }
 
@@ -126,7 +132,7 @@ void menu_principal(ARQUIVOS files){
                 cadastrarProduto(files);
                 break;
             case 2:
-                removerProduto();
+                removerProduto(files);
                 break;
             case 3:
                 atualizarPreco();
