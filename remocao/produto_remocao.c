@@ -164,14 +164,20 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
     // 1° CASO: a remoção é feita em um nó folha com número de chaves maior que o mínimo (ORDEM/2)
     if( mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover) ){
         // Logo, apenas remove a chave do nó, realizando as alterações necessárias e gravando novamente no arquivo
+        printf("\n--->Entrou aqui 1\n");
         remover_caso1(files, no_a_remover, codigo, pos_remocao);
-
     } else if ( !eh_folha(no_a_remover ) ) { // CASO 2°: a remoção é feita em um nó interno
         // Logo, busca-se a chave sucessora e a insere no lugar da chave removida no nó interno
         // Além disso, a função deve retornar a posição do nó chave sucessora, pois esse nó deve ser tratado após remoção
-        printf("\n--->Entrou aqui\n");
+        printf("\n--->Entrou aqui 2\n");
         int pos_no_sucessor = remover_caso2(files, no_a_remover, codigo, pos_remocao);
+    } else if ( !mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover) ){
+        // CASO 3°: a remoção é feita em um nó com numero minimo de chaves
+        // Logo, é necessário verificar, PRIMEIRAMENTE, se pode ser feito a redistribuição
+        // Caso contrário, fazer concatenação
+        printf("\n--->Entrou aqui 3\n");
     }
+
     printf("\n--->NAO Entrou aqui\n");
 
     free(cab_indices);
