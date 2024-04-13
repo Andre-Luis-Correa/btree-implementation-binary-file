@@ -197,28 +197,29 @@ int pode_redistribuir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * 
     if (pos_filho_remocao == 0) {
         dir = ler_no(files.file_indices, pai->filho[1]);
         if (dir->num_chaves > MIN) {
-            *pegar_esq = 0;
-            *pegar_dir = 1;
+            *pegar_esq = -1;
+            *pegar_dir = pai->filho[1];
             return 1;
         }
     } else if ( pos_filho_remocao == pai->num_chaves ){
         esq = ler_no(files.file_indices, pai->filho[pai->num_chaves - 1]);
         if (esq->num_chaves > MIN) {
-            *pegar_esq = 1;
-            *pegar_dir = 0;
+            *pegar_esq = pai->filho[pai->num_chaves - 1];
+            *pegar_dir = -1;
             return 1;
         }
     } else {
         esq = ler_no(files.file_indices, pos_filho_remocao - 1);
         dir = ler_no(files.file_indices, pos_filho_remocao + 1);
 
-        if(esq->num_chaves > MIN){
-            *pegar_esq = 1;
-            *pegar_dir = 0;
+        if (dir->num_chaves > MIN) {
+            *pegar_esq = -1;
+            *pegar_dir = pos_filho_remocao + 1;
             return 1;
-        } else if (dir->num_chaves > MIN){
-            *pegar_esq = 0;
-            *pegar_dir = 1;
+
+        } else if (esq->num_chaves > MIN) {
+            *pegar_esq = pos_filho_remocao - 1;
+            *pegar_dir = -1;
             return 1;
         }
     }
@@ -230,8 +231,39 @@ int pode_redistribuir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * 
     return 0;
 }
 
-void redistribuir(ARQUIVOS files, int pos_pai, int pos_no_removido, int pegar_esq, int pegar_dir){
+void redistribuir_partida_da_direita(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_dir){
+    ARVOREB * pai = ler_no(files.file_indices, pos_pai);
+    ARVOREB * no_remocao = ler_no(files.file_indices, pos_remocao);
+    ARVOREB * dir = ler_no(files.file_indices, pegar_dir);
 
+    no_remocao->chave[no_remocao->num_chaves] = pai->chave[pos_filho_remocao];
+    no_remocao->pt_dados[no_remocao->num_chaves] = pai->pt_dados[pos_filho_remocao];
+    no_remocao->num_chaves++;
+    no_remocao->filho[no_remocao->num_chaves] = dir->filho[0];
+
+    pai->chave[pos_filho_remocao] = dir->chave[0];
+    pai->pt_dados[pos_filho_remocao] = dir->pt_dados[0];
+
+    int i;
+    for(i = 0; )
+
+
+}
+
+void redistribuir_partida_da_esquerda(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_esq){
+    ARVOREB * pai = ler_no(files.file_indices, pos_pai);
+    ARVOREB * no_remocao = ler_no(files.file_indices, pos_remocao);
+    ARVOREB * esq = ler_no(files.file_indices, pegar_esq);
+
+}
+
+void redistribuir(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_esq, int pegar_dir){
+
+    if(pegar_dir!= -1){
+        redistribuir_partida_da_direita(files, pos_pai, pos_remocao, pos_filho_remocao, pegar_dir);
+    } else {
+        redistribuir_partida_da_esquerda(files, pos_pai, pos_remocao, pos_filho_remocao, pegar_esq);
+    }
 
 }
 
@@ -269,7 +301,8 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
             // A função pode_redistribuir() verifica se é possível realizar a redistribuição e indica a partir de qual lado
             if( pode_redistribuir(files, pos_pai, pos_filho_remocao, &pegar_esq, &pegar_dir) ){
                 // Aqui será inserido a lógica da redistribuição
-                redistribuir(files, pos_pai, pos_remocao, pegar_esq, pegar_dir);
+                // A função pode_redistribuir quarda a posição no arquivo dos filhos da esq e dir
+                redistribuir(files, pos_pai, pos_remocao, pos_filho_remocao, pegar_esq, pegar_dir);
             } else {
                 // Aqui será inserido a lógica da concatenação
                 concatenar();
