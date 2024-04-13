@@ -142,10 +142,14 @@ int remover_caso2(ARQUIVOS files, ARVOREB * no_a_remover, int codigo, int pos_re
 
     // Preciso atualizar a folha que continha a chave sucessora
     ARVOREB  * no_sucessor = ler_no(files.file_indices, pos_no_sucessor);
+
+    int pt_dados_remocao = no_sucessor->pt_dados[0];
+
     atualiza_no_remocao_folha(files, no_sucessor, pos_no_sucessor, 0);
 
     // Realiza a substituição da chave removida pela chave sucessora
     no_a_remover->chave[pos_codigo] = chave_sucessora;
+    no_a_remover->pt_dados[pos_codigo] = pt_dados_remocao;
     escreve_no(files.file_indices, no_a_remover, pos_remocao);
 
     return pos_no_sucessor;
@@ -165,9 +169,10 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
     } else if ( !eh_folha(no_a_remover ) ) { // CASO 2°: a remoção é feita em um nó interno
         // Logo, busca-se a chave sucessora e a insere no lugar da chave removida no nó interno
         // Além disso, a função deve retornar a posição do nó chave sucessora, pois esse nó deve ser tratado após remoção
+        printf("\n--->Entrou aqui\n");
         int pos_no_sucessor = remover_caso2(files, no_a_remover, codigo, pos_remocao);
     }
-
+    printf("\n--->NAO Entrou aqui\n");
 
     free(cab_indices);
 }
