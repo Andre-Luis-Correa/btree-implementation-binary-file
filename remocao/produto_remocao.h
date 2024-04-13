@@ -19,8 +19,8 @@ int buscar_chave_sucessora_folha(ARQUIVOS files, ARVOREB * no_a_remover, int pos
 int remover_caso2(ARQUIVOS files, ARVOREB * no_a_remover, int codigo, int pos_remocao);
 int buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int * pos_filho_remocao);
 int pode_redistribuir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * pegar_esq, int * pegar_dir);
-void redistribuir_partida_da_direita(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_dir);
-void redistribuir_partida_da_esquerda(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_esq);
+void redistribuir_partir_da_direita(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_dir);
+void redistribuir_partir_da_esquerda(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_esq);
 void redistribuir(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_esq, int pegar_dir);
 void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao);
 #endif //PRODUTO_REMOCAO_H
