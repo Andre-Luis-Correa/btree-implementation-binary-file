@@ -334,13 +334,18 @@ void buscar_filhos_esq_dir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, i
 
     // Depois obter os filhos a esquerda e direita
     if (pos_filho_remocao == 0) {
+        printf("\n--> entrou aqui:   if (pos_filho_remocao == 0) \n");
         *pegar_dir = pai->filho[1];
         *pegar_esq = -1;
+        return;
     } else if ( pos_filho_remocao == pai->num_chaves ){
+        printf("\n--> entrou aqui:   ( pos_filho_remocao == pai->num_chaves ) \n");
         *pegar_esq = pai->filho[pai->num_chaves-1];
         *pegar_dir = -1;
+        return;
     }
 
+    printf("\n-->NAOOAOAOAOOAOAOAOAOAOA aqui: \n");
     *pegar_esq = pai->filho[pos_filho_remocao-1];
     *pegar_dir = pai->filho[pos_filho_remocao+1];
 }
