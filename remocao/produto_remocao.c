@@ -510,6 +510,37 @@ void verificar_redistribuicao_ou_concatenacao(ARQUIVOS files, int pos_raiz, ARVO
 
     free(cab_indices);
 }
+
+
+void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
+    ARVOREB * pai_atual = ler_no(files.file_indices, pos_pai);
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+
+    while( pai_atual->num_chaves < MIN ){
+        int pos_filho_pai;
+        int pos_pai_do_pai = buscar_pai(files, pos_raiz, pai_atual->chave[0], &pos_filho_pai);
+
+        verificar_redistribuicao_ou_concatenacao(files, pos_raiz, pai_atual, pos_pai_do_pai, pos_filho_pai, pos_pai, pai_atual->chave[0]);
+        pai_atual = ler_no(files.file_indices, pos_pai_do_pai);
+
+        if(pai_atual->num_chaves == 0){
+            // Então mudar a raiz;
+            int pos_nova_raiz;
+            if(pos_filho_pai == 0) {
+                pos_nova_raiz = pai_atual->filho[pos_filho_pai + 1];
+            } else {
+                pos_nova_raiz = pai_atual->filho[pos_filho_pai + 1];
+            }
+
+            cab_indices->pos_raiz = pos_nova_raiz;
+            atualizar_pos_livres_indices(files, pos_pai_do_pai);
+            return;
+        }
+    }
+
+    free(pai_atual);
+}
+
 void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
 
@@ -540,6 +571,7 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
 
         remover_caso1(files, no_a_remover, codigo, pos_remocao);
         verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_a_remover, pos_pai, pos_filho_remocao, pos_remocao, codigo);
+        remover_caso4(files, cab_indices->pos_raiz, pos_pai);
     }
 
     printf("\n--->NAO Entrou aqui\n");
