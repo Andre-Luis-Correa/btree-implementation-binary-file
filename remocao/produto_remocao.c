@@ -193,11 +193,15 @@ int pode_redistribuir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * 
     ARVOREB *pai = ler_no(files.file_indices, pos_pai);
     ARVOREB *esq = (ARVOREB *) malloc(sizeof(ARVOREB));
     ARVOREB *dir = (ARVOREB *) malloc(sizeof(ARVOREB));
-
+    imprimir_no(pai);
+    printf("\n---> pos filho remocao: %d\n", pos_filho_remocao);
     // Depois obter os filhos a esquerda e direita
     if (pos_filho_remocao == 0) {
         dir = ler_no(files.file_indices, pai->filho[1]);
         if (dir->num_chaves > MIN) {
+            printf("\n----> Pode emprestar a dir e nao esq!\n");
+            imprimir_no(esq);
+            imprimir_no(dir);
             *pegar_esq = -1;
             *pegar_dir = pai->filho[1];
             return 1;
@@ -205,25 +209,41 @@ int pode_redistribuir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * 
     } else if ( pos_filho_remocao == pai->num_chaves ){
         esq = ler_no(files.file_indices, pai->filho[pai->num_chaves - 1]);
         if (esq->num_chaves > MIN) {
+            printf("\n----> Pode emprestar a esq e nao dir!\n");
+            imprimir_no(esq);
+            imprimir_no(dir);
             *pegar_esq = pai->filho[pai->num_chaves - 1];
             *pegar_dir = -1;
             return 1;
         }
     } else {
-        esq = ler_no(files.file_indices, pos_filho_remocao - 1);
-        dir = ler_no(files.file_indices, pos_filho_remocao + 1);
+        esq = ler_no(files.file_indices, pai->filho[pos_filho_remocao - 1]);
+        dir = ler_no(files.file_indices, pai->filho[pos_filho_remocao + 1]);
+
+        imprimir_no(esq);
+        imprimir_no(dir);
+        printf("\n-----> Esse é o numero de chaves da dir e o min: %d => %d\n", dir->num_chaves,  MIN);
+        printf("\n-----> Esse é o numero de chaves da esq e o min: %d => %d\n", esq->num_chaves,  MIN);
 
         if (dir->num_chaves > MIN) {
+            printf("\n----> Pode emprestar a dir e nao esq!\n");
+            imprimir_no(esq);
+            imprimir_no(dir);
             *pegar_esq = -1;
-            *pegar_dir = pos_filho_remocao + 1;
+            *pegar_dir = pai->filho[pos_filho_remocao + 1];
             return 1;
 
         } else if (esq->num_chaves > MIN) {
-            *pegar_esq = pos_filho_remocao - 1;
+            printf("\n----> Pode emprestar a esq e nao dir!\n");
+            imprimir_no(esq);
+            imprimir_no(dir);
+            *pegar_esq = pai->filho[pos_filho_remocao - 1];
             *pegar_dir = -1;
             return 1;
         }
     }
+
+    printf("\n----> Nao pode ocorrer emprestimo!\n");
 
     *pegar_esq = 0;
     *pegar_dir = 0;
@@ -303,6 +323,31 @@ void redistribuir(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_re
 
 }
 
+void verificar_redistribuicao_ou_concatenacao(ARQUIVOS files, int pos_raiz, ARVOREB * no_a_remover, int pos_pai, int pos_filho_remocao, int pos_remocao, int codigo) {
+    CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
+    // Busca o pai para poder veirificar os filhos irmão e verificar se podem emprestar
+    printf("\n  ----> POS PAI: %d\n", pos_pai);
+
+    if (pos_pai != -1) {
+        // 1° Verifica-se se é possícel realizar a redistribuição
+        int pegar_esq, pegar_dir;
+        // A função pode_redistribuir() verifica se é possível realizar a redistribuição e indica a partir de qual lado
+        int teste_pode_redistribuir = pode_redistribuir(files, pos_pai, pos_filho_remocao, &pegar_esq, &pegar_dir);
+        printf("\n-----------Esse é o teste redistribuir: %d\n", teste_pode_redistribuir);
+        if (teste_pode_redistribuir) {
+            printf("\n---> Será fieito a redistribuição!\n");
+            // Aqui será inserido a lógica da redistribuição
+            // A função pode_redistribuir quarda a posição no arquivo dos filhos da esq e dir
+            redistribuir(files, pos_pai, pos_remocao, pos_filho_remocao, pegar_esq, pegar_dir);
+        } else {
+            printf("\n---> Não será feito a redistribuição, mas sim, a concatenação");
+            // Aqui será inserido a lógica da concatenação
+            //concatenar();
+        }
+    }
+
+    free(cab_indices);
+}
 void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
 
@@ -325,34 +370,14 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         // CASO 3°: a remoção é feita em um nó com numero minimo de chaves
         // Logo, é necessário verificar, PRIMEIRAMENTE, se pode ser feito a redistribuição
         // Caso contrário, fazer concatenação
-        printf("\n--->Entrou aqui 3\n");
-
+        printf("\n--->Entrou aqui CASO 3\n");
         // Busca o pai para poder veirificar os filhos irmão e verificar se podem emprestar
         int pos_filho_remocao;
         int pos_pai = buscar_pai(files, cab_indices->pos_raiz, codigo, &pos_filho_remocao);
         printf("\n  ----> POS PAI: %d\n", pos_pai);
-        ARVOREB * pai = ler_no(files.file_indices, pos_pai);
 
         remover_caso1(files, no_a_remover, codigo, pos_remocao);
-
-        if(pos_pai != -1){
-            // 1° Verifica-se se é possícel realizar a redistribuição
-            int pegar_esq, pegar_dir;
-            // A função pode_redistribuir() verifica se é possível realizar a redistribuição e indica a partir de qual lado
-            int teste_pode_redistribuir = pode_redistribuir(files, pos_pai, pos_filho_remocao, &pegar_esq, &pegar_dir);
-            printf("\n-----------Esse é o teste redistribuir: %d\n", teste_pode_redistribuir);
-            if( teste_pode_redistribuir ){
-                printf("\n---> Será fieito a redistribuição!\n");
-                // Aqui será inserido a lógica da redistribuição
-                // A função pode_redistribuir quarda a posição no arquivo dos filhos da esq e dir
-                redistribuir(files, pos_pai, pos_remocao, pos_filho_remocao, pegar_esq, pegar_dir);
-            } else {
-                printf("\n---> Não será feito a redistribuição, mas sim, a concatenação");
-                // Aqui será inserido a lógica da concatenação
-                //concatenar();
-            }
-        }
-
+        verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_a_remover, pos_pai, pos_filho_remocao, pos_remocao, codigo);
     }
 
     printf("\n--->NAO Entrou aqui\n");
