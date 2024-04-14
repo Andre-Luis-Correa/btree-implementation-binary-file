@@ -446,6 +446,8 @@ void concatenar(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remo
         printf("\n---> Tem ou nao tem esq, então faz concatenação com a direita\n");
         dir = ler_no(files.file_indices, pegar_dir);
         concatenar_direita(files, pai, dir, no_a_remover, pos_filho_remocao);
+        escreve_no(files.file_indices, pai, pos_pai);
+        escreve_no(files.file_indices, dir, pegar_dir);
     }
 
     free(pai);
