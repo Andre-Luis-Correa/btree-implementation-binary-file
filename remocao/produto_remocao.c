@@ -363,6 +363,7 @@ void atualizar_pos_livres_indices(ARQUIVOS files, int pos_livre){
 
     no_atual->prox_livre = pos_livre;
     escreve_no(files.file_indices, no_atual, pos_atual);
+    free(no_atual);
     free(cab_indices);
 }
 
@@ -398,7 +399,33 @@ void concatenar_esquerda(ARQUIVOS files, ARVOREB * pai, ARVOREB * esq, ARVOREB *
 }
 
 void concatenar_direita(ARQUIVOS files, ARVOREB * pai, ARVOREB * dir, ARVOREB * no_a_remover, int pos_filho_remocao){
+    int i;
 
+    // Mover a chave do pai para o nó a ser removido na posição correta
+    no_a_remover->chave[no_a_remover->num_chaves] = pai->chave[pos_filho_remocao + 1];
+    no_a_remover->pt_dados[no_a_remover->num_chaves] = pai->pt_dados[pos_filho_remocao + 1];
+    no_a_remover->num_chaves++;
+
+    // Trazer as informações do nó direito para o nó a ser removido
+    for (i = 0; i < dir->num_chaves; i++) {
+        no_a_remover->chave[no_a_remover->num_chaves] = dir->chave[i];
+        no_a_remover->pt_dados[no_a_remover->num_chaves] = dir->pt_dados[i];
+        no_a_remover->filho[no_a_remover->num_chaves] = dir->filho[i];
+        no_a_remover->num_chaves++;
+    }
+    no_a_remover->filho[no_a_remover->num_chaves] = dir->filho[i]; // Último filho
+
+    // Atualizar a lista de livres, pois o nó direito agora está vazio
+    atualizar_pos_livres_indices(files, pai->filho[pos_filho_remocao+1]);
+
+    // Atualizar nó pai
+    for (i = pos_filho_remocao - 1; i < pai->num_chaves - 1; i++) {
+        pai->chave[i] = pai->chave[i + 1];
+        pai->pt_dados[i] = pai->pt_dados[i + 1];
+        pai->filho[i + 1] = pai->filho[i + 2];
+    }
+
+    pai->num_chaves--;
 }
 
 void concatenar(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_esq, int pegar_dir){
