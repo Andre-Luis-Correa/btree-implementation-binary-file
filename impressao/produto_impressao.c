@@ -21,7 +21,7 @@ void imprimir_lista_produtos(ARQUIVOS files, int pos_atual) {
 
             if (i != no->num_chaves) {
                 DADOS_REGISTRO *registro = ler_registro(files.file_dados, no->pt_dados[i]);
-                printf("| %-8d | %-30s | %-25s | R$ %0.2f |\n", registro->produto.codigo, registro->produto.nome, registro->produto.marca, registro->produto.preco);
+                printf("| %-8d | %-30s | %-25s | %-8d | R$ %-6.2f |\n", registro->produto.codigo, registro->produto.nome, registro->produto.marca, registro->produto.estoque, registro->produto.preco);
                 free(registro);
             }
         }
@@ -47,13 +47,14 @@ void imprimir_informacoes_produto(ARQUIVOS files, int codigo){
 
         DADOS_REGISTRO * informacoes_produto = ler_registro(files.file_dados, r->pt_dados[i]);
         printf("\n");
-        printf("+---------------------------------------------------------------------------------+\n");
-        printf("|                             Informacoes do Produto                              |\n");
-        printf("+---------------------------------------------------------------------------------+\n");
-        printf("| CODIGO   | NOME                           |   MARCA                   |   PRECO |\n");
-        printf("+---------------------------------------------------------------------------------+\n");
-        printf("| %-8d | %-30s | %-25s | R$ %0.2f |\n", informacoes_produto->produto.codigo, informacoes_produto->produto.nome, informacoes_produto->produto.marca, informacoes_produto->produto.preco);
-        printf("+---------------------------------------------------------------------------------+\n");
+        printf("\n");
+        printf("+----------------------------------------------------------------------------------------------+\n");
+        printf("|                                     Informacoes do Produto                                   |\n");
+        printf("+----------------------------------------------------------------------------------------------+\n");
+        printf("| CODIGO   | NOME                           | MARCA                     | ESTOQUE  | PRECO     |\n");
+        printf("+----------------------------------------------------------------------------------------------+\n");
+        printf("| %-8d | %-30s | %-25s | %-8d | R$ %-6.2f |\n", informacoes_produto->produto.codigo, informacoes_produto->produto.nome, informacoes_produto->produto.marca, informacoes_produto->produto.estoque, informacoes_produto->produto.preco);
+        printf("+----------------------------------------------------------------------------------------------+\n");
 
         free(informacoes_produto);
     } else {

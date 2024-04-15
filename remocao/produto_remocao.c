@@ -432,7 +432,7 @@ void verificar_redistribuicao_ou_concatenacao(ARQUIVOS files, int pos_raiz, ARVO
         int pegar_esq, pegar_dir;
         // A função pode_redistribuir() verifica se é possível realizar a redistribuição e indica a partir de qual lado
         int teste_pode_redistribuir = pode_redistribuir(files, pos_pai, pos_filho_remocao, &pegar_esq, &pegar_dir);
-
+        printf("\n teste pode redistribuir %d", teste_pode_redistribuir);
         if (teste_pode_redistribuir) {
             // Aqui será inserido a lógica da redistribuição
             // A função pode_redistribuir guarda a posição no arquivo dos filhos da esq e dir
@@ -440,6 +440,7 @@ void verificar_redistribuicao_ou_concatenacao(ARQUIVOS files, int pos_raiz, ARVO
         } else {
             // Aqui será inserido a lógica da concatenação
             buscar_filhos_esq_dir(files, pos_pai, pos_filho_remocao, &pegar_esq, &pegar_dir);
+            printf("\n esq %d e dir %d ", pegar_esq, pegar_dir);
             concatenar(files, pos_pai, pos_remocao, pos_filho_remocao, pegar_esq, pegar_dir);
         }
     }
@@ -485,7 +486,6 @@ void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
         atualizar_pos_livres_indices(files, no_livre);
         return;
     }
-
 }
 
 void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
@@ -503,12 +503,29 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
     } else if ( !eh_folha(no_a_remover ) ) { // CASO 2°: a remoção é feita em um nó interno
         // Logo, busca-se a chave sucessora e a insere no lugar da chave removida no nó interno
         // Além disso, a função deve retornar a posição do nó chave sucessora, pois esse nó deve ser tratado após remoção
+        printf("\nCASO 2");
         int pos_no_sucessor = remover_caso2(files, no_a_remover, codigo, pos_remocao);
         ARVOREB * no_sucessor = ler_no(files.file_indices, pos_no_sucessor);
+        imprimir_no(no_a_remover);
+        imprimir_no(no_sucessor);
         int pos_filho_remocao;
         int pos_pai = buscar_pai(files, cab_indices->pos_raiz, no_sucessor->chave[0], &pos_filho_remocao);
+        printf("\n--->pos pai: %d\n", pos_pai);
         verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_sucessor, pos_pai, pos_filho_remocao, pos_no_sucessor, no_sucessor->chave[0]);
-        remover_caso4(files, cab_indices->pos_raiz, pos_pai);
+        printf("\n--->pos pai: %d\n", pos_pai);
+        ARVOREB * pai = ler_no(files.file_indices, pos_pai);
+
+        if( pai->num_chaves != 0 ) {
+            remover_caso4(files, cab_indices->pos_raiz, pos_pai);
+        } else {
+            if( pos_filho_remocao == 0) {
+                cab_indices->pos_raiz = pai->filho[1];
+            } else {
+                cab_indices->pos_raiz = pai->filho[0];
+            }
+            escreve_cabecalho_indices(files.file_indices, cab_indices);
+        }
+
         free(no_sucessor);
 
     } else if ( !mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover) ) {
@@ -519,13 +536,23 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         int pos_filho_remocao;
         int pos_pai = buscar_pai(files, cab_indices->pos_raiz, codigo, &pos_filho_remocao);
         remover_caso1(files, no_a_remover, codigo, pos_remocao);
+        verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_a_remover, pos_pai, pos_filho_remocao, pos_remocao, codigo);
 
-        if (pos_pai != -1 && no_a_remover->num_chaves > 0) {
-            verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_a_remover, pos_pai, pos_filho_remocao, pos_remocao, codigo);
+//        if (pos_pai != -1 && no_a_remover->num_chaves > 0) {
+//            remover_caso4(files, cab_indices->pos_raiz, pos_pai);
+//
+//        } else if(pos_pai == -1 && no_a_remover->num_chaves == 0) {
+//            cab_indices->pos_raiz = -1;
+//            escreve_cabecalho_indices(files.file_indices, cab_indices);
+//        }
+
+        ARVOREB * pai = ler_no(files.file_indices, pos_pai);
+
+        if( pai->num_chaves != 0 ) {
             remover_caso4(files, cab_indices->pos_raiz, pos_pai);
-
-        } else if(pos_pai == -1 && no_a_remover->num_chaves == 0) {
-            cab_indices->pos_raiz = -1;
+        } else {
+            if(pos_filho_remocao == 1) pos_filho_remocao = 0;
+            cab_indices->pos_raiz = pai->filho[pos_filho_remocao];
             escreve_cabecalho_indices(files.file_indices, cab_indices);
         }
 
