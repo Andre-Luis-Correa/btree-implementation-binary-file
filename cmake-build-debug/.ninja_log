@@ -13,3 +13,15 @@
 334	529	7348502594208289	trabalho_aed_3_bruna_andre.exe	d10623854631233a
 5	190	7348504081085226	CMakeFiles/trabalho_aed_3_bruna_andre.dir/insercao/produto_insercao.c.obj	bbb526a80dea9eb6
 191	410	7348504083198593	trabalho_aed_3_bruna_andre.exe	d10623854631233a
+42	189	7348515758287836	CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/mainB.c.obj	32efdfc167b25039
+2	267	7348515759033700	CMakeFiles/trabalho_aed_3_bruna_andre.dir/main.c.obj	fac8a501521a76cc
+21	272	7348515759113655	CMakeFiles/trabalho_aed_3_bruna_andre.dir/cabecalho/cabecalho_dados.c.obj	14bf0b06cd3f77f
+79	273	7348515759143689	CMakeFiles/trabalho_aed_3_bruna_andre.dir/cabecalho/cabecalho_indices.c.obj	a371114b91e3ebee
+93	296	7348515759454740	CMakeFiles/trabalho_aed_3_bruna_andre.dir/lote/lote.c.obj	e090697320a97b75
+120	327	7348515759783131	CMakeFiles/trabalho_aed_3_bruna_andre.dir/impressao/produto_impressao.c.obj	b985e22d932ec8d9
+56	330	7348515759803134	CMakeFiles/trabalho_aed_3_bruna_andre.dir/remocao/produto_remocao.c.obj	6778994594d68183
+157	356	7348515760065236	CMakeFiles/trabalho_aed_3_bruna_andre.dir/atualizacao/produto_atualizacao.c.obj	32f93fda33960216
+137	359	7348515760095238	CMakeFiles/trabalho_aed_3_bruna_andre.dir/insercao/produto_insercao.c.obj	bbb526a80dea9eb6
+189	365	7348515760176261	CMakeFiles/trabalho_aed_3_bruna_andre.dir/file/file.c.obj	8c88dcefac906883
+172	372	7348515760246259	CMakeFiles/trabalho_aed_3_bruna_andre.dir/menu/menu.c.obj	43421c959190b292
+373	566	7348515762098005	trabalho_aed_3_bruna_andre.exe	d10623854631233a

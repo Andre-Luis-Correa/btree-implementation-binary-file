@@ -12,9 +12,6 @@ void atualizar_preco_produto(ARQUIVOS files, int codigo_produto){
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
     CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
 
-    imprimir_cabecalho_indices(cab_indices);
-    imprimir_cabecalho_dados(cab_dados);
-
     //a pos esta guarando o no em que esta elemento que possui esse codigo de produto
     int pos = buscar_no(files.file_indices, codigo_produto, cab_indices->pos_raiz);
 

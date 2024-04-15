@@ -29,7 +29,7 @@ void header_menu(){
 // Pré-condições: Nenhuma
 // Pós-condição: Um novo produto é cadastrado
 void cadastrarProduto(ARQUIVOS files) {
-    printf("Operacao: Cadastrar Produto\n");
+    printf("---> Operacao: Cadastrar Produto\n");
     cadastrar_produto(files);
     // Implemente a lógica para cadastrar um produto
 }
@@ -38,7 +38,7 @@ void cadastrarProduto(ARQUIVOS files) {
 // Pré-condições: Nenhuma
 // Pós-condição: O produto é removido do cadastro
 void removerProduto(ARQUIVOS files) {
-    printf("Operacao: Remover Produto\n");
+    printf("---> Operacao: Remover Produto\n");
     remover_produto(files);
     // Implemente a lógica para remover um produto
 }
@@ -47,35 +47,55 @@ void removerProduto(ARQUIVOS files) {
 // Pré-condições: Nenhuma
 // Pós-condição: O preço do produto é atualizado
 void atualizarPreco(ARQUIVOS files) {
-    printf("Operacao: Atualizar Preco\n");
-    int cod;
-    printf("Digite o codigo do produto de preco a ser atualizado:\n");
-    scanf("%d", &cod);
-    atualizar_preco_produto(files, cod);
     // Implemente a lógica para atualizar o preço de um produto
+    printf("---> Operacao: Atualizar Preco\n");
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+
+    if( cab_indices->pos_raiz == -1){
+        printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
+    } else {
+        int cod;
+        printf("Digite o codigo do produto de preco a ser atualizado:\n");
+        scanf("%d", &cod);
+        atualizar_preco_produto(files, cod);
+    }
+    free(cab_indices);
 }
 
 // Atualiza o estoque de um produto
 // Pré-condições: Nenhuma
 // Pós-condição: O estoque do produto é atualizado
 void atualizarEstoque(ARQUIVOS files) {
-    printf("Operacao: Atualizar Estoque\n");
-    int cod;
-    printf("Digite o codigo do produto de estoque a ser atualizado:\n");
-    scanf("%d", &cod);
-    atualizar_estoque_produto(files, cod);
+    printf("---> Operacao: Atualizar Estoque\n");
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+
+    if(cab_indices->pos_raiz == -1){
+        printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
+    } else {
+        int cod;
+        printf("Digite o codigo do produto de estoque a ser atualizado:\n");
+        scanf("%d", &cod);
+        atualizar_estoque_produto(files, cod);
+    }
+    free(cab_indices);
 }
 
 // Imprime as informações de um produto específico
 // Pré-condições: Nenhuma
 // Pós-condição: As informações do produto são impressas no console
 void imprimirInformacoes(ARQUIVOS files) {
-    printf("Operacao: Imprimir informacoes de um produto\n");
-    int codigo;
+    printf("---> Operacao: Imprimir informacoes de um produto\n");
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
 
-    printf("Digite o código desejado para busca-lo: ");
-    scanf("%d", &codigo);
-    imprimir_informacoes_produto(files, codigo);
+    if(cab_indices->pos_raiz == -1){
+        printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
+    } else {
+        int codigo;
+        printf("Digite o código desejado para busca-lo: ");
+        scanf("%d", &codigo);
+        imprimir_informacoes_produto(files, codigo);
+    }
+    free(cab_indices);
 }
 
 // Imprime a lista de todos os produtos cadastrados
@@ -84,20 +104,30 @@ void imprimirInformacoes(ARQUIVOS files) {
 void imprimirListaProdutos(ARQUIVOS files) {
     printf("Operacao: Imprimir Lista de Produtos\n\n");
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+
     if(cab_indices->pos_raiz == -1) {
-        printf("Nao ha elementos na arvore\n");
+        printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
     }else {
         imprimir_lista_produtos(files, cab_indices->pos_raiz);
     }
     free(cab_indices);
 }
+
 // Imprime a árvore de produtos
 // Pré-condições: Nenhuma
 // Pós-condição: A árvore de produtos é impressa no console
 void imprimirArvore(ARQUIVOS files) {
-    printf("Operacao: Imprimir Arvore\n");
-    imprimir_arvore(files);
     // Implemente a lógica para imprimir a árvore de produtos
+    printf("---> Operacao: Imprimir Arvore\n");
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+
+    if(cab_indices->pos_raiz == -1){
+        printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
+    } else {
+        imprimir_arvore(files);
+    }
+
+    free(cab_indices);
 }
 
 // Imprime a lista de nós livres do arquivo de índices
@@ -125,9 +155,16 @@ void realizarOperacoesEmLote() {
 }
 
 void imprimir_info_nos(ARQUIVOS files){
-    printf("\n----> Impressao de infos no no: \n");
+    printf("\n----> Operacao: Impressao de infos no no: \n");
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-    imprimir_info_nos_chaves(files, cab_indices->pos_raiz);
+
+    if(cab_indices->pos_raiz == -1){
+        printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
+    } else {
+        imprimir_info_nos_chaves(files, cab_indices->pos_raiz);
+    }
+
+    free(cab_indices);
 }
 
 // Exibe o menu principal e processa a escolha do usuário
@@ -176,10 +213,10 @@ void menu_principal(ARQUIVOS files){
                 imprimir_info_nos(files);
                 break;
             case 0:
-                printf("Saindo do programa. Ate mais!\n");
+                printf("---> Saindo do programa. Ate mais!\n");
                 break;
             default:
-                printf("Opcao invalida! Escolha uma opcao valida.\n");
+                printf("---> Opcao invalida! Escolha uma opcao valida.\n");
         }
     } while (opcao != 0);
 
