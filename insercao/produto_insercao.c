@@ -188,7 +188,7 @@ void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, in
     if (pos == -1) { // pos -> pos_raiz == -1 árvore vazia ou a função recebeu uma posição (pos) vazia
 
         // Atualiza a poisção da cabeça
-        cab_indices->pos_raiz = 0;
+        cab_indices->pos_raiz = cab_indices->pos_topo;
 
         // Escreve no arquivo de dados as informações do produto a ser inserido
         cria_registro(dados, produto);
