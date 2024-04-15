@@ -27,5 +27,7 @@ void concatenar_esquerda(ARQUIVOS files, ARVOREB * pai, ARVOREB * esq, ARVOREB *
 void concatenar_direita(ARQUIVOS files, ARVOREB * pai, ARVOREB * dir, ARVOREB * no_a_remover, int pos_filho_remocao);
 void concatenar(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_esq, int pegar_dir);
 void verificar_redistribuicao_ou_concatenacao(ARQUIVOS files, int pos_raiz, ARVOREB * no_a_remover, int pos_pai, int pos_filho_remocao, int pos_remocao, int codigo);
+int equal(ARVOREB * raiz, ARVOREB * no_a_remover);
+int eh_raiz(ARQUIVOS files, ARVOREB * no_a_remover);
 void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao);
 #endif //PRODUTO_REMOCAO_H

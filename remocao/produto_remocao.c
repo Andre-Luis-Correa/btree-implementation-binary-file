@@ -552,6 +552,27 @@ void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
     free(pai_atual);
 }
 
+int equal(ARVOREB * raiz, ARVOREB * no_a_remover){
+    if(raiz->num_chaves != no_a_remover->num_chaves) return 0;
+
+    for(int i = 0; i < raiz->num_chaves; i++){
+        if(raiz->chave[i] != no_a_remover->chave[i]) return 0;
+    }
+
+    return 1;
+}
+
+int eh_raiz(ARQUIVOS files, ARVOREB * no_a_remover){
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    ARVOREB * raiz = ler_no(files.file_indices, cab_indices->pos_raiz);
+    if(equal(raiz, no_a_remover)){
+        return 1;
+    }
+    free(raiz);
+    free(cab_indices);
+    return 0;
+}
+
 void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
 
@@ -574,6 +595,7 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         int pos_pai = buscar_pai(files, cab_indices->pos_raiz, no_sucessor->chave[0], &pos_filho_remocao);
         verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_sucessor, pos_pai, pos_filho_remocao, pos_no_sucessor, no_sucessor->chave[0]);
         remover_caso4(files, cab_indices->pos_raiz, pos_pai);
+        imprimir_cabecalho_indices(cab_indices);
 
     } else if ( !mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover) ){
         // CASO 3°: a remoção é feita em um nó com numero minimo de chaves
@@ -587,11 +609,20 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         printf("\n  ----> POS filho remocao: %d\n", pos_filho_remocao);
 
         remover_caso1(files, no_a_remover, codigo, pos_remocao);
+
+        if(eh_raiz(files, no_a_remover) && no_a_remover->num_chaves == 0){ // Logo, a raiz ficou vazia
+            cab_indices->pos_raiz = -1;
+            cab_indices->pos_livre = -1;
+            escreve_cabecalho_indices(files.file_indices, cab_indices);
+            return;
+        }
+
         verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_a_remover, pos_pai, pos_filho_remocao, pos_remocao, codigo);
         remover_caso4(files, cab_indices->pos_raiz, pos_pai);
+        imprimir_cabecalho_indices(cab_indices);
     }
 
-    printf("\n--->NAO Entrou aqui\n");
+    printf("\n---> Remocao realizada com sucesso!\n");
 
     free(cab_indices);
 }
