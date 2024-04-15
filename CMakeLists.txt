@@ -19,4 +19,5 @@ add_executable(trabalho_aed_3_bruna_andre main.c
         insercao/produto_insercao.h
         remocao/produto_remocao.h
         atualizacao/produto_atualizacao.h
-        impressao/produto_impressao.h)
+        impressao/produto_impressao.h
+        menu/menu.c)
