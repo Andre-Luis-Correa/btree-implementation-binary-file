@@ -167,9 +167,11 @@ int buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int * pos_filho_remocao
     int i;
 
     for(i = 0; i <= r->num_chaves; i++){
+
         if(i < r->num_chaves && codigo < r->chave[i]){
             ARVOREB * filho = ler_no(files.file_indices, r->filho[i]);
             int pos_codigo = busca_pos_chave(filho, codigo);
+            printf("\n----> 1 POS_CODIGO : %d\n", pos_codigo);
             if(pos_codigo != -1) {
                 *pos_filho_remocao = i;
                 return pos_raiz;
@@ -177,15 +179,19 @@ int buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int * pos_filho_remocao
 
         } else if (i == r->num_chaves) {
             ARVOREB * filho = ler_no(files.file_indices, r->filho[i]);
+            printf("\n---> FILHOOO no buscar pai: \n");
+            imprimir_no(filho);
             int pos_codigo = busca_pos_chave(filho, codigo);
+            printf("\n----> 2 POS_CODIGO : %d\n", pos_codigo);
             if(pos_codigo != -1) {
                 *pos_filho_remocao = i;
                 return pos_raiz;
             }
         }
+
     }
 
-    return buscar_pai(files, r->filho[i], codigo, pos_filho_remocao);
+    return buscar_pai(files, r->filho[r->num_chaves], codigo, pos_filho_remocao);
 }
 
 int pode_redistribuir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * pegar_esq, int * pegar_dir) {
@@ -526,18 +532,23 @@ void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
         if(pai_atual->num_chaves == 0){
             // Então mudar a raiz;
             int pos_nova_raiz;
+            int no_livre;
             if(pos_filho_pai == 0) {
                 pos_nova_raiz = pai_atual->filho[pos_filho_pai + 1];
+                no_livre = pai_atual->filho[pos_filho_pai - 1];
             } else {
-                pos_nova_raiz = pai_atual->filho[pos_filho_pai + 1];
+                pos_nova_raiz = pai_atual->filho[pos_filho_pai - 1];
+                no_livre = pai_atual->filho[pos_filho_pai + 1];
             }
 
             cab_indices->pos_raiz = pos_nova_raiz;
+            escreve_cabecalho_indices(files.file_indices, cab_indices);
             atualizar_pos_livres_indices(files, pos_pai_do_pai);
+            atualizar_pos_livres_indices(files, no_livre);
             return;
         }
     }
-
+    free(cab_indices);
     free(pai_atual);
 }
 
@@ -558,6 +569,11 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         // Além disso, a função deve retornar a posição do nó chave sucessora, pois esse nó deve ser tratado após remoção
         printf("\n--->Entrou aqui 2\n");
         int pos_no_sucessor = remover_caso2(files, no_a_remover, codigo, pos_remocao);
+        ARVOREB * no_sucessor = ler_no(files.file_indices, pos_no_sucessor);
+        int pos_filho_remocao;
+        int pos_pai = buscar_pai(files, cab_indices->pos_raiz, no_sucessor->chave[0], &pos_filho_remocao);
+        verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_sucessor, pos_pai, pos_filho_remocao, pos_no_sucessor, no_sucessor->chave[0]);
+        remover_caso4(files, cab_indices->pos_raiz, pos_pai);
 
     } else if ( !mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover) ){
         // CASO 3°: a remoção é feita em um nó com numero minimo de chaves
@@ -568,6 +584,7 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         int pos_filho_remocao;
         int pos_pai = buscar_pai(files, cab_indices->pos_raiz, codigo, &pos_filho_remocao);
         printf("\n  ----> POS PAI: %d\n", pos_pai);
+        printf("\n  ----> POS filho remocao: %d\n", pos_filho_remocao);
 
         remover_caso1(files, no_a_remover, codigo, pos_remocao);
         verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_a_remover, pos_pai, pos_filho_remocao, pos_remocao, codigo);
