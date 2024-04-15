@@ -257,30 +257,39 @@ void imprimir_arvore(ARQUIVOS files) {
         return;
     } else {
         ARVOREB *no = ler_no(files.file_indices, pos);
-        printf("Imprimindo Arvore por niveis :\n\n");
+        printf("---> Imprimindo Arvore por niveis :\n\n");
         imprimir_por_niveis(files, no);
+        printf("\n\n");
     }
 }
-void imprimir_no(ARVOREB *r) {
-    printf("\n-----------------------------\n");
-    printf("    O no analisado foi: \n");
 
-    printf("Chaves: ");
+void imprimir_no(ARVOREB *r) {
+    printf("\n");
+    printf("+-------------------------------------+\n");
+    printf("|    O no analisado foi:             |\n");
+    printf("+-------------------------------------+\n");
+
+    printf("| Chaves: ");
     for(int i = 0; i < r->num_chaves; i++){
         printf("%d ", r->chave[i]);
     }
     printf("\n");
-    printf("Pt. Dados: ");
+
+    printf("| Pt. Dados: ");
     for(int i = 0; i < r->num_chaves; i++){
         printf("%d ", r->pt_dados[i]);
     }
     printf("\n");
-    printf("Filhos: ");
+
+    printf("| Filhos: ");
     for(int i = 0; i <= r->num_chaves; i++){
         printf("%d ", r->filho[i]);
     }
-    printf("\n-----------------------------\n");
+    printf("\n");
+
+    printf("+-------------------------------------+\n");
 }
+
 
 
 void imprimir_info_nos_chaves(ARQUIVOS files, int pos){

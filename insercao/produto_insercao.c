@@ -265,7 +265,7 @@ void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, in
     free(dados);
     free(cab_indices);
     free(cab_dados);
-    printf("\nInsercao realizada com sucesso!\n");
+    printf("\n---> Insercao realizada com sucesso!\n");
 }
 
 int busca_pos (ARVOREB * r, int codigo, int * pos){
