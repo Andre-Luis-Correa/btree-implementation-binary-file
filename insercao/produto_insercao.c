@@ -117,7 +117,7 @@ void cadastrar_produto(ARQUIVOS files){
         // Realizar a inserção do nó, pois ainda não existe esse código na árvore
         cadastrar_produto_files(files, produto);
     }else{
-        printf("\nATENCAO: Codigo de produto ja existente!\n");
+        printf("\n---> ATENCAO: Codigo de produto ja existente!\n");
     }
 
     free(cab_indices);
