@@ -87,37 +87,40 @@ ARVOREB *desenfileirar(Fila *fila) {
 int fila_vazia(Fila *fila) {
     return fila->frente == fila->tras;
 }
-void imprimir_por_niveis(ARQUIVOS files, ARVOREB *arvore) {
-    if (arvore == NULL) {
+void imprimir_por_niveis(ARQUIVOS files, int pos_raiz) {
+    CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
+
+    if (pos_raiz == -1) {
         printf("Árvore vazia.\n");
+        free(cab_indices);
         return;
     }
 
-    int nivel_atual = 0;
+    int nivel_atual = 1;
     int nivel_proximo = 0;
-    int i;
 
-    // Fila para armazenar os nós a serem impressos
-    ARVOREB *fila[100]; // Ajuste o tamanho conforme necessário
+    ARVOREB *fila[100]; // Tamanho da fila ajustável conforme necessário
     int frente = 0;
     int tras = 0;
 
-    fila[tras++] = arvore;
+    fila[tras++] = ler_no(files.file_indices, pos_raiz);
 
     while (frente != tras) {
         ARVOREB *no_atual = fila[frente++];
         nivel_atual--;
 
-        for (i = 0; i < no_atual->num_chaves; i++) {
+        for (int i = 0; i < no_atual->num_chaves; i++) {
             printf("%d", no_atual->chave[i]);
             if (i < no_atual->num_chaves - 1) {
-                printf("|");
+                printf(",");
             }
         }
 
+        printf("|"); // Divisor de nó
+
         if (no_atual->filho[0] != -1) {
-            for (i = 0; i <= no_atual->num_chaves; i++) {
-                fila[tras++] = &arvore[no_atual->filho[i]];
+            for (int i = 0; i <= no_atual->num_chaves; i++) {
+                fila[tras++] = ler_no(files.file_indices, no_atual->filho[i]);
                 nivel_proximo++;
             }
         }
@@ -127,6 +130,12 @@ void imprimir_por_niveis(ARQUIVOS files, ARVOREB *arvore) {
             nivel_atual = nivel_proximo;
             nivel_proximo = 0;
         }
+    }
+
+    free(cab_indices);
+    // Liberar os nós da fila
+    for (int i = 0; i < tras; i++) {
+        free(fila[i]);
     }
 }
 
