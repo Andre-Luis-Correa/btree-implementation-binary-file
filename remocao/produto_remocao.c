@@ -105,7 +105,6 @@ void remover_caso1(ARQUIVOS files, ARVOREB * no_a_remover, int codigo, int pos_r
     // Encontra a pos dentro do nó
     pos_codigo = busca_pos_chave(no_a_remover, codigo);
     atualiza_no_remocao_folha(files, no_a_remover, pos_remocao, pos_codigo);
-    imprimir_no(no_a_remover);
 }
 
 int buscar_chave_sucessora_folha(ARQUIVOS files, ARVOREB * no_a_remover, int pos_codigo, int * pos_no_sucessor){
@@ -517,18 +516,12 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         // Logo, é necessário verificar, PRIMEIRAMENTE, se pode ser feito a redistribuição
         // Caso contrário, fazer concatenação
         // Busca o pai para poder veirificar os filhos irmão e verificar se podem emprestar
-        printf("\n---> CASO 3: \n");
         int pos_filho_remocao;
         int pos_pai = buscar_pai(files, cab_indices->pos_raiz, codigo, &pos_filho_remocao);
         remover_caso1(files, no_a_remover, codigo, pos_remocao);
-        ARVOREB * teste = ler_no(files.file_indices, pos_remocao);
-        imprimir_no(teste);
-        printf("Esse é o nume de chaves : %d\n", teste->num_chaves);
 
         if (pos_pai != -1 && no_a_remover->num_chaves > 0) {
             verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_a_remover, pos_pai, pos_filho_remocao, pos_remocao, codigo);
-            imprimir_cabecalho_indices(cab_indices);
-            printf("\n---> essa e a pos do pai: %d\n", pos_pai);
             remover_caso4(files, cab_indices->pos_raiz, pos_pai);
 
         } else if(pos_pai == -1 && no_a_remover->num_chaves == 0) {
@@ -536,7 +529,6 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
             escreve_cabecalho_indices(files.file_indices, cab_indices);
         }
 
-        imprimir_cabecalho_indices(cab_indices);
     }
 
     free(no_a_remover);
