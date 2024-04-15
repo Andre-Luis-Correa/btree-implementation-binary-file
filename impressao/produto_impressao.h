@@ -9,10 +9,18 @@
 
 #define TAMANHO_FILA 100 // Ajuste o tamanho conforme necessário
 
-typedef struct {
-    ARVOREB *elementos[TAMANHO_FILA];
-    int frente; // Índice do primeiro elemento na fila
-    int tras;   // Índice do próximo espaço disponível na fila
+struct noLista
+{
+    int info;
+    struct noLista* prox;
+};
+
+typedef struct noLista noL;
+
+typedef struct noFila
+{
+    struct noLista* inicio;
+    struct noLista* fim;
 } Fila;
 
 void imprimir_lista_produtos(ARQUIVOS files, int pos_atual);
