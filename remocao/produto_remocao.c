@@ -13,7 +13,7 @@ void remover_produto(ARQUIVOS files){
 
     int codigo, pos_codigo, pos_raiz, pos_esq, pos_dir;
 
-    printf ("Insira o codigo a ser removido: ");
+    printf ("---> Insira o codigo a ser removido: ");
     scanf ("%d", &codigo);
 
     pos_codigo = buscar_no(files.file_indices, codigo, cab_indices->pos_raiz);
@@ -149,7 +149,7 @@ int remover_caso2(ARQUIVOS files, ARVOREB * no_a_remover, int codigo, int pos_re
 
 int buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int * pos_filho_remocao){
     ARVOREB * r = ler_no(files.file_indices, pos_raiz);
-    imprimir_no(r);
+
     if(eh_folha(r)){
         *pos_filho_remocao = -1;
         return -1;
@@ -186,7 +186,6 @@ int pode_redistribuir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * 
     ARVOREB *pai = ler_no(files.file_indices, pos_pai);
     ARVOREB *esq = (ARVOREB *) malloc(sizeof(ARVOREB));
     ARVOREB *dir = (ARVOREB *) malloc(sizeof(ARVOREB));
-    imprimir_no(pai);
 
     // Depois obter os filhos a esquerda e direita
     if (pos_filho_remocao == 0) {
