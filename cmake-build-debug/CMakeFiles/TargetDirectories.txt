@@ -1,3 +1,3 @@
-/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna2/cmake-build-debug/CMakeFiles/trabalho_aed_3_bruna_andre.dir
-/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna2/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/andre/CLionProjects/trabalho_aed_3_bruna_andre/cmake-build-debug/CMakeFiles/trabalho_aed_3_bruna_andre.dir
+C:/Users/andre/CLionProjects/trabalho_aed_3_bruna_andre/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/andre/CLionProjects/trabalho_aed_3_bruna_andre/cmake-build-debug/CMakeFiles/rebuild_cache.dir
