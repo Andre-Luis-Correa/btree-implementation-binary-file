@@ -122,8 +122,7 @@ ARVOREB * busca(FILE* arq, ARVOREB* r, int info, int * pos)
 //testa se uma fila é vazia.
 //pre-condição: fila válida
 //pos-condição: retorna se a fila é vazia
-int vaziaFila(Fila* f)
-{
+int vaziaFila(Fila* f){
     return (f->inicio == NULL);
 }
 
