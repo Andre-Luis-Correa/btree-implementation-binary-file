@@ -2,7 +2,6 @@
 #define MENU_H
 
 #include "../file/file.h"
-
 // Exibe o cabeçalho do menu
 // Pré-condições: Nenhuma
 // Pós-condições: O cabeçalho do menu é exibido no console
@@ -16,17 +15,17 @@ void cadastrarProduto(ARQUIVOS files);
 // Remove um produto existente
 // Pré-condições: O produto a ser removido deve existir no cadastro
 // Pós-condições: O produto é removido do cadastro
-void removerProduto(ARQUIVOS files);
+void removerProduto();
 
 // Atualiza o preço de um produto
 // Pré-condições: O produto a ser atualizado deve existir no cadastro
 // Pós-condições: O preço do produto é atualizado
-void atualizarPreco();
+void atualizarPreco(ARQUIVOS files);
 
 // Atualiza o estoque de um produto
 // Pré-condições: O produto a ser atualizado deve existir no cadastro
 // Pós-condições: O estoque do produto é atualizado
-void atualizarEstoque();
+void atualizarEstoque(ARQUIVOS files);
 
 // Imprime as informações de um produto específico
 // Pré-condições: O produto cujas informações serão impressas deve existir no cadastro
@@ -41,7 +40,7 @@ void imprimirListaProdutos(ARQUIVOS files);
 // Imprime a árvore de produtos
 // Pré-condições: Nenhuma
 // Pós-condições: A árvore de produtos é impressa no console
-void imprimirArvore();
+void imprimirArvore(ARQUIVOS files);
 
 // Imprime a lista de nós livres do arquivo de índices
 // Pré-condições: Nenhuma

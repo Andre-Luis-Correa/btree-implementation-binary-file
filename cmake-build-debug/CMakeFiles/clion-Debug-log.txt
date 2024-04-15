@@ -1,4 +1,19 @@
-"C:\Program Files\JetBrains\CLion 2023.3.4\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -G Ninja -S C:\Users\andre\CLionProjects\trabalho_aed_3_bruna_andre -B C:\Users\andre\CLionProjects\trabalho_aed_3_bruna_andre\cmake-build-debug
+/opt/clion-2024.1/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna2 -B /home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna2/cmake-build-debug
+CMake Deprecation Warning:
+  Support for "Extra Generators" like
+
+    CodeBlocks
+
+  is deprecated and will be removed from a future version of CMake.  IDEs may
+  use the cmake-file-api(7) to view CMake-generated project build trees.
+
+
+-- The C compiler identification is GNU 10.2.1
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
 -- Configuring done (0.2s)
 -- Generating done (0.0s)
--- Build files have been written to: C:/Users/andre/CLionProjects/trabalho_aed_3_bruna_andre/cmake-build-debug
+-- Build files have been written to: /home/brunafeyh/CLionProjects/trabalho_aed_3_andre_bruna2/cmake-build-debug

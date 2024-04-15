@@ -4,6 +4,7 @@
 #include "../insercao/produto_insercao.h"
 #include "../impressao/produto_impressao.h"
 #include "../remocao/produto_remocao.h"
+#include "../atualizacao/produto_atualizacao.h"
 
 // Exibe o cabeçalho do menu
 // Pré-condições: Nenhuma
@@ -45,17 +46,24 @@ void removerProduto(ARQUIVOS files) {
 // Atualiza o preço de um produto
 // Pré-condições: Nenhuma
 // Pós-condição: O preço do produto é atualizado
-void atualizarPreco() {
+void atualizarPreco(ARQUIVOS files) {
     printf("Operacao: Atualizar Preco\n");
+    int cod;
+    printf("Digite o codigo do produto de preco a ser atualizado:\n");
+    scanf("%d", &cod);
+    atualizar_preco_produto(files, cod);
     // Implemente a lógica para atualizar o preço de um produto
 }
 
 // Atualiza o estoque de um produto
 // Pré-condições: Nenhuma
 // Pós-condição: O estoque do produto é atualizado
-void atualizarEstoque() {
+void atualizarEstoque(ARQUIVOS files) {
     printf("Operacao: Atualizar Estoque\n");
-    // Implemente a lógica para atualizar o estoque de um produto
+    int cod;
+    printf("Digite o codigo do produto de estoque a ser atualizado:\n");
+    scanf("%d", &cod);
+    atualizar_estoque_produto(files, cod);
 }
 
 // Imprime as informações de um produto específico
@@ -74,22 +82,21 @@ void imprimirInformacoes(ARQUIVOS files) {
 // Pré-condições: Nenhuma
 // Pós-condição: A lista de todos os produtos é impressa no console
 void imprimirListaProdutos(ARQUIVOS files) {
-    printf("Operacao: Imprimir Lista de Produtos\n");
+    printf("Operacao: Imprimir Lista de Produtos\n\n");
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
     if(cab_indices->pos_raiz == -1) {
-        printf("\nNao ha elementos!: \n");
-    } else {
-        printf("\nImpressao: \n");
+        printf("Nao ha elementos na arvore\n");
+    }else {
         imprimir_lista_produtos(files, cab_indices->pos_raiz);
     }
     free(cab_indices);
 }
-
 // Imprime a árvore de produtos
 // Pré-condições: Nenhuma
 // Pós-condição: A árvore de produtos é impressa no console
-void imprimirArvore() {
+void imprimirArvore(ARQUIVOS files) {
     printf("Operacao: Imprimir Arvore\n");
+    imprimir_arvore(files);
     // Implemente a lógica para imprimir a árvore de produtos
 }
 
@@ -118,7 +125,7 @@ void realizarOperacoesEmLote() {
 }
 
 void imprimir_info_nos(ARQUIVOS files){
-    printf("\n----> Impressao de infos no nno: \n");
+    printf("\n----> Impressao de infos no no: \n");
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
     imprimir_info_nos_chaves(files, cab_indices->pos_raiz);
 }
@@ -142,10 +149,10 @@ void menu_principal(ARQUIVOS files){
                 removerProduto(files);
                 break;
             case 3:
-                atualizarPreco();
+                atualizarPreco(files);
                 break;
             case 4:
-                atualizarEstoque();
+                atualizarEstoque(files);
                 break;
             case 5:
                 imprimirInformacoes(files);
@@ -154,7 +161,7 @@ void menu_principal(ARQUIVOS files){
                 imprimirListaProdutos(files);
                 break;
             case 7:
-                imprimirArvore();
+                imprimirArvore(files);
                 break;
             case 8:
                 imprimirListaLivresIndices();
