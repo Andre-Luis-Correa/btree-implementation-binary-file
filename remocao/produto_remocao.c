@@ -579,22 +579,23 @@ void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
         pai_atual = ler_no(files.file_indices, pos_pai_do_pai);
 
         if(pai_atual->num_chaves == 0){
-            // Então mudar a raiz;
-            if(pos_filho_pai == 0) {
-                pos_nova_raiz = pai_atual->filho[pos_filho_pai + 1];
-                no_livre = pai_atual->filho[pos_filho_pai - 1];
-            } else {
-                pos_nova_raiz = pai_atual->filho[pos_filho_pai - 1];
-                no_livre = pai_atual->filho[pos_filho_pai + 1];
-            }
-
-            cab_indices->pos_raiz = pos_nova_raiz;
-            escreve_cabecalho_indices(files.file_indices, cab_indices);
-            atualizar_pos_livres_indices(files, pos_pai_do_pai);
-            atualizar_pos_livres_indices(files, no_livre);
-            free(cab_indices);
-            free(pai_atual);
-            return;
+//            // Então mudar a raiz;
+//            if(pos_filho_pai == 0) {
+//                pos_nova_raiz = pai_atual->filho[pos_filho_pai + 1];
+//                no_livre = pai_atual->filho[pos_filho_pai - 1];
+//            } else {
+//                pos_nova_raiz = pai_atual->filho[pos_filho_pai - 1];
+//                no_livre = pai_atual->filho[pos_filho_pai + 1];
+//            }
+//
+//            cab_indices->pos_raiz = pos_nova_raiz;
+//            escreve_cabecalho_indices(files.file_indices, cab_indices);
+//            atualizar_pos_livres_indices(files, pos_pai_do_pai);
+//            atualizar_pos_livres_indices(files, no_livre);
+//            free(cab_indices);
+//            free(pai_atual);
+//            return;
+            break;
         }
     }
 
@@ -655,8 +656,12 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         int pos_filho_remocao;
         printf("\n---> CODIGO para procurar pai após remocao caso 2: %d\n", no_sucessor->chave[0]);
         int pos_pai = buscar_pai(files, cab_indices->pos_raiz, no_sucessor->chave[0], &pos_filho_remocao);
-        verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_sucessor, pos_pai, pos_filho_remocao, pos_no_sucessor, no_sucessor->chave[0]);
-        remover_caso4(files, cab_indices->pos_raiz, pos_pai);
+
+        if(no_sucessor->num_chaves < MIN) {
+            verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_sucessor, pos_pai, pos_filho_remocao,
+                                                     pos_no_sucessor, no_sucessor->chave[0]);
+            remover_caso4(files, cab_indices->pos_raiz, pos_pai);
+        }
         imprimir_cabecalho_indices(cab_indices);
 
     } else if ( !mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover) ){
