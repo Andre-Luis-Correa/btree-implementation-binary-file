@@ -21,7 +21,7 @@ int main() {
     ARQUIVOS files;
 
     // Verifica a existência e integridade dos arquivos, abrindo-os se necessário.
-    verificar_arquivos(&files);
+    verificarArquivos(&files);
 
     // Executa a função com as opções do menu disponíveis
     menu_principal(files);
@@ -30,7 +30,7 @@ int main() {
     //menu_principal(files);
 
     // Fecha os arquivos ao final da execução do programa.
-    fechar_arquivos(&files);
+    fecharArquivos(&files);
 
     // Indica a conclusão bem-sucedida do programa.
     return 0;

@@ -11,17 +11,17 @@
 
 // Definição da estrutura ARQUIVOS
 typedef struct {
-    FILE * file_indices;        // Ponteiro para o arquivo de cursos
-    FILE * file_dados;   // Ponteiro para o arquivo de disciplinas
+    FILE * fileIndices;        // Ponteiro para o arquivo de cursos
+    FILE * fileRegistros;   // Ponteiro para o arquivo de disciplinas
 } ARQUIVOS;
 
-void verificar_arquivos(ARQUIVOS * files);
-void fechar_arquivos(ARQUIVOS * files);
-int is_vazio(ARQUIVOS files, int get_file_indices);
-int tem_indices_livres(ARQUIVOS files, int get_file_indices);
-ARVOREB * ler_no(FILE * file_indices, int pos);
-void escreve_no(FILE * file_indices, ARVOREB * no, int pos);
-DADOS_REGISTRO * ler_registro(FILE * file_dados, int pos);
-void escreve_registro(FILE * file_dados, DADOS_REGISTRO * registro, int pos);
+void verificarArquivos(ARQUIVOS * files);
+void fecharArquivos(ARQUIVOS * files);
+int isVazio(ARQUIVOS files, int getFileIndices);
+int temPosLivre(ARQUIVOS files, int getFileIndices);
+ARVOREB * lerNo(FILE * fileIndices, int pos);
+void escreveNo(FILE * fileIndices, ARVOREB * no, int pos);
+PRODUTO_REGISTRO * lerRegistro(FILE * fileDados, int pos);
+void escreveRegistro(FILE * fileDados, PRODUTO_REGISTRO * registro, int pos);
 
 #endif //FILE_H

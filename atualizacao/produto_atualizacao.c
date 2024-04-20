@@ -9,18 +9,18 @@
 
 void atualizar_preco_produto(ARQUIVOS files, int codigo_produto){
     //lendo os cabecalhos de indices e file_dados
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-    CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
+    CABECALHO_DADOS * cab_dados = lerCabecalhoRegistros(files.fileRegistros);
 
     //a pos esta guarando o no em que esta elemento que possui esse codigo de produto
-    int pos = buscar_no(files.file_indices, codigo_produto, cab_indices->pos_raiz);
+    int pos = buscar_no(files.fileIndices, codigo_produto, cab_indices->posRaiz);
 
     if (pos == -1) {
         printf("Produto com c?digo %d n?o encontrado.\n", codigo_produto);
         return;
     }
 
-    ARVOREB * no = ler_no(files.file_indices, pos);
+    ARVOREB * no = lerNo(files.fileIndices, pos);
 
     // procurar o indice do codigo dentro do n?
     int indice = -1;
@@ -36,7 +36,7 @@ void atualizar_preco_produto(ARQUIVOS files, int codigo_produto){
         return;
     }
     // ler o registro de dados do produto
-    DADOS_REGISTRO * registro = ler_registro(files.file_dados, no->pt_dados[indice]);
+    DADOS_REGISTRO * registro = lerRegistro(files.fileRegistros, no->pt_dados[indice]);
 
     // atualizar o preco do produto
     float novo_preco;
@@ -45,7 +45,7 @@ void atualizar_preco_produto(ARQUIVOS files, int codigo_produto){
     registro->produto.preco = novo_preco;
 
     // Escrever o registro atualizado de volta no arquivo de dados
-    escreve_registro(files.file_dados, registro, no->pt_dados[indice]);
+    escreveRegistro(files.fileRegistros, registro, no->pt_dados[indice]);
 
     // Liberar mem?ria alocada
     free(no);
@@ -57,20 +57,20 @@ void atualizar_preco_produto(ARQUIVOS files, int codigo_produto){
 
 // Fun??o para atualizar o estoque de um produto a partir do seu c?digo
 void atualizar_estoque_produto(ARQUIVOS files, int codigo_produto) {
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-    CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
+    CABECALHO_DADOS * cab_dados = lerCabecalhoRegistros(files.fileRegistros);
 
-    imprimir_cabecalho_indices(cab_indices);
-    imprimir_cabecalho_dados(cab_dados);
+    imprimirCabecalhoIndices(cab_indices);
+    imprimirCabecalhoDados(cab_dados);
 
-    int pos = buscar_no(files.file_indices, codigo_produto, cab_indices->pos_raiz);
+    int pos = buscar_no(files.fileIndices, codigo_produto, cab_indices->posRaiz);
 
     if (pos == -1) {
         printf("Produto com c?digo %d n?o encontrado.\n", codigo_produto);
         return;
     }
 
-    ARVOREB * no = ler_no(files.file_indices, pos);
+    ARVOREB * no = lerNo(files.fileIndices, pos);
 
     // Procurar o ?ndice do c?digo dentro do n?
     int indice = -1;
@@ -87,7 +87,7 @@ void atualizar_estoque_produto(ARQUIVOS files, int codigo_produto) {
     }
 
     // Ler o registro de dados do produto
-    DADOS_REGISTRO * registro = ler_registro(files.file_dados, no->pt_dados[indice]);
+    DADOS_REGISTRO * registro = lerRegistro(files.fileRegistros, no->pt_dados[indice]);
 
     // Atualizar o estoque do produto
     int novo_estoque;
@@ -96,7 +96,7 @@ void atualizar_estoque_produto(ARQUIVOS files, int codigo_produto) {
     registro->produto.estoque = novo_estoque;
 
     // Escrever o registro atualizado de volta no arquivo de dados
-    escreve_registro(files.file_dados, registro, no->pt_dados[indice]);
+    escreveRegistro(files.fileRegistros, registro, no->pt_dados[indice]);
 
     // Liberar mem?ria alocada
     free(no);

@@ -10,11 +10,12 @@
 
 // Estrutura para nó da árvore B*
 typedef struct indice_node {
-    int chave[ORDEM];   // Chaves
+    int chave[ORDEM];   // Armazena as chaves (códigos) da árvore, além disso a posição 0 das chaves será utilizada para encadear os nós livres
     int pt_dados[ORDEM]; // Posições dos registros de dados no arquivo
     int filho[ORDEM+1]; // Ponteiros para os filhos
     int num_chaves;     // Número de chaves presentes no nó
-    int prox_livre;     // Posição do próximo registro livre
+    int pos_file; // posição da chave no arquivo, a fim de facilitar a busca do mesmo
+    int pos_pai; // posição do pai do nó no arquivo, afim de facilitar operações de inserção, remoção e balanceamento da àrvore B
 } ARVOREB;
 
 // Estrutura para os dados do produto
@@ -25,12 +26,6 @@ typedef struct produto_data {
     char categoria[MAX_CATEGORIA + 1]; // Categoria do produto
     int estoque;                  // Quantidade em estoque
     float preco;                  // Preço do produto
-} PRODUTO_DATA;
-
-// Estrutura para registro de dados
-typedef struct dados_registro {
-    PRODUTO_DATA produto; // Dados do produto
-    int prox_livre;       // Encadeamento para registro livre
-} DADOS_REGISTRO;
+} PRODUTO_REGISTRO;
 
 #endif //PRODUTO_H

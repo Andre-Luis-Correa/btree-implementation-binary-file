@@ -8,19 +8,19 @@
 #include "../insercao/produto_insercao.h"
 
 void imprimir_lista_produtos(ARQUIVOS files, int pos_atual) {
-    CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES *cab_indices = lerCabecalhoIndices(files.fileIndices);
 
     if (pos_atual == -1) {
         free(cab_indices);
         return;
     }else{
-        ARVOREB *no = ler_no(files.file_indices, pos_atual);
+        ARVOREB *no = lerNo(files.fileIndices, pos_atual);
 
         for (int i = 0; i <= no->num_chaves; i++) {
             imprimir_lista_produtos(files, no->filho[i]);
 
             if (i != no->num_chaves) {
-                DADOS_REGISTRO *registro = ler_registro(files.file_dados, no->pt_dados[i]);
+                DADOS_REGISTRO *registro = lerRegistro(files.fileRegistros, no->pt_dados[i]);
                 printf("| %-8d | %-30s | %-25s | %-8d | R$ %-6.2f |\n", registro->produto.codigo, registro->produto.nome, registro->produto.marca, registro->produto.estoque, registro->produto.preco);
                 free(registro);
             }
@@ -33,19 +33,19 @@ void imprimir_lista_produtos(ARQUIVOS files, int pos_atual) {
 }
 
 void imprimir_informacoes_produto(ARQUIVOS files, int codigo){
-    CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES *cab_indices = lerCabecalhoIndices(files.fileIndices);
 
-    int pos = buscar_no(files.file_indices, codigo, cab_indices->pos_raiz);
+    int pos = buscar_no(files.fileIndices, codigo, cab_indices->posRaiz);
 
     if(pos != -1) {
-        ARVOREB * r = ler_no(files.file_indices, pos);
+        ARVOREB * r = lerNo(files.fileIndices, pos);
 
         int i;
         for(i = 0; i < r->num_chaves; i++){
             if(r->chave[i] == codigo) break;
         }
 
-        DADOS_REGISTRO * informacoes_produto = ler_registro(files.file_dados, r->pt_dados[i]);
+        DADOS_REGISTRO * informacoes_produto = lerRegistro(files.fileRegistros, r->pt_dados[i]);
         printf("\n");
         printf("\n");
         printf("+----------------------------------------------------------------------------------------------+\n");
@@ -84,7 +84,7 @@ int buscaNivel(FILE* arq, ARVOREB* r, int chave, int count)
         {
             if (chave < r->chave[i])
             {
-                ARVOREB* filho_i = ler_no(arq, r->filho[i]);
+                ARVOREB* filho_i = lerNo(arq, r->filho[i]);
                 if (filho_i != NULL)
                 {
                     int retorno = 1 + buscaNivel(arq, filho_i, chave, count);
@@ -95,7 +95,7 @@ int buscaNivel(FILE* arq, ARVOREB* r, int chave, int count)
             }
         }
 
-        ARVOREB* filho_i = ler_no(arq, r->filho[r->num_chaves]);
+        ARVOREB* filho_i = lerNo(arq, r->filho[r->num_chaves]);
         if (filho_i != NULL)
         {
             int retorno = 1 + buscaNivel(arq, filho_i, chave, count);
@@ -115,7 +115,7 @@ ARVOREB * busca(FILE* arq, ARVOREB* r, int info, int * pos)
     while (i < r->num_chaves && r->chave[i] < info) i++;
     if ((i + 1) > r->num_chaves|| r->chave[i] > info)
     {
-        ARVOREB* aux = ler_no(arq, r->filho[i]);
+        ARVOREB* aux = lerNo(arq, r->filho[i]);
         ARVOREB* b = busca(arq, aux, info, pos);
         if (b != aux)
         {
@@ -169,7 +169,7 @@ void enfileiraFilhos(FILE* arq, ARVOREB* r, Fila* f)
             int i;
             for (i = 0; i <= aux->num_chaves; i++)
             {
-                ARVOREB* filho_i = ler_no(arq, aux->filho[i]);
+                ARVOREB* filho_i = lerNo(arq, aux->filho[i]);
                 if (filho_i != NULL)
                 {
                     enqueue(f, filho_i->chave[0]);
@@ -228,15 +228,15 @@ void imprimir_por_niveis(ARQUIVOS files, ARVOREB* r)
         while (!vaziaFila(f))
         {
             ARVOREB* aux = NULL;
-            enfileiraFilhos(files.file_indices,r, f);
-            atual = buscaNivel(files.file_indices,r, f->inicio->info, 0);
+            enfileiraFilhos(files.fileIndices, r, f);
+            atual = buscaNivel(files.fileIndices, r, f->inicio->info, 0);
             if (atual != ant)
             {
                 printf("\n");
                 ant = atual;
             }
             int p = 0;
-            aux = busca(files.file_indices,r, f->inicio->info,&p);
+            aux = busca(files.fileIndices, r, f->inicio->info, &p);
             int j;
             printf("[");
             for (j = 0; j < aux->num_chaves; j++)
@@ -251,13 +251,13 @@ void imprimir_por_niveis(ARQUIVOS files, ARVOREB* r)
 
 
 void imprimir_arvore(ARQUIVOS files) {
-    CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
-    int pos =  cab_indices->pos_raiz;
+    CABECALHO_INDICES *cab_indices = lerCabecalhoIndices(files.fileIndices);
+    int pos =  cab_indices->posRaiz;
     if (pos == -1) {
         free(cab_indices);
         return;
     } else {
-        ARVOREB *no = ler_no(files.file_indices, pos);
+        ARVOREB *no = lerNo(files.fileIndices, pos);
         printf("---> Imprimindo Arvore por niveis :\n\n");
         imprimir_por_niveis(files, no);
         printf("\n\n");
@@ -294,14 +294,14 @@ void imprimir_no(ARVOREB *r) {
 
 
 void imprimir_info_nos_chaves(ARQUIVOS files, int pos){
-    CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES *cab_indices = lerCabecalhoIndices(files.fileIndices);
 
     if (pos == -1) {
         //printf("Arvore vazia!\n");
         free(cab_indices);
         return;
     }else{
-        ARVOREB * no = ler_no(files.file_indices, pos);
+        ARVOREB * no = lerNo(files.fileIndices, pos);
         imprimir_no(no);
 
         for(int i = 0; i <= no->num_chaves; i++){

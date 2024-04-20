@@ -54,9 +54,9 @@ void removerProduto(ARQUIVOS files) {
 void atualizarPreco(ARQUIVOS files) {
     // Implemente a l?gica para atualizar o pre?o de um produto
     printf("\n---> Operacao: Atualizar Preco\n");
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
 
-    if( cab_indices->pos_raiz == -1){
+    if(cab_indices->posRaiz == -1){
         printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
     } else {
         int cod;
@@ -72,9 +72,9 @@ void atualizarPreco(ARQUIVOS files) {
 // P?s-condi??o: O estoque do produto ? atualizado
 void atualizarEstoque(ARQUIVOS files) {
     printf("\n---> Operacao: Atualizar Estoque\n");
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
 
-    if(cab_indices->pos_raiz == -1){
+    if(cab_indices->posRaiz == -1){
         printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
     } else {
         int cod;
@@ -90,9 +90,9 @@ void atualizarEstoque(ARQUIVOS files) {
 // P?s-condi??o: As informa??es do produto s?o impressas no console
 void imprimirInformacoes(ARQUIVOS files) {
     printf("\n---> Operacao: Imprimir informacoes de um produto\n");
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
 
-    if(cab_indices->pos_raiz == -1){
+    if(cab_indices->posRaiz == -1){
         printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
     } else {
         int codigo;
@@ -108,9 +108,9 @@ void imprimirInformacoes(ARQUIVOS files) {
 // P?s-condi??o: A lista de todos os produtos ? impressa no console
 void imprimirListaProdutos(ARQUIVOS files) {
     printf("\n---> Operacao: Imprimir Lista de Produtos\n\n");
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
 
-    if(cab_indices->pos_raiz == -1) {
+    if(cab_indices->posRaiz == -1) {
         printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
     }else {
         printf("+----------------------------------------------------------------------------------------------+\n");
@@ -118,7 +118,7 @@ void imprimirListaProdutos(ARQUIVOS files) {
         printf("+----------------------------------------------------------------------------------------------+\n");
         printf("| CODIGO   | NOME                           | MARCA                     | ESTOQUE  | PRECO     |\n");
         printf("+----------------------------------------------------------------------------------------------+\n");
-        imprimir_lista_produtos(files, cab_indices->pos_raiz);
+        imprimir_lista_produtos(files, cab_indices->posRaiz);
         printf("+----------------------------------------------------------------------------------------------+\n");
     }
     free(cab_indices);
@@ -130,9 +130,9 @@ void imprimirListaProdutos(ARQUIVOS files) {
 void imprimirArvore(ARQUIVOS files) {
     // Implemente a l?gica para imprimir a ?rvore de produtos
     printf("\n---> Operacao: Imprimir Arvore\n");
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
 
-    if(cab_indices->pos_raiz == -1){
+    if(cab_indices->posRaiz == -1){
         printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
     } else {
         imprimir_arvore(files);
@@ -167,12 +167,12 @@ void realizarOperacoesEmLote() {
 
 void imprimir_info_nos(ARQUIVOS files){
     printf("\n----> Operacao: Impressao de infos no no: \n");
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
 
-    if(cab_indices->pos_raiz == -1){
+    if(cab_indices->posRaiz == -1){
         printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
     } else {
-        imprimir_info_nos_chaves(files, cab_indices->pos_raiz);
+        imprimir_info_nos_chaves(files, cab_indices->posRaiz);
     }
 
     free(cab_indices);

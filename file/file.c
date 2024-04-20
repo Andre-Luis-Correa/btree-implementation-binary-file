@@ -7,16 +7,16 @@
 //Pós-condição: se aqrquivos existirem, então são abertos para leitura e escrita. Caso contrário, são criados e inicializados com uma lista vazia
 void verificar_arquivos(ARQUIVOS * files){
 
-    if( (files->file_indices = fopen("file_indices.bin", "r+b") ) == NULL ){
+    if((files->fileIndices = fopen("file_indices.bin", "r+b") ) == NULL ){
         printf("CRIANDO ARQUIVO DE INDICES...\n");
-        files->file_indices = fopen("file_indices.bin", "w+b");
-        cria_arvore_vazia_indices(files->file_indices);
+        files->fileIndices = fopen("file_indices.bin", "w+b");
+        criaArvoreVaziaIndices(files->fileIndices);
     }
 
-    if( (files->file_dados = fopen("file_dados.bin", "r+b") ) == NULL ){
+    if((files->fileRegistros = fopen("file_dados.bin", "r+b") ) == NULL ){
         printf("CRIANDO ARQUIVO DE DADOS...\n");
-        files->file_dados = fopen("file_dados.bin", "w+b");
-        cria_arvore_vazia_dados(files->file_dados);
+        files->fileRegistros = fopen("file_dados.bin", "w+b");
+        criarRegistroVazio(files->fileDados);
         printf("\n");
     }
 }
@@ -24,73 +24,74 @@ void verificar_arquivos(ARQUIVOS * files){
 //Fecha os aqrquivos
 //Pré-condição: nenhuma
 //Pós-condição: arquivos fechados
-void fechar_arquivos(ARQUIVOS * files){
-    fclose(files->file_indices);
+void fecharArquivos(ARQUIVOS * files){
+    fclose(files->fileIndices);
     printf("\nFECHANDO ARQUIVO DE INDICES...");
-    fclose(files->file_dados);
+    fclose(files->fileRegistros);
     printf("\nFECHANDO ARQUIVO DE DADOS...\n");
 }
 
 //Verifica se um arquivo está vazio ou não, isto é: se contem registros ou não
 //Pré-condição: nenhuma
 //Pós-condição: retorna 1 se há registros e 0 caso não
-int is_vazio(ARQUIVOS files, int get_file_indices){
+int isVazio(ARQUIVOS files, int getFileIndices){
 
-    if( get_file_indices ){
-        CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-        int pos_raiz = cab_indices->pos_raiz;
-        free(cab_indices);
-        return pos_raiz == -1;
+    if( getFileIndices ){
+        CABECALHO_INDICES * cabIndices = lerCabecalhoIndices(files.fileIndices);
+        int posRaiz = cabIndices->posRaiz;
+        free(cabIndices);
+        return posRaiz == -1;
 
     }
 
-    CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
-    int pos_topo = cab_dados->pos_topo;
-    free(cab_dados);
-    return pos_topo == 0;
+    CABECALHO_DADOS * cabRegistros = lerCabecalhoRegistros(files.fileRegistros);
+    int posTopo = cabRegistros->posTopo;
+    free(cabRegistros);
+    return posTopo == 0;
 }
 
-int tem_indices_livres(ARQUIVOS files, int get_file_indices){
-    int pos_livre;
+int temPosLivre(ARQUIVOS files, int getFileIndices){
+    int posLivre;
 
-    if( get_file_indices ){
-        CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-        pos_livre = cab_indices->pos_livre;
-        free(cab_indices);
-        return pos_livre != -1;
+    if( getFileIndices ){
+        CABECALHO_INDICES * cabIndices = lerCabecalhoIndices(files.fileIndices);
+        posLivre = cabIndices->posLivre;
+        free(cabIndices);
+        return posLivre != -1;
     }
 
-    CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
-    pos_livre = cab_dados->pos_livre;
+    CABECALHO_DADOS * cab_dados = lerCabecalhoRegistros(files.fileRegistros);
+    posLivre = cab_dados->posLivre;
     free(cab_dados);
-    return pos_livre != -1;
+
+    return posLivre != -1;
 }
 
 // Função para ler um nó do arquivo de índices da árvore B de produtos
-ARVOREB * ler_no (FILE * file_indices, int pos){
+ARVOREB * lerNo (FILE * fileIndices, int pos){
     ARVOREB * no = (ARVOREB*) malloc(sizeof (ARVOREB));
-    fseek (file_indices, sizeof (CABECALHO_INDICES) + pos * sizeof (ARVOREB), SEEK_SET);
-    fread (no, sizeof (ARVOREB), 1, file_indices);
+    fseek (fileIndices, sizeof (CABECALHO_INDICES) + pos * sizeof (ARVOREB), SEEK_SET);
+    fread (no, sizeof (ARVOREB), 1, fileIndices);
     return no;
 }
 
 // Função para escrever um nó no arquivo de índices
-void escreve_no (FILE * file_indices, ARVOREB * no, int pos){
-    fseek (file_indices, sizeof (CABECALHO_INDICES) + pos * sizeof (ARVOREB), SEEK_SET);
-    fwrite (no, sizeof (ARVOREB), 1, file_indices);
+void escreveNo (FILE * fileIndices, ARVOREB * no, int pos){
+    fseek (fileIndices, sizeof (CABECALHO_INDICES) + pos * sizeof (ARVOREB), SEEK_SET);
+    fwrite (no, sizeof (ARVOREB), 1, fileIndices);
 }
 
 // Função para ler um registro de dados de um produto no arquivo de dados
-DADOS_REGISTRO * ler_registro(FILE * file_dados, int pos){
-    DADOS_REGISTRO * registro = (DADOS_REGISTRO*) malloc(sizeof (DADOS_REGISTRO));
-    fseek (file_dados, sizeof (CABECALHO_DADOS) + pos * sizeof (DADOS_REGISTRO), SEEK_SET);
-    fread (registro, sizeof (DADOS_REGISTRO), 1, file_dados);
+PRODUTO_REGISTRO * lerRegistro(FILE * fileDados, int pos){
+    PRODUTO_REGISTRO * registro = (PRODUTO_REGISTRO*) malloc(sizeof (PRODUTO_REGISTRO));
+    fseek (fileDados, sizeof (CABECALHO_DADOS) + pos * sizeof (PRODUTO_REGISTRO), SEEK_SET);
+    fread (registro, sizeof (PRODUTO_REGISTRO), 1, fileDados);
     return registro;
 }
 
 // Função para escrever um nó no arquivo de índices
-void escreve_registro (FILE * file_dados, DADOS_REGISTRO * registro, int pos){
-    fseek (file_dados, sizeof (CABECALHO_DADOS ) + pos * sizeof (DADOS_REGISTRO), SEEK_SET);
-    fwrite (registro, sizeof (DADOS_REGISTRO), 1, file_dados);
+void escreveRegistro (FILE * fileDados, PRODUTO_REGISTRO * registro, int pos){
+    fseek (fileDados, sizeof (CABECALHO_DADOS ) + pos * sizeof (PRODUTO_REGISTRO), SEEK_SET);
+    fwrite (registro, sizeof (PRODUTO_REGISTRO), 1, fileDados);
 }
 

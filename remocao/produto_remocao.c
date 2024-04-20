@@ -9,16 +9,16 @@
 #define MIN (ORDEM/2 + ORDEM%2 - 1)
 
 void remover_produto(ARQUIVOS files){
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
 
     int codigo, pos_codigo, pos_raiz, pos_esq, pos_dir;
 
     printf ("Insira o codigo a ser removido: ");
     scanf ("%d", &codigo);
 
-    pos_codigo = buscar_no(files.file_indices, codigo, cab_indices->pos_raiz);
+    pos_codigo = buscar_no(files.fileIndices, codigo, cab_indices->posRaiz);
 
-    if(cab_indices->pos_raiz == -1){
+    if(cab_indices->posRaiz == -1){
         printf("A arvore encontra-se vazia!\n");
         free(cab_indices);
         return;
@@ -29,8 +29,8 @@ void remover_produto(ARQUIVOS files){
     }
 
     printf("---> Iniciando a remocao da chave %d!\n", codigo);
-    ARVOREB * raiz = ler_no(files.file_indices, cab_indices->pos_raiz);
-    remover(files, codigo, cab_indices->pos_raiz, pos_codigo);
+    ARVOREB * raiz = lerNo(files.fileIndices, cab_indices->posRaiz);
+    remover(files, codigo, cab_indices->posRaiz, pos_codigo);
 
     free(raiz);
     free(cab_indices);
@@ -54,33 +54,33 @@ int busca_pos_chave(ARVOREB * r, int codigo){
 
 void atualiza_lista_dados_livres(ARQUIVOS files, CABECALHO_DADOS * cab_dados, int pos_registro){
     printf("\n---> Atualizando dados livres!\n");
-    DADOS_REGISTRO * dados_atual = ler_registro(files.file_dados, cab_dados->pos_livre);
+    DADOS_REGISTRO * dados_atual = lerRegistro(files.fileRegistros, cab_dados->posLivre);
 
-    int prox = cab_dados->pos_livre;
+    int prox = cab_dados->posLivre;
 
     while(dados_atual->prox_livre != -1){
         prox = dados_atual->prox_livre;
         if(prox == -1) break;
         free(dados_atual);
-        dados_atual = ler_registro(files.file_dados, prox);
+        dados_atual = lerRegistro(files.fileRegistros, prox);
     }
     printf("\n---> Ainda atualizando dados livres!\n");
     dados_atual->prox_livre = pos_registro;
-    escreve_registro(files.file_dados, dados_atual, prox);
+    escreveRegistro(files.fileRegistros, dados_atual, prox);
     free(dados_atual);
 }
 
 void atualiza_no_remocao_folha(ARQUIVOS files, ARVOREB * folha, int pos_remocao, int pos_codigo){
-    CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
+    CABECALHO_DADOS * cab_dados = lerCabecalhoRegistros(files.fileRegistros);
 
     // A posição dos dados no arq de dados deve ser atualizado
     // folha->pt_dados[pos_codigo] => posição dos dados no file de dados
     int pos_registro = folha->pt_dados[pos_codigo];
 
-    if(cab_dados->pos_livre == -1){
-        cab_dados->pos_livre = pos_registro;
+    if(cab_dados->posLivre == -1){
+        cab_dados->posLivre = pos_registro;
         // Atualiza o cab_dados com a posição livre
-        escreve_cabecalho_dados(files.file_dados, cab_dados);
+        escreverCabecalhoDeDados(files.fileRegistros, cab_dados);
 
     }else {
         printf("\n---> Atualizando lista de dados livres!\n");
@@ -105,7 +105,7 @@ void atualiza_no_remocao_folha(ARQUIVOS files, ARVOREB * folha, int pos_remocao,
     printf("\n ---> CASO 1 - DEPOIS ATT - REMOCAO: \n");
     imprimir_no(folha);
 
-    escreve_no(files.file_indices, folha, pos_remocao);
+    escreveNo(files.fileIndices, folha, pos_remocao);
     free(cab_dados);
 }
 
@@ -122,7 +122,7 @@ int buscar_chave_sucessora_folha(ARQUIVOS files, ARVOREB * no_a_remover, int pos
     int pos_chave_sucessora = no_a_remover->filho[pos_codigo + 1];
     int chave_sucessora;
 
-    ARVOREB * no_sucessor = ler_no(files.file_indices, pos_chave_sucessora);
+    ARVOREB * no_sucessor = lerNo(files.fileIndices, pos_chave_sucessora);
 
     if(eh_folha(no_sucessor)){
         *pos_no_sucessor = pos_chave_sucessora;
@@ -145,7 +145,7 @@ int remover_caso2(ARQUIVOS files, ARVOREB * no_a_remover, int codigo, int pos_re
     int chave_sucessora = buscar_chave_sucessora_folha(files, no_a_remover, pos_codigo, &pos_no_sucessor);
 
     // Preciso atualizar a folha que continha a chave sucessora
-    ARVOREB  * no_sucessor = ler_no(files.file_indices, pos_no_sucessor);
+    ARVOREB  * no_sucessor = lerNo(files.fileIndices, pos_no_sucessor);
 
     int pt_dados_remocao = no_sucessor->pt_dados[0];
 
@@ -154,7 +154,7 @@ int remover_caso2(ARQUIVOS files, ARVOREB * no_a_remover, int codigo, int pos_re
     // Realiza a substituição da chave removida pela chave sucessora
     no_a_remover->chave[pos_codigo] = chave_sucessora;
     no_a_remover->pt_dados[pos_codigo] = pt_dados_remocao;
-    escreve_no(files.file_indices, no_a_remover, pos_remocao);
+    escreveNo(files.fileIndices, no_a_remover, pos_remocao);
 
     return pos_no_sucessor;
 }
@@ -201,7 +201,7 @@ int remover_caso2(ARQUIVOS files, ARVOREB * no_a_remover, int codigo, int pos_re
 //}
 
 int buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int *pos_filho_remocao) {
-    ARVOREB *r = ler_no(files.file_indices, pos_raiz);
+    ARVOREB *r = lerNo(files.fileIndices, pos_raiz);
 
     // Verifica se é uma folha
     if (eh_folha(r)) {
@@ -213,7 +213,7 @@ int buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int *pos_filho_remocao)
     for (i = 0; i < r->num_chaves; i++) {
         // Se o código for menor que a chave atual, desce para o filho à esquerda
         if (codigo < r->chave[i]) {
-            ARVOREB *filho = ler_no(files.file_indices, r->filho[i]);
+            ARVOREB *filho = lerNo(files.fileIndices, r->filho[i]);
             int pos_codigo = busca_pos_chave(filho, codigo);
             free(filho);
             // Se a chave for encontrada no filho, retorna o nó atual como pai
@@ -227,7 +227,7 @@ int buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int *pos_filho_remocao)
     }
 
     // Se o código for maior que todas as chaves, desce para o último filho
-    ARVOREB *filho = ler_no(files.file_indices, r->filho[i]);
+    ARVOREB *filho = lerNo(files.fileIndices, r->filho[i]);
     int pos_codigo = busca_pos_chave(filho, codigo);
     free(filho);
     // Se a chave for encontrada no último filho, retorna o nó atual como pai
@@ -241,14 +241,14 @@ int buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int *pos_filho_remocao)
 
 int pode_redistribuir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * pegar_esq, int * pegar_dir) {
     // Buscar o pai
-    ARVOREB *pai = ler_no(files.file_indices, pos_pai);
+    ARVOREB *pai = lerNo(files.fileIndices, pos_pai);
     ARVOREB *esq = (ARVOREB *) malloc(sizeof(ARVOREB));
     ARVOREB *dir = (ARVOREB *) malloc(sizeof(ARVOREB));
     imprimir_no(pai);
     printf("\n---> pos filho remocao: %d\n", pos_filho_remocao);
     // Depois obter os filhos a esquerda e direita
     if (pos_filho_remocao == 0) {
-        dir = ler_no(files.file_indices, pai->filho[1]);
+        dir = lerNo(files.fileIndices, pai->filho[1]);
         if (dir->num_chaves > MIN) {
             printf("\n----> Pode emprestar a dir e nao esq!\n");
             imprimir_no(esq);
@@ -258,7 +258,7 @@ int pode_redistribuir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * 
             return 1;
         }
     } else if ( pos_filho_remocao == pai->num_chaves ){
-        esq = ler_no(files.file_indices, pai->filho[pai->num_chaves - 1]);
+        esq = lerNo(files.fileIndices, pai->filho[pai->num_chaves - 1]);
         if (esq->num_chaves > MIN) {
             printf("\n----> Pode emprestar a esq e nao dir!\n");
             imprimir_no(esq);
@@ -268,8 +268,8 @@ int pode_redistribuir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * 
             return 1;
         }
     } else {
-        esq = ler_no(files.file_indices, pai->filho[pos_filho_remocao - 1]);
-        dir = ler_no(files.file_indices, pai->filho[pos_filho_remocao + 1]);
+        esq = lerNo(files.fileIndices, pai->filho[pos_filho_remocao - 1]);
+        dir = lerNo(files.fileIndices, pai->filho[pos_filho_remocao + 1]);
 
         imprimir_no(esq);
         imprimir_no(dir);
@@ -304,9 +304,9 @@ int pode_redistribuir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * 
 }
 
 void redistribuir_partir_da_direita(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_dir){
-    ARVOREB * pai = ler_no(files.file_indices, pos_pai);
-    ARVOREB * no_remocao = ler_no(files.file_indices, pos_remocao);
-    ARVOREB * dir = ler_no(files.file_indices, pegar_dir);
+    ARVOREB * pai = lerNo(files.fileIndices, pos_pai);
+    ARVOREB * no_remocao = lerNo(files.fileIndices, pos_remocao);
+    ARVOREB * dir = lerNo(files.fileIndices, pegar_dir);
 
     no_remocao->chave[no_remocao->num_chaves] = pai->chave[pos_filho_remocao];
     no_remocao->pt_dados[no_remocao->num_chaves] = pai->pt_dados[pos_filho_remocao];
@@ -326,15 +326,15 @@ void redistribuir_partir_da_direita(ARQUIVOS files, int pos_pai, int pos_remocao
     dir->filho[i] = dir->filho[dir->num_chaves];
     dir->num_chaves--;
 
-    escreve_no(files.file_indices, pai, pos_pai);
-    escreve_no(files.file_indices, no_remocao, pos_remocao);
-    escreve_no(files.file_indices, dir, pegar_dir);
+    escreveNo(files.fileIndices, pai, pos_pai);
+    escreveNo(files.fileIndices, no_remocao, pos_remocao);
+    escreveNo(files.fileIndices, dir, pegar_dir);
 }
 
 void redistribuir_partir_da_esquerda(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_esq){
-    ARVOREB *pai = ler_no(files.file_indices, pos_pai);
-    ARVOREB *no_remocao = ler_no(files.file_indices, pos_remocao);
-    ARVOREB *esq = ler_no(files.file_indices, pegar_esq);
+    ARVOREB *pai = lerNo(files.fileIndices, pos_pai);
+    ARVOREB *no_remocao = lerNo(files.fileIndices, pos_remocao);
+    ARVOREB *esq = lerNo(files.fileIndices, pegar_esq);
 
     // Movendo a chave e o ponteiro de dados do pai para o nó de remoção
     int i;
@@ -359,9 +359,9 @@ void redistribuir_partir_da_esquerda(ARQUIVOS files, int pos_pai, int pos_remoca
     esq->num_chaves--;
 
     // Escrevendo as alterações de volta nos arquivos
-    escreve_no(files.file_indices, pai, pos_pai);
-    escreve_no(files.file_indices, no_remocao, pos_remocao);
-    escreve_no(files.file_indices, esq, pegar_esq);
+    escreveNo(files.fileIndices, pai, pos_pai);
+    escreveNo(files.fileIndices, no_remocao, pos_remocao);
+    escreveNo(files.fileIndices, esq, pegar_esq);
 }
 
 void redistribuir(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_esq, int pegar_dir){
@@ -375,7 +375,7 @@ void redistribuir(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_re
 }
 void buscar_filhos_esq_dir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int * pegar_esq, int * pegar_dir){
     // Buscar o pai
-    ARVOREB *pai = ler_no(files.file_indices, pos_pai);
+    ARVOREB *pai = lerNo(files.fileIndices, pos_pai);
     ARVOREB *esq = (ARVOREB *) malloc(sizeof(ARVOREB));
     ARVOREB *dir = (ARVOREB *) malloc(sizeof(ARVOREB));
     imprimir_no(pai);
@@ -402,24 +402,24 @@ void buscar_filhos_esq_dir(ARQUIVOS files, int pos_pai, int pos_filho_remocao, i
 }
 
 void atualizar_pos_livres_indices(ARQUIVOS files, int pos_livre){
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
 
-    if(cab_indices->pos_livre == -1){
-        cab_indices->pos_livre = pos_livre;
+    if(cab_indices->posLivre == -1){
+        cab_indices->posLivre = pos_livre;
         return;
     }
 
-    ARVOREB * no_atual = ler_no(files.file_indices, cab_indices->pos_livre);
-    int pos_atual = cab_indices->pos_livre;
+    ARVOREB * no_atual = lerNo(files.fileIndices, cab_indices->posLivre);
+    int pos_atual = cab_indices->posLivre;
 
 
     while(no_atual->prox_livre !=-1){
         pos_atual = no_atual->prox_livre;
-        no_atual = ler_no(files.file_indices, no_atual->prox_livre);
+        no_atual = lerNo(files.fileIndices, no_atual->prox_livre);
     }
 
     no_atual->prox_livre = pos_livre;
-    escreve_no(files.file_indices, no_atual, pos_atual);
+    escreveNo(files.fileIndices, no_atual, pos_atual);
     free(no_atual);
     free(cab_indices);
 }
@@ -496,8 +496,8 @@ void concatenar_direita(ARQUIVOS files, ARVOREB * pai, ARVOREB * dir, ARVOREB * 
 
 void concatenar(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remocao, int pegar_esq, int pegar_dir){
     printf("\n---> INICIANDO A CONCATENAÇÂO\n");
-    ARVOREB * pai = ler_no(files.file_indices, pos_pai);
-    ARVOREB * no_a_remover = ler_no(files.file_indices, pos_remocao);
+    ARVOREB * pai = lerNo(files.fileIndices, pos_pai);
+    ARVOREB * no_a_remover = lerNo(files.fileIndices, pos_remocao);
     ARVOREB *esq = (ARVOREB *) malloc(sizeof(ARVOREB));
     ARVOREB *dir = (ARVOREB *) malloc(sizeof(ARVOREB));
     imprimir_no(pai);
@@ -505,13 +505,13 @@ void concatenar(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remo
 
     if(pegar_dir == -1){
         printf("\n---> Não tem direita, então faz concatenação com a esquerda\n");
-        esq = ler_no(files.file_indices, pegar_esq);
+        esq = lerNo(files.fileIndices, pegar_esq);
         concatenar_esquerda(files, pai, esq, no_a_remover, pos_filho_remocao);
-        escreve_no(files.file_indices, pai, pos_pai);
-        escreve_no(files.file_indices, esq, pegar_esq);
+        escreveNo(files.fileIndices, pai, pos_pai);
+        escreveNo(files.fileIndices, esq, pegar_esq);
     } else {
         printf("\n---> Tem ou nao tem esq, então faz concatenação com a direita\n");
-        dir = ler_no(files.file_indices, pegar_dir);
+        dir = lerNo(files.fileIndices, pegar_dir);
         printf("\n---> esse é o filho da dir!\n");
         imprimir_no(dir);
         printf("\n---> esse é o no pai!\n");
@@ -519,8 +519,8 @@ void concatenar(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remo
         printf("\n---> esse é o no a remover!\n");
         imprimir_no(no_a_remover);
         concatenar_direita(files, pai, dir, no_a_remover, pos_filho_remocao);
-        escreve_no(files.file_indices, pai, pos_pai);
-        escreve_no(files.file_indices, no_a_remover, pos_remocao);
+        escreveNo(files.fileIndices, pai, pos_pai);
+        escreveNo(files.fileIndices, no_a_remover, pos_remocao);
     }
 
     free(pai);
@@ -530,7 +530,7 @@ void concatenar(ARQUIVOS files, int pos_pai, int pos_remocao, int pos_filho_remo
 }
 
 void verificar_redistribuicao_ou_concatenacao(ARQUIVOS files, int pos_raiz, ARVOREB * no_a_remover, int pos_pai, int pos_filho_remocao, int pos_remocao, int codigo) {
-    CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES *cab_indices = lerCabecalhoIndices(files.fileIndices);
     // Busca o pai para poder veirificar os filhos irmão e verificar se podem emprestar
     printf("\n  ----> POS PAI: %d\n", pos_pai);
 
@@ -551,8 +551,8 @@ void verificar_redistribuicao_ou_concatenacao(ARQUIVOS files, int pos_raiz, ARVO
             // Aqui será inserido a lógica da concatenação
             buscar_filhos_esq_dir(files, pos_pai, pos_filho_remocao, &pegar_esq, &pegar_dir);
             printf("\n--> FILHOS a esq e dir\n");
-            ARVOREB * esq = ler_no(files.file_indices, pegar_esq);
-            ARVOREB * dir  = ler_no(files.file_indices, pegar_dir);
+            ARVOREB * esq = lerNo(files.fileIndices, pegar_esq);
+            ARVOREB * dir  = lerNo(files.fileIndices, pegar_dir);
             imprimir_no(esq);
             imprimir_no(dir);
             concatenar(files, pos_pai, pos_remocao, pos_filho_remocao, pegar_esq, pegar_dir);
@@ -564,8 +564,8 @@ void verificar_redistribuicao_ou_concatenacao(ARQUIVOS files, int pos_raiz, ARVO
 
 
 void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
-    ARVOREB * pai_atual = ler_no(files.file_indices, pos_pai);
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    ARVOREB * pai_atual = lerNo(files.fileIndices, pos_pai);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
 
     int pos_filho_pai;
     int pos_pai_do_pai;
@@ -576,7 +576,7 @@ void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
         pos_pai_do_pai = buscar_pai(files, pos_raiz, pai_atual->chave[0], &pos_filho_pai);
 
         verificar_redistribuicao_ou_concatenacao(files, pos_raiz, pai_atual, pos_pai_do_pai, pos_filho_pai, pos_pai, pai_atual->chave[0]);
-        pai_atual = ler_no(files.file_indices, pos_pai_do_pai);
+        pai_atual = lerNo(files.fileIndices, pos_pai_do_pai);
 
         if(pai_atual->num_chaves == 0){
 //            // Então mudar a raiz;
@@ -604,8 +604,8 @@ void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
         pos_nova_raiz = pai_atual->filho[0];
         no_livre = pai_atual->filho[1];
 
-        cab_indices->pos_raiz = pos_nova_raiz;
-        escreve_cabecalho_indices(files.file_indices, cab_indices);
+        cab_indices->posRaiz = pos_nova_raiz;
+        escreverCabecalhoIndices(files.fileIndices, cab_indices);
         atualizar_pos_livres_indices(files, pos_pai_do_pai);
         atualizar_pos_livres_indices(files, no_livre);
     }
@@ -625,8 +625,8 @@ int equal(ARVOREB * raiz, ARVOREB * no_a_remover){
 }
 
 int eh_raiz(ARQUIVOS files, ARVOREB * no_a_remover){
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-    ARVOREB * raiz = ler_no(files.file_indices, cab_indices->pos_raiz);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
+    ARVOREB * raiz = lerNo(files.fileIndices, cab_indices->posRaiz);
     if(equal(raiz, no_a_remover)){
         return 1;
     }
@@ -636,10 +636,10 @@ int eh_raiz(ARQUIVOS files, ARVOREB * no_a_remover){
 }
 
 void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_INDICES * cab_indices = lerCabecalhoIndices(files.fileIndices);
 
     // Buscar o nó que possui a chave a ser removida a ser removido
-    ARVOREB * no_a_remover = ler_no(files.file_indices, pos_remocao);
+    ARVOREB * no_a_remover = lerNo(files.fileIndices, pos_remocao);
 
     // 1° CASO: a remoção é feita em um nó folha com número de chaves maior que o mínimo (ORDEM/2)
     if( mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover) ){
@@ -652,17 +652,17 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         // Além disso, a função deve retornar a posição do nó chave sucessora, pois esse nó deve ser tratado após remoção
         printf("\n--->Entrou aqui 2\n");
         int pos_no_sucessor = remover_caso2(files, no_a_remover, codigo, pos_remocao);
-        ARVOREB * no_sucessor = ler_no(files.file_indices, pos_no_sucessor);
+        ARVOREB * no_sucessor = lerNo(files.fileIndices, pos_no_sucessor);
         int pos_filho_remocao;
         printf("\n---> CODIGO para procurar pai após remocao caso 2: %d\n", no_sucessor->chave[0]);
-        int pos_pai = buscar_pai(files, cab_indices->pos_raiz, no_sucessor->chave[0], &pos_filho_remocao);
+        int pos_pai = buscar_pai(files, cab_indices->posRaiz, no_sucessor->chave[0], &pos_filho_remocao);
 
         if(no_sucessor->num_chaves < MIN) {
             verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_sucessor, pos_pai, pos_filho_remocao,
                                                      pos_no_sucessor, no_sucessor->chave[0]);
-            remover_caso4(files, cab_indices->pos_raiz, pos_pai);
+            remover_caso4(files, cab_indices->posRaiz, pos_pai);
         }
-        imprimir_cabecalho_indices(cab_indices);
+        imprimirCabecalhoIndices(cab_indices);
 
     } else if ( !mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover) ){
         // CASO 3°: a remoção é feita em um nó com numero minimo de chaves
@@ -671,22 +671,22 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         printf("\n--->Entrou aqui CASO 3\n");
         // Busca o pai para poder veirificar os filhos irmão e verificar se podem emprestar
         int pos_filho_remocao;
-        int pos_pai = buscar_pai(files, cab_indices->pos_raiz, codigo, &pos_filho_remocao);
+        int pos_pai = buscar_pai(files, cab_indices->posRaiz, codigo, &pos_filho_remocao);
         printf("\n  ----> POS PAI: %d\n", pos_pai);
         printf("\n  ----> POS filho remocao: %d\n", pos_filho_remocao);
 
         remover_caso1(files, no_a_remover, codigo, pos_remocao);
 
         if(eh_raiz(files, no_a_remover) && no_a_remover->num_chaves == 0){ // Logo, a raiz ficou vazia
-            cab_indices->pos_raiz = -1;
-            cab_indices->pos_livre = -1;
-            escreve_cabecalho_indices(files.file_indices, cab_indices);
+            cab_indices->posRaiz = -1;
+            cab_indices->posLivre = -1;
+            escreverCabecalhoIndices(files.fileIndices, cab_indices);
             return;
         }
         verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_a_remover, pos_pai, pos_filho_remocao, pos_remocao, codigo);
         printf("\n---> Chamando caso 4!\n");
-        remover_caso4(files, cab_indices->pos_raiz, pos_pai);
-        imprimir_cabecalho_indices(cab_indices);
+        remover_caso4(files, cab_indices->posRaiz, pos_pai);
+        imprimirCabecalhoIndices(cab_indices);
     }
 
     printf("\n---> Remocao realizada com sucesso!\n");
