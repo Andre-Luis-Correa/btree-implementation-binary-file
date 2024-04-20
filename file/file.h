@@ -21,5 +21,9 @@ void verificar_arquivos(ARQUIVOS * files);
 //Pós-condição: arquivos fechados
 void fechar_arquivos(ARQUIVOS * files);
 
+int is_vazio(ARQUIVOS files, int getFileIndices);
+
+int tem_pos_livre(ARQUIVOS files, int getFileIndices);
+
 
 #endif //FILE_H

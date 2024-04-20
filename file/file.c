@@ -27,7 +27,7 @@ void verificar_arquivos(ARQUIVOS * files){
 //Fecha os aqrquivos
 //Pré-condição: nenhuma
 //Pós-condição: arquivos fechados
-void fecharArquivos(ARQUIVOS * files){
+void fechar_arquivos(ARQUIVOS * files){
     fclose(files->file_indices);
     printf("\nFECHANDO ARQUIVO DE INDICES...");
     fclose(files->file_dados);
@@ -37,7 +37,7 @@ void fecharArquivos(ARQUIVOS * files){
 //Verifica se um arquivo está vazio ou não, isto é: se contem registros ou não
 //Pré-condição: nenhuma
 //Pós-condição: retorna 1 se há registros e 0 caso não
-int isVazio(ARQUIVOS files, int getFileIndices){
+int is_vazio(ARQUIVOS files, int getFileIndices){
 
     if( getFileIndices ){
         CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
@@ -53,7 +53,7 @@ int isVazio(ARQUIVOS files, int getFileIndices){
     return pos_topo == 0;
 }
 
-int temPosLivre(ARQUIVOS files, int getFileIndices){
+int tem_pos_livre(ARQUIVOS files, int getFileIndices){
     int pos_livre;
 
     if( getFileIndices ){
