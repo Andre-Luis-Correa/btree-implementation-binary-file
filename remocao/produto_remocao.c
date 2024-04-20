@@ -599,24 +599,24 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         // Além disso, a função deve retornar a posição do nó chave sucessora, pois esse nó deve ser tratado após remoção
         printf("\n--->Entrou aqui 2\n");
         int pos_no_sucessor = remover_caso2(files, no_a_remover, codigo, pos_remocao);
-        ARVOREB * no_sucessor = ler_no(files.file_indices, pos_no_sucessor);
-        int pos_filho_remocao;
-
-        int pos_pai;
-        printf("\n---> CODIGO para procurar pai apos remocao caso 2: %d\n", no_sucessor->chave[0]);
-        if(no_sucessor->num_chaves != 0)
-            pos_pai = buscar_pai(files, pos_remocao, no_sucessor->chave[0], &pos_filho_remocao);
-        else{
-            pos_pai = pos_remocao;
-            pos_filho_remocao = pos_no_sucessor;
-        }
-
-        if(no_sucessor->num_chaves < MIN) {
-            verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_sucessor, pos_pai, pos_filho_remocao,
-                                                     pos_no_sucessor, no_sucessor->chave[0]);
-            remover_caso4(files, cab_indices->pos_raiz, pos_pai);
-        }
-        imprimir_cabecalho_indices(cab_indices);
+//        ARVOREB * no_sucessor = ler_no(files.file_indices, pos_no_sucessor);
+//        int pos_filho_remocao;
+//
+//        int pos_pai;
+//        printf("\n---> CODIGO para procurar pai apos remocao caso 2: %d\n", no_sucessor->chave[0]);
+//        if(no_sucessor->num_chaves != 0)
+//            pos_pai = buscar_pai(files, pos_remocao, no_sucessor->chave[0], &pos_filho_remocao);
+//        else{
+//            pos_pai = pos_remocao;
+//            pos_filho_remocao = pos_no_sucessor;
+//        }
+//
+//        if(no_sucessor->num_chaves < MIN) {
+//            verificar_redistribuicao_ou_concatenacao(files, pos_raiz, no_sucessor, pos_pai, pos_filho_remocao,
+//                                                     pos_no_sucessor, no_sucessor->chave[0]);
+//            remover_caso4(files, cab_indices->pos_raiz, pos_pai);
+//        }
+//        imprimir_cabecalho_indices(cab_indices);
 
     } else if ( !mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover) ){
         // CASO 3°: a remoção é feita em um nó com numero minimo de chaves
