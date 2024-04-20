@@ -185,7 +185,7 @@ void cadastrar_produto_file(ARQUIVOS files, PRODUTO_DATA * produto){
 
         // Chama a função auxiliar de inserção
         // Os parâmetros são: Os arquivos (AMBOS), código do produto, ponteiro de dado do produto, posição da raiz
-        cadastrar_aux (files, raiz, produto->codigo, pt_dados_atual, cab_indices->pos_raiz);
+        cadastrar_aux (files, raiz, produto->codigo, pt_dados_atual, cab_indices->pos_raiz, cab_indices);
 
         // Lê o cabeçalho atual do arquivo de índices
         CABECALHO_INDICES * cab_indices_atual = le_cabecalho_indices(files.file_indices);
@@ -286,10 +286,9 @@ void adiciona_direita (ARVOREB * r, int pos, int codigo, int pt_dados, int p){
 }
 
 // Os parâmetros são: Os arquivos (AMBOS), código do produto, ponteiro de dado do produto, posição da raiz (Na 1° chamada)
-void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int pos_atual){
+void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int pos_atual, CABECALHO_INDICES * cab_indices){
     // Variável para armazenar a posiçao na qual uma determinada chave deveria entrar
     int pos;
-    CABECALHO_INDICES  *  cab_indices = le_cabecalho_indices(files.file_indices);
 
     if(!busca_pos(r, codigo, &pos)){
 
@@ -310,7 +309,7 @@ void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int po
         } else{
             // O trecho de código abaixo é responsável por fazer a inserção a partir de um nó interno
             ARVOREB * filho = ler_no(files.file_indices, r->filho[pos]);
-            cadastrar_aux(files, filho, codigo, pt_dados, r->filho[pos]);
+            cadastrar_aux(files, filho, codigo, pt_dados, r->filho[pos], cab_indices);
 
             if( overflow(filho) ){
 

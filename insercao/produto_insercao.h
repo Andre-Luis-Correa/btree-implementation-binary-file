@@ -27,7 +27,7 @@ int split(ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio, CABE
 void cadastrar_produto_file(ARQUIVOS files, PRODUTO_DATA * produto);
 int busca_pos(ARVOREB * r, int codigo, int * pos);
 void adiciona_direita(ARVOREB * r, int pos, int codigo, int pt_dados, int p);
-void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int pos_atual);
+void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int pos_atual, CABECALHO_INDICES * cab_indices);
 
 
 #endif //PRODUTO_INSERCAO_H
