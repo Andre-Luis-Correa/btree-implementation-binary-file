@@ -22,11 +22,6 @@ void imprimir_cabecalho_indices(CABECALHO_INDICES * cab);
 // Pós-condição: O arquivo é inicializado com uma árvore vazia
 void cria_arvore_vazia_indices(FILE * arq);
 
-// Função para verificar se a árvore está vazia
-// Pré-condição: O ponteiro para o cabeçalho deve ser válido
-// Pós-condição: Retorna 1 se a árvore está vazia, 0 caso contrário
-int is_vazia_arvore_indices(CABECALHO_INDICES * cab);
-
 // Função para ler o cabeçalho do arquivo contendo as informações da árvore
 // Pré-condição: O arquivo deve estar aberto e ser um arquivo de lista
 // Pós-condição: Retorna o ponteiro para o cabeçalho lido

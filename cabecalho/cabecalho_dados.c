@@ -17,13 +17,6 @@ void cria_arvore_vazia_dados(FILE * arq){
     free(cab);
 }
 
-// Função para verificar se a árvore está vazia
-// Pré-condição: O ponteiro para o cabeçalho deve ser válido
-// Pós-condição: Retorna 1 se a árvore está vazia, 0 caso contrário
-int is_vazia_arvore_dados(CABECALHO_DADOS * cab){
-    return (cab->pos_topo == 0);
-}
-
 // Função para ler o cabeçalho do arquivo contendo as informações da árvore
 // Pré-condição: O arquivo deve estar aberto e ser um arquivo de lista
 // Pós-condição: Retorna o ponteiro para o cabeçalho lido
@@ -40,4 +33,8 @@ CABECALHO_DADOS * le_cabecalho_dados(FILE * arq) {
 void escreve_cabecalho_dados(FILE* arq, CABECALHO_DADOS * cab){
     fseek(arq, 0, SEEK_SET); // Posiciona no início do arquivo
     fwrite(cab, sizeof(CABECALHO_DADOS), 1, arq);
+}
+
+void imprimir_cabecalho_dados(CABECALHO_DADOS * cab){
+    printf("\nCABECALHO DE DADOS: topo: %d livre: %d\n", cab->pos_topo, cab->pos_livre);
 }

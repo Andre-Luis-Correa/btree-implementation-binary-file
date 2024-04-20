@@ -228,15 +228,15 @@ void imprimir_por_niveis(ARQUIVOS files, ARVOREB* r)
         while (!vaziaFila(f))
         {
             ARVOREB* aux = NULL;
-            enfileiraFilhos(files.file_indices,r, f);
-            atual = buscaNivel(files.file_indices,r, f->inicio->info, 0);
+            enfileiraFilhos(files.file_indices, r, f);
+            atual = buscaNivel(files.file_indices, r, f->inicio->info, 0);
             if (atual != ant)
             {
                 printf("\n");
                 ant = atual;
             }
             int p = 0;
-            aux = busca(files.file_indices,r, f->inicio->info,&p);
+            aux = busca(files.file_indices, r, f->inicio->info, &p);
             int j;
             printf("[");
             for (j = 0; j < aux->num_chaves; j++)

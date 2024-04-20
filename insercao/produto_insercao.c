@@ -48,34 +48,6 @@ void imprimir_produto(PRODUTO_DATA * produto) {
     printf("Preco: R$ %.2f\n", produto->preco);
 }
 
-// Função para ler um nó do arquivo de índices da árvore B de produtos
-ARVOREB * ler_no (FILE * file_indices, int pos){
-    ARVOREB * no = (ARVOREB*) malloc(sizeof (ARVOREB));
-    fseek (file_indices, sizeof (CABECALHO_INDICES) + pos * sizeof (ARVOREB), SEEK_SET);
-    fread (no, sizeof (ARVOREB), 1, file_indices);
-    return no;
-}
-
-// Função para escrever um nó no arquivo de índices
-void escreve_no (FILE * file_indices, ARVOREB * no, int pos){
-    fseek (file_indices, sizeof (CABECALHO_INDICES) + pos * sizeof (ARVOREB), SEEK_SET);
-    fwrite (no, sizeof (ARVOREB), 1, file_indices);
-}
-
-// Função para ler um registro de dados de um produto no arquivo de dados
-DADOS_REGISTRO * ler_registro(FILE * file_dados, int pos){
-    DADOS_REGISTRO * registro = (DADOS_REGISTRO*) malloc(sizeof (DADOS_REGISTRO));
-    fseek (file_dados, sizeof (CABECALHO_DADOS) + pos * sizeof (DADOS_REGISTRO), SEEK_SET);
-    fread (registro, sizeof (DADOS_REGISTRO), 1, file_dados);
-    return registro;
-}
-
-// Função para escrever um nó no arquivo de índices
-void escreve_registro (FILE * file_dados, DADOS_REGISTRO * registro, int pos){
-    fseek (file_dados, sizeof (CABECALHO_DADOS ) + pos * sizeof (DADOS_REGISTRO), SEEK_SET);
-    fwrite (registro, sizeof (DADOS_REGISTRO), 1, file_dados);
-}
-
 // Função para verificar se já existe um determinado código na árvore e retorna a posição do mesmo
 int buscar_no(FILE * file_indices, int codigo, int pos){
     //faz a busca no metodo árvore binaria de busca

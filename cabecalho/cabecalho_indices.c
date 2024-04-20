@@ -42,3 +42,7 @@ void escreve_cabecalho_indices(FILE* arq, CABECALHO_INDICES* cab){
     fseek(arq, 0, SEEK_SET); // Posiciona no início do arquivo
     fwrite(cab, sizeof(CABECALHO_INDICES), 1, arq);
 }
+
+void imprimir_cabecalho_indices(CABECALHO_INDICES * cab){
+    printf("\nCABECALHO DE INDICES: raiz: %d topo: %d livre: %d\n", cab->pos_raiz, cab->pos_topo, cab->pos_livre);
+}
