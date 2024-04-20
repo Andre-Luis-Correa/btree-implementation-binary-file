@@ -5,34 +5,23 @@
 #ifndef FILE_H
 #define FILE_H
 
+#include "../cabecalho/cabecalho_dados.h"
+#include "../cabecalho/cabecalho_indices.h"
+#include "../produto/produto.h"
+
 // Definição da estrutura ARQUIVOS
 typedef struct {
     FILE * file_indices;        // Ponteiro para o arquivo de cursos
     FILE * file_dados;   // Ponteiro para o arquivo de disciplinas
 } ARQUIVOS;
 
-//Verificar se os arquivos binários já existem ou não
-//Pré-condição: nenhuma
-//Pós-condição: se aqrquivos existirem, então são abertos para leitura e escrita. Caso contrário, são criados e inicializados com uma lista vazia
 void verificar_arquivos(ARQUIVOS * files);
-
-//Fecha os aqrquivos
-//Pré-condição: nenhuma
-//Pós-condição: arquivos fechados
 void fechar_arquivos(ARQUIVOS * files);
-
-//Verifica se um arquivo está vazio ou não, isto é: se contem registros ou não
-//Pré-condição: nenhuma
-//Pós-condição: retorna 1 se há registros e 0 caso não
-int is_vazio_file_indices(FILE * file);
-
-//Verifica se um arquivo está vazio ou não, isto é: se contem registros ou não
-//Pré-condição: nenhuma
-//Pós-condição: retorna 1 se há registros e 0 caso não
-int is_vazio_file_dados(FILE * file);
-
-int tem_pos_livre_file_indices(FILE * file);
-
-int tem_pos_livre_file_dados(FILE * file);
+int is_vazio(ARQUIVOS files, int get_file_indices);
+int tem_indices_livres(ARQUIVOS files, int get_file_indices);
+ARVOREB * ler_no(FILE * file_indices, int pos);
+void escreve_no(FILE * file_indices, ARVOREB * no, int pos);
+DADOS_REGISTRO * ler_registro(FILE * file_dados, int pos);
+void escreve_registro(FILE * file_dados, DADOS_REGISTRO * registro, int pos);
 
 #endif //FILE_H

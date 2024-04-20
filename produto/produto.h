@@ -1,7 +1,7 @@
 #ifndef PRODUTO_H
 #define PRODUTO_H
 
-#define ORDEM 5
+#define ORDEM 3
 #define MAX_NOME 50
 #define MAX_MARCA 30
 #define MAX_CATEGORIA 50

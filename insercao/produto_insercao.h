@@ -12,7 +12,6 @@
 PRODUTO_DATA * ler_produto();
 int overflow (ARVOREB * r);
 int eh_folha(ARVOREB * r);
-void imprimir_produto(PRODUTO_DATA * produto);
 ARVOREB * ler_no(FILE * file_indices, int pos);
 void escreve_no(FILE * file_indices, ARVOREB * no, int pos);
 DADOS_REGISTRO * ler_registro(FILE * file_dados, int pos);
@@ -24,10 +23,10 @@ void cadastrar_produto(ARQUIVOS files);
 void cadastrar_produto_files(ARQUIVOS files, PRODUTO_DATA * produto);
 void cria_no(ARVOREB * r, int codigo, int pos_dados);
 void cria_registro(DADOS_REGISTRO * dados, PRODUTO_DATA * produto);
-int split(ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio, CABECALHO_INDICES * cab_indices);
+int split(ARQUIVOS files, ARVOREB * x, int pos_x, int * meio, int * pos_meio, CABECALHO_INDICES * cab_indices);
 void cadastrar_produto_sem_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, int pos);
 int busca_pos(ARVOREB * r, int codigo, int * pos);
-void adiciona_direita(ARVOREB * r, int pos, int codigo, int pt_dados, int p);
+void adiciona_direita(ARQUIVOS files, ARVOREB * r, int pos, int codigo, int pt_dados, int p);
 void cadastrar_aux(ARQUIVOS files, ARVOREB * r, int codigo, int pt_dados, int pos_atual);
 void cadastrar_produto_com_nos_livres(ARQUIVOS files, PRODUTO_DATA * produto, int pos);
 
