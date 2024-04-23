@@ -231,6 +231,8 @@ void adjustNode(struct BTreeNode *myNode, int pos) {
 int delValFromNode(int item, struct BTreeNode *myNode) {
     int pos, flag = 0;
     if (myNode) {
+
+        // 1° if
         if (item < myNode->item[1]) {
             pos = 0;
             flag = 0;
@@ -243,6 +245,8 @@ int delValFromNode(int item, struct BTreeNode *myNode) {
                 flag = 0;
             }
         }
+
+        // 2° if
         if (flag) {
             if (myNode->linker[pos - 1]) {
                 copySuccessor(myNode, pos);

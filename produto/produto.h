@@ -5,6 +5,7 @@
 #define MAX_NOME 50
 #define MAX_MARCA 30
 #define MAX_CATEGORIA 50
+#define MIN (ORDEM/2 + ORDEM%2 - 1)
 
 #include "../file/file.h"
 
