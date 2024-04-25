@@ -11,6 +11,11 @@
 
 void remover_produto(ARQUIVOS files);
 void remover_produto_file(ARQUIVOS files, int codigo);
+void left_shift(ARQUIVOS files, ARVOREB * no, int pos_no, int pos);
+void right_shift(ARQUIVOS files, ARVOREB * no, int pos_no, int pos);
+void concatenar_nos(ARQUIVOS files, ARVOREB * no, int pos_no, int pos);
+void ajustar_no(ARQUIVOS files, ARVOREB * no, int pos_no, int pos);
+void remover_valor(ARQUIVOS files, ARVOREB * no, int pos_no, int pos);
 void copiar_sucessor(ARQUIVOS files, ARVOREB * no, int pos_raiz, int pos);
 int remover_codigo_da_arvore(ARQUIVOS files, int codigo, ARVOREB * raiz, int pos_raiz);
 //int mais_chaves_que_min(ARVOREB * r);

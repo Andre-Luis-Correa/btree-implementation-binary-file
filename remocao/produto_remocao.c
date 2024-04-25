@@ -650,8 +650,6 @@
 //    free(cab_indices);
 //}
 
-void copiar_sucessor(ARVOREB *r, int pos);
-
 void remover_produto(ARQUIVOS files){
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
     int codigo, pos_codigo;
@@ -685,7 +683,7 @@ int remover_codigo_da_arvore(ARQUIVOS files, int codigo, ARVOREB * raiz, int pos
     int pos, flag;
 
     // 1° : tenta encontrar a chave no nó atual (raiz atual)
-    if( vazio(raiz) ){
+    if( !vazio(raiz) ){
         if(codigo < raiz->chave[1]){
             pos = 0;
             flag = 0;
@@ -703,7 +701,7 @@ int remover_codigo_da_arvore(ARQUIVOS files, int codigo, ARVOREB * raiz, int pos
 
     ARVOREB * filho_pos = ler_no(files.file_indices, raiz->filho[pos]);
 
-    if(flag){
+    if( flag ){
         ARVOREB * filho = ler_no(files.file_indices, raiz->filho[pos-1]);
 
         if( !vazio(filho) ){
@@ -716,7 +714,7 @@ int remover_codigo_da_arvore(ARQUIVOS files, int codigo, ARVOREB * raiz, int pos
             }
         } else {
             free(filho);
-            remover_valor();
+            remover_valor(files, raiz, pos_raiz, pos);
         }
     } else {
         flag = remover_codigo_da_arvore(files, codigo, filho_pos, raiz->filho[pos]);
@@ -724,13 +722,164 @@ int remover_codigo_da_arvore(ARQUIVOS files, int codigo, ARVOREB * raiz, int pos
 
     if( !vazio(filho_pos) ){
         if(filho_pos->num_chaves < MIN){
-            ajustar_no();
+            ajustar_no(files, raiz, pos_raiz, pos);
         }
     }
     escreve_no(files.file_indices, filho_pos, raiz->filho[pos]);
 
     free(filho_pos);
     return flag;
+}
+
+void ajustar_no(ARQUIVOS files, ARVOREB * no, int pos_no, int pos){
+
+    if ( !pos ) {
+        ARVOREB * filho1 = ler_no(files.file_indices, no->filho[1]);
+
+        if (filho1->num_chaves > MIN) {
+            left_shift(files, no, pos_no, 1);
+        } else {
+            concatenar_nos(files, no, pos_no, 1);
+        }
+
+        free(filho1);
+
+    } else {
+        ARVOREB * filho_antecessor = ler_no(files.file_indices, no->filho[pos-1]);
+        ARVOREB * filho_sucessor = ler_no(files.file_indices, no->filho[pos+1]);
+
+        if ( no->num_chaves != pos ) {
+            if ( filho_antecessor->num_chaves > MIN ){
+                right_shift(files, no, pos_no, pos);
+            } else {
+                if( filho_sucessor->num_chaves > MIN ) {
+                    left_shift(files, no, pos_no, pos + 1);
+                } else {
+                    concatenar_nos(files, no, pos_no, pos);
+                }
+            }
+        } else {
+            if (filho_antecessor->num_chaves > MIN)
+                right_shift(files, no, pos_no, pos);
+            else
+                concatenar_nos(files, no, pos_no, pos);
+        }
+
+        free(filho_antecessor);
+        free(filho_sucessor);
+    }
+}
+
+void left_shift(ARQUIVOS files, ARVOREB * no, int pos_no, int pos){
+    int j = 1;
+    ARVOREB * x = ler_no(files.file_indices, no->filho[pos-1]);
+    ARVOREB * aux = ler_no(files.file_indices, no->filho[pos]);
+
+    x->num_chaves++;
+    x->chave[x->num_chaves] = no->chave[pos];
+    x->pt_dados[x->num_chaves] = no->pt_dados[pos];
+    x->filho[x->num_chaves] = aux->filho[0];
+
+    x = aux;
+    no->chave[pos] = x->chave[1];
+    no->pt_dados[pos] = x->pt_dados[1];
+    x->filho[0] = x->filho[1];
+    x->num_chaves--;
+
+    while( j <= x->num_chaves ){
+        x->chave[j] = x->chave[j + 1];
+        x->pt_dados[j] = x->pt_dados[j + 1];
+        x->filho[j] = x->filho[j + 1];
+        j++;
+    }
+
+    escreve_no(files.file_indices, x, no->filho[pos-1]);
+    escreve_no(files.file_indices, no, pos_no);
+
+    free(x);
+    free(aux);
+}
+
+void right_shift(ARQUIVOS files, ARVOREB * no, int pos_no, int pos){
+    ARVOREB * x = ler_no(files.file_indices, no->filho[pos]);
+    ARVOREB * aux = ler_no(files.file_indices, no->filho[pos-1]);
+    int j = x->num_chaves;
+
+    while (j > 0) {
+        x->chave[j + 1] = x->chave[j];
+        x->pt_dados[j + 1] = x->pt_dados[j];
+        x->filho[j + 1] = x->filho[j];
+        j--;
+    }
+
+    x->chave[1] = no->chave[pos];
+    x->pt_dados[1] = no->pt_dados[pos];
+    x->filho[1] = x->filho[0];
+    x->num_chaves++;
+
+    x = aux;
+
+    no->chave[pos] = x->chave[x->num_chaves];
+    no->pt_dados[pos] = x->pt_dados[x->num_chaves];
+    no->filho[pos] = x->filho[x->num_chaves];
+    x->num_chaves--;
+
+    escreve_no(files.file_indices, x, no->filho[pos]);
+    escreve_no(files.file_indices, no, pos_no);
+
+    free(x);
+    free(aux);
+}
+
+void concatenar_nos(ARQUIVOS files, ARVOREB * no, int pos_no, int pos) {
+    int j = 1;
+    ARVOREB *x1 = ler_no(files.file_indices, no->filho[pos]), *x2 = ler_no(files.file_indices, no->filho[pos] - 1);
+
+    x2->num_chaves++;
+    x2->chave[x2->num_chaves] = no->chave[pos];
+    x2->pt_dados[x2->num_chaves] = no->pt_dados[pos];
+    x2->filho[x2->num_chaves] = no->filho[0];
+
+    while (j <= x1->num_chaves) {
+        x2->num_chaves++;
+        x2->chave[x2->num_chaves] = x1->chave[j];
+        x2->pt_dados[x2->num_chaves] = x1->pt_dados[j];
+        x2->filho[x2->num_chaves] = x1->filho[j];
+        j++;
+    }
+
+    j = pos;
+
+    while (j < no->num_chaves) {
+        no->chave[j] = no->chave[j + 1];
+        no->pt_dados[j] = no->pt_dados[j + 1];
+        no->filho[j] = no->filho[j + 1];
+        j++;
+    }
+
+    no->num_chaves--;
+
+    escreve_no(files.file_indices, x1, no->filho[pos]);
+    escreve_no(files.file_indices, x2, no->filho[pos] - 1);
+    escreve_no(files.file_indices, no, pos_no);
+
+    free(x1);
+    free(x2);
+}
+
+void remover_valor(ARQUIVOS files, ARVOREB * no, int pos_no, int pos){
+    int i = pos + 1;
+
+    while (i <= no->num_chaves){
+        no->chave[i-1] = no->chave[i];
+        no->pt_dados[i-1] = no->pt_dados[i];
+        no->filho[i-1] = no->filho[i];
+        i++;
+    }
+
+    no->num_chaves--;
+
+    escreve_no(files.file_indices, no, pos_no);
 }
 
 void copiar_sucessor(ARQUIVOS files, ARVOREB * no, int pos_no, int pos) {
@@ -744,7 +893,7 @@ void copiar_sucessor(ARQUIVOS files, ARVOREB * no, int pos_no, int pos) {
     }
 
     no->chave[pos] = aux->chave[1];
-    escreve_no(files.file_indices, aux, pos_no);
+    escreve_no(files.file_indices, no, pos_no);
     free(aux);
 }
 
