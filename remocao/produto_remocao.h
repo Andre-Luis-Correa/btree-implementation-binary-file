@@ -40,6 +40,7 @@
 void remover_produto(ARQUIVOS files);
 ARVOREB * encontrar_irmao_esq(FILE * file_indices, ARVOREB * filho);
 ARVOREB * encontrar_irmao_dir(FILE* file_indices, ARVOREB * filho);
+int pode_emprestar(ARVOREB * r);
 int is_emprestimo(FILE* file_indices, ARVOREB * r);
 void balancear(FILE * file_indices, ARVOREB * r);
 ARVOREB * remover(ARQUIVOS files, ARVOREB * r, int codigo);
