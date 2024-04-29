@@ -332,7 +332,418 @@ int main() {
 
     traversal(root);
 
-    delete (20, root);
+    delete (23, root);
     printf("\n");
     traversal(root);
 }
+
+
+////////////////////
+//
+//void remover_produto(ARQUIVOS files){
+//    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+//    int codigo, pos_codigo;
+//
+//    printf ("\n---> Insira o codigo a ser removido: ");
+//    scanf ("%d", &codigo);
+//
+//    pos_codigo = buscar_no(files.file_indices, codigo, cab_indices->pos_raiz);
+//
+//    if(cab_indices->pos_raiz == -1){
+//        printf("\n---> A arvore encontra-se vazia!\n");
+//        free(cab_indices);
+//        return;
+//    } else if (pos_codigo == -1) {
+//        printf("\n---> Produto nao encontrado na arvore!\n");
+//        free(cab_indices);
+//        return;
+//    }
+//
+//    printf("\n---> Iniciando a remocao da chave %d!\n", codigo);
+//
+//    free(cab_indices);
+//    remover_produto_file(files, codigo);
+//}
+//
+//void remover_produto_file(ARQUIVOS files, int codigo){
+//    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+//    int pos_raiz = cab_indices->pos_raiz;
+//
+//    ARVOREB * raiz = ler_no(files.file_indices, pos_raiz);
+//    imprimir_no(raiz);
+//    remover_codigo_da_arvore(files, codigo, raiz, pos_raiz);
+//
+//    if(raiz->num_chaves == 0){
+//        raiz = ler_no(files.file_indices, raiz->filho[0]);
+//        pos_raiz = raiz->filho[0];
+//        escreve_no(files.file_indices, raiz, pos_raiz);
+//    }
+//
+//    cab_indices->pos_raiz = pos_raiz;
+//    escreve_cabecalho_indices(files.file_indices, cab_indices);
+//    escreve_no(files.file_indices, raiz, pos_raiz);
+//
+//    free(raiz);
+//    free(cab_indices);
+//}
+//
+//int vazio(ARVOREB * r){
+//    return r->num_chaves == 0;
+//}
+//
+//int remover_codigo_da_arvore(ARQUIVOS files, int codigo, ARVOREB * raiz, int pos_raiz){
+//    int pos, flag = 0;
+//
+//    // 1° : tenta encontrar a chave no nó atual (raiz atual)
+//    if( !vazio(raiz) ){
+//        printf("\n---> Arvore nao esta vazia! ");
+//
+//        if(raiz->num_chaves > 1 && codigo < raiz->chave[1]) {
+//            printf("\n---> A chave e menor que a chave[1] ");
+//            pos = 0;
+//            flag = 0;
+//
+//        } else {
+//            printf("\n---> A chave NAO e menor que a chave[1], continua a busca");
+//            for(pos = raiz->num_chaves; (codigo < raiz->chave[pos] && pos > 1); pos--)
+//                ;
+//
+//            if(codigo == raiz->chave[pos]){
+//                flag = 1;
+//            } else {
+//                flag = 0;
+//            }
+//        }
+//
+//        ARVOREB * filho_pos = ler_no(files.file_indices, raiz->filho[pos]);
+//
+//        if( flag ){
+//            ARVOREB * filho = ler_no(files.file_indices, raiz->filho[pos-1]);
+//
+//            if( !vazio(filho) ){
+//                copiar_sucessor(files, raiz, pos_raiz, pos);
+//                free(filho);
+//
+//                flag = remover_codigo_da_arvore(files, raiz->chave[pos], filho_pos, raiz->filho[pos]);
+//                if( flag == 0 ){
+//                    printf("\n---> Elemento nao encontrado na arvore!");
+//                }
+//            } else {
+//                free(filho);
+//                remover_valor(files, raiz, pos_raiz, pos);
+//            }
+//        } else {
+//            flag = remover_codigo_da_arvore(files, codigo, filho_pos, raiz->filho[pos]);
+//        }
+//
+//        if( !vazio(filho_pos) ){
+//            if(filho_pos->num_chaves < MIN){
+//                ajustar_no(files, raiz, pos_raiz, pos);
+//            }
+//        }
+//       // escreve_no(files.file_indices, filho_pos, raiz->filho[pos]);
+//        //escreve_no(files.file_indices, raiz, pos_raiz);
+//
+//        free(filho_pos);
+//    }
+//
+//    return flag;
+//}
+//
+//void ajustar_no(ARQUIVOS files, ARVOREB * no, int pos_no, int pos){
+//
+//    if ( !pos ) {
+//        ARVOREB * filho1 = ler_no(files.file_indices, no->filho[1]);
+//
+//        if (filho1->num_chaves > MIN) {
+//            left_shift(files, no, pos_no, 1);
+//        } else {
+//            concatenar_nos(files, no, pos_no, 1);
+//        }
+//
+//        free(filho1);
+//
+//    } else {
+//        ARVOREB * filho_antecessor = ler_no(files.file_indices, no->filho[pos-1]);
+//        ARVOREB * filho_sucessor = ler_no(files.file_indices, no->filho[pos+1]);
+//
+//        if ( no->num_chaves != pos ) {
+//            if ( filho_antecessor->num_chaves > MIN ){
+//                right_shift(files, no, pos_no, pos);
+//            } else {
+//                if( filho_sucessor->num_chaves > MIN ) {
+//                    left_shift(files, no, pos_no, pos + 1);
+//                } else {
+//                    concatenar_nos(files, no, pos_no, pos);
+//                }
+//            }
+//        } else {
+//            if (filho_antecessor->num_chaves > MIN)
+//                right_shift(files, no, pos_no, pos);
+//            else
+//                concatenar_nos(files, no, pos_no, pos);
+//        }
+//
+//        free(filho_antecessor);
+//        free(filho_sucessor);
+//    }
+//}
+//
+//void left_shift(ARQUIVOS files, ARVOREB * no, int pos_no, int pos){
+//    int j = 1;
+//    ARVOREB * x = ler_no(files.file_indices, no->filho[pos-1]);
+//    ARVOREB * aux = ler_no(files.file_indices, no->filho[pos]);
+//
+//    x->num_chaves++;
+//    x->chave[x->num_chaves] = no->chave[pos];
+//    x->pt_dados[x->num_chaves] = no->pt_dados[pos];
+//    x->filho[x->num_chaves] = aux->filho[0];
+//
+//    x = aux;
+//    no->chave[pos] = x->chave[1];
+//    no->pt_dados[pos] = x->pt_dados[1];
+//    x->filho[0] = x->filho[1];
+//    x->num_chaves--;
+//
+//    while( j <= x->num_chaves ){
+//        x->chave[j] = x->chave[j + 1];
+//        x->pt_dados[j] = x->pt_dados[j + 1];
+//        x->filho[j] = x->filho[j + 1];
+//        j++;
+//    }
+//
+//    escreve_no(files.file_indices, x, no->filho[pos-1]);
+//    escreve_no(files.file_indices, no, pos_no);
+//
+//    free(x);
+//    free(aux);
+//}
+//
+//void right_shift(ARQUIVOS files, ARVOREB * no, int pos_no, int pos){
+//    ARVOREB * x = ler_no(files.file_indices, no->filho[pos]);
+//    ARVOREB * aux = ler_no(files.file_indices, no->filho[pos-1]);
+//    int j = x->num_chaves;
+//
+//    while (j > 0) {
+//        x->chave[j + 1] = x->chave[j];
+//        x->pt_dados[j + 1] = x->pt_dados[j];
+//        x->filho[j + 1] = x->filho[j];
+//        j--;
+//    }
+//
+//    x->chave[1] = no->chave[pos];
+//    x->pt_dados[1] = no->pt_dados[pos];
+//    x->filho[1] = x->filho[0];
+//    x->num_chaves++;
+//
+//    x = aux;
+//
+//    no->chave[pos] = x->chave[x->num_chaves];
+//    no->pt_dados[pos] = x->pt_dados[x->num_chaves];
+//    no->filho[pos] = x->filho[x->num_chaves];
+//    x->num_chaves--;
+//
+//    escreve_no(files.file_indices, x, no->filho[pos]);
+//    escreve_no(files.file_indices, no, pos_no);
+//
+//    free(x);
+//    free(aux);
+//}
+//
+//void concatenar_nos(ARQUIVOS files, ARVOREB * no, int pos_no, int pos) {
+//    int j = 1;
+//    ARVOREB *x1 = ler_no(files.file_indices, no->filho[pos]), *x2 = ler_no(files.file_indices, no->filho[pos] - 1);
+//
+//    x2->num_chaves++;
+//    x2->chave[x2->num_chaves] = no->chave[pos];
+//    x2->pt_dados[x2->num_chaves] = no->pt_dados[pos];
+//    x2->filho[x2->num_chaves] = no->filho[0];
+//
+//    while (j <= x1->num_chaves) {
+//        x2->num_chaves++;
+//        x2->chave[x2->num_chaves] = x1->chave[j];
+//        x2->pt_dados[x2->num_chaves] = x1->pt_dados[j];
+//        x2->filho[x2->num_chaves] = x1->filho[j];
+//        j++;
+//    }
+//
+//    j = pos;
+//
+//    while (j < no->num_chaves) {
+//        no->chave[j] = no->chave[j + 1];
+//        no->pt_dados[j] = no->pt_dados[j + 1];
+//        no->filho[j] = no->filho[j + 1];
+//        j++;
+//    }
+//
+//    no->num_chaves--;
+//
+//    escreve_no(files.file_indices, x1, no->filho[pos]);
+//    escreve_no(files.file_indices, x2, no->filho[pos] - 1);
+//    escreve_no(files.file_indices, no, pos_no);
+//
+//    free(x1);
+//    free(x2);
+//}
+//
+//void remover_valor(ARQUIVOS files, ARVOREB * no, int pos_no, int pos){
+//    int i = pos + 1;
+//
+//    while (i <= no->num_chaves){
+//        no->chave[i-1] = no->chave[i];
+//        no->pt_dados[i-1] = no->pt_dados[i];
+//        no->filho[i-1] = no->filho[i];
+//        i++;
+//    }
+//
+//    no->num_chaves--;
+//
+//    escreve_no(files.file_indices, no, pos_no);
+//}
+//
+//void copiar_sucessor(ARQUIVOS files, ARVOREB * no, int pos_no, int pos) {
+//    ARVOREB * aux = ler_no(files.file_indices, no->filho[pos]);
+//    ARVOREB * temp;
+//
+//    for( ; aux->filho[0] != -1; ){
+//        temp = aux;
+//        aux = ler_no(files.file_indices, aux->filho[0]);
+//        free(temp);
+//    }
+//
+//    no->chave[pos] = aux->chave[1];
+//    escreve_no(files.file_indices, no, pos_no);
+//    free(aux);
+//}
+//
+//
+///////////////////////////// AQUIIII
+////void remover_produto(ARQUIVOS files){
+////    CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
+////    int codigo;
+////
+////    printf ("\n---> Insira o codigo a ser removido: ");
+////    scanf ("%d", &codigo);
+////
+////    int pos_codigo = buscar_no(files.file_indices, codigo, cab_indices->pos_raiz);
+////
+////    if (cab_indices->pos_raiz == -1) {
+////        printf("\n---> A arvore encontra-se vazia!\n");
+////        free(cab_indices);
+////        return;
+////    } else if (pos_codigo == -1) {
+////        printf("\n---> Produto nao encontrado na arvore!\n");
+////        free(cab_indices);
+////        return;
+////    }
+////
+////    printf("\n---> Iniciando a remocao da chave %d!\n", codigo);
+////
+////    remover_produto_file(files, codigo);
+////
+////    free(cab_indices);
+////}
+////
+////int remover_codigo_da_arvore(ARQUIVOS files, int codigo, ARVOREB *raiz, int pos_raiz) {
+////    if (vazio(raiz)) {
+////        printf("\n---> Arvore esta vazia!\n");
+////        return 0;
+////    }
+////
+////    int pos = buscar_chave(raiz, codigo);
+////    if (pos == -1) {
+////        printf("\n---> Produto nao encontrado na arvore!\n");
+////        return 0;
+////    }
+////
+////    printf("\n---> Removendo a chave %d...\n", codigo);
+////    int sucesso = remover_codigo_da_arvore_recursivo(files, codigo, raiz, pos_raiz, pos);
+////    if (sucesso) {
+////        printf("\n---> Chave %d removida com sucesso!\n", codigo);
+////    } else {
+////        printf("\n---> Falha ao remover a chave %d!\n", codigo);
+////    }
+////
+////    return sucesso;
+////}
+////
+////int remover_codigo_da_arvore_recursivo(ARQUIVOS files, int codigo, ARVOREB *no, int pos_no, int pos) {
+////    int sucesso;
+////
+////    if (no->filho[0] == -1) {
+////        // Se o nó for uma folha, remova o valor do nó
+////        remover_valor(files, no, pos_no, pos);
+////        sucesso = 1;
+////    } else {
+////        // Encontre o nó sucessor e copie seu valor para o nó atual
+////        copiar_sucessor(files, no, pos_no, pos);
+////        // Remova a chave duplicada no nó sucessor
+////        sucesso = remover_codigo_da_arvore_recursivo(files, codigo, ler_no(files.file_indices, no->filho[pos + 1]), no->filho[pos + 1], 1);
+////    }
+////
+////    // Verifique se o nó precisa ser ajustado após a remoção
+////    if (!sucesso) {
+////        printf("\n---> Falha ao remover a chave %d!\n", codigo);
+////        return 0;
+////    }
+////
+////    // Verifique se o nó precisa ser ajustado após a remoção
+////    if (no->num_chaves < MIN) {
+////        ajustar_no(files, no, pos_no, pos);
+////    }
+////
+////    return 1;
+////}
+////
+////void ajustar_no(ARQUIVOS files, ARVOREB *no, int pos_no, int pos) {
+////    if (pos == 0) {
+////        // Se a posição for 0, ajuste o nó à esquerda
+////        ARVOREB *filho_direito = ler_no(files.file_indices, no->filho[1]);
+////        if (filho_direito->num_chaves > MIN) {
+////            // Se o filho direito tiver chaves suficientes, faça um deslocamento à esquerda
+////            left_shift(files, no, pos_no, pos + 1);
+////        } else {
+////            // Caso contrário, concatene os nós
+////            concatenar_nos(files, no, pos_no, pos + 1);
+////        }
+////        free(filho_direito);
+////    } else {
+////        // Se a posição não for 0, ajuste o nó à direita
+////        ARVOREB *filho_esquerdo = ler_no(files.file_indices, no->filho[pos - 1]);
+////        if (filho_esquerdo->num_chaves > MIN) {
+////            // Se o filho esquerdo tiver chaves suficientes, faça um deslocamento à direita
+////            right_shift(files, no, pos_no, pos);
+////        } else {
+////            // Caso contrário, verifique se o próximo nó tem chaves suficientes
+////            ARVOREB *proximo_filho = ler_no(files.file_indices, no->filho[pos + 1]);
+////            if (proximo_filho->num_chaves > MIN) {
+////                // Se o próximo filho tiver chaves suficientes, faça um deslocamento à esquerda
+////                left_shift(files, no, pos_no, pos + 1);
+////            } else {
+////                // Caso contrário, concatene os nós
+////                concatenar_nos(files, no, pos_no, pos);
+////            }
+////            free(proximo_filho);
+////        }
+////        free(filho_esquerdo);
+////    }
+////}
+////
+////void concatenar_nos(ARQUIVOS files, ARVOREB *no, int pos_no, int pos) {
+////    // Implementação da concatenação de nós após a remoção
+////}
+////
+////void remover_valor(ARQUIVOS files, ARVOREB *no, int pos_no, int pos) {
+////    // Implementação da remoção de um valor do nó
+////}
+////
+////void copiar_sucessor(ARQUIVOS files, ARVOREB *no, int pos_no, int pos) {
+////    // Implementação da cópia do sucessor antes da remoção
+////}
+////
+////void remover_produto_file(ARQUIVOS files, int codigo) {
+////    // Implementação da remoção do produto no arquivo de índices
+////}
+////
+////
+////

@@ -7,8 +7,6 @@
 #define MAX_CATEGORIA 50
 #define MIN (ORDEM/2 + ORDEM%2 - 1)
 
-#include "../file/file.h"
-
 // Estrutura para nó da árvore B*
 typedef struct indice_node {
     int chave[ORDEM];   // Chaves

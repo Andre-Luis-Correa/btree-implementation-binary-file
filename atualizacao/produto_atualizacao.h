@@ -6,6 +6,7 @@
 #define PRODUTO_ATUALIZACAO_H
 
 #include "../produto/produto.h"
+#include "../file/file.h"
 #include "../cabecalho/cabecalho_indices.h"
 #include "../cabecalho/cabecalho_dados.h"
 

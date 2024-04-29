@@ -6,6 +6,7 @@
 #define PRODUTO_IMPRESSAO_H
 
 #include "../produto/produto.h"
+#include "../file/file.h"
 
 #define TAMANHO_FILA 100 // Ajuste o tamanho conforme necess?rio
 

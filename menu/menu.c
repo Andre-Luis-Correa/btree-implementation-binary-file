@@ -5,6 +5,7 @@
 #include "../impressao/produto_impressao.h"
 #include "../remocao/produto_remocao.h"
 #include "../atualizacao/produto_atualizacao.h"
+#include "../utils/arvore_utils.h"
 
 // Exibe o cabe?alho do menu
 // Pr?-condi??es: Nenhuma
@@ -178,6 +179,23 @@ void imprimir_info_nos(ARQUIVOS files){
     free(cab_indices);
 }
 
+void buscar(ARQUIVOS files){
+    printf("\n----> Operacao: BUscar pai: \n");
+    int codigo;
+
+    printf("\n---> Digite o valor para buscar o no pai: ");
+    scanf("%d", &codigo);
+
+    int pos_pai = buscar_pai(files.file_indices, codigo);
+    printf("\n POS PAI : %d", pos_pai);
+    ARVOREB * pai = ler_no(files.file_indices, pos_pai);
+    if(pai != NULL)
+        imprimir_no(pai);
+    else
+        printf("\n---> Ta nulo!");
+    free(pai);
+}
+
 // Exibe o menu principal e processa a escolha do usu?rio
 // Pr?-condi??es: Nenhuma
 // P?s-condi??o: O usu?rio escolhe uma op??o do menu e a opera??o correspondente ? executada
@@ -222,6 +240,9 @@ void menu_principal(ARQUIVOS files){
                 break;
             case 11:
                 imprimir_info_nos(files);
+                break;
+            case 12:
+                buscar(files);
                 break;
             case 0:
                 printf("---> Saindo do programa. Ate mais!\n");

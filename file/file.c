@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "file.h"
-#include "../produto/produto.h"
 #include "../cabecalho/cabecalho_indices.h"
 #include "../cabecalho/cabecalho_dados.h"
 
@@ -72,6 +71,8 @@ int tem_pos_livre(ARQUIVOS files, int getFileIndices){
 
 // Função para ler um nó do arquivo de índices da árvore B de produtos
 ARVOREB * ler_no (FILE * file_indices, int pos){
+    if( pos == -1) return NULL;
+
     ARVOREB * no = (ARVOREB*) malloc(sizeof (ARVOREB));
     fseek (file_indices, sizeof (CABECALHO_INDICES) + pos * sizeof (ARVOREB), SEEK_SET);
     fread (no, sizeof (ARVOREB), 1, file_indices);
@@ -86,6 +87,8 @@ void escreve_no (FILE * file_indices, ARVOREB * no, int pos){
 
 // Função para ler um registro de dados de um produto no arquivo de dados
 DADOS_REGISTRO * ler_registro(FILE * file_dados, int pos){
+    if( pos == -1) return NULL;
+
     DADOS_REGISTRO * registro = (DADOS_REGISTRO*) malloc(sizeof (DADOS_REGISTRO));
     fseek (file_dados, sizeof (CABECALHO_DADOS) + pos * sizeof (DADOS_REGISTRO), SEEK_SET);
     fread (registro, sizeof (DADOS_REGISTRO), 1, file_dados);

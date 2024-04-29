@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "produto_insercao.h"
+#include "../utils/arvore_utils.h"
 #include "../impressao/produto_impressao.h"
 
 // Função para ler os dados de um produto
@@ -31,10 +32,6 @@ PRODUTO_DATA * ler_produto() {
 
 int overflow (ARVOREB * r){
     return r->num_chaves == ORDEM;
-}
-
-int eh_folha(ARVOREB * r){
-    return r->filho[0] == -1;
 }
 
 // Função para imprimir os dados de um produto
