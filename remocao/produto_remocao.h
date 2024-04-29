@@ -42,6 +42,14 @@ ARVOREB * encontrar_irmao_esq(FILE * file_indices, ARVOREB * filho);
 ARVOREB * encontrar_irmao_dir(FILE* file_indices, ARVOREB * filho);
 int pode_emprestar(ARVOREB * r);
 int is_emprestimo(FILE* file_indices, ARVOREB * r);
+void redistribuir_pela_esq(FILE* file_indices, ARVOREB * r, ARVOREB * esq);
+void redistribuir_pela_dir(FILE* file_indices, ARVOREB * r, ARVOREB * dir);
+void redistribuir(FILE* file_indices, ARVOREB * r);
+void atualizar_pos_livres_indices(FILE *file_dados, int pos);
+void atualizar_pos_livres_dados(FILE* file_dados, int pos);
+void concatenar_pela_esq(FILE* file_indices, ARVOREB * r, ARVOREB * esq);
+void concatenar_pela_dir(FILE* file_indices, ARVOREB * r, ARVOREB * dir);
+void concatenar(FILE* file_indices, ARVOREB * r);
 void balancear(FILE * file_indices, ARVOREB * r);
 ARVOREB * remover(ARQUIVOS files, ARVOREB * r, int codigo);
 

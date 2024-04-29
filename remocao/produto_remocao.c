@@ -121,6 +121,283 @@ int is_emprestimo(FILE* file_indices, ARVOREB * r)
 
 }
 
+//redistribui a arvore r com base no irmao esq que pôde fazer emprestimo
+//pre-condição: faz parte de remover, nao pode ser chamada solta
+//pos-condição: redistribui r emprestando do irmao esq
+void redistribuir_pela_esq(FILE* file_indices, ARVOREB * r, ARVOREB * esq) {
+    int i, pos_chave_separadora, pos_pai, pos_r, pos_esq;
+
+    pos_r = buscar_no(file_indices, r->chave[0]);
+    pos_esq = buscar_no(file_indices, esq->chave[0]);
+    pos_pai = buscar_pai(file_indices, r->chave[0]);
+    pos_chave_separadora = buscar_pos_chave_separadora(file_indices, esq, r);//posicao da chave que separa os irmaos.
+
+    for (i = r->num_chaves; i >= 0; i--){
+        r->chave[i] = r->chave[i - 1];
+        r->pt_dados[i] = r->pt_dados[i - 1];
+        r->filho[i + 1] = r->filho[i];
+    }
+
+    ARVOREB * pai = ler_no(file_indices, pos_pai);
+
+    r->chave[0] = pai->chave[pos_chave_separadora];
+    r->pt_dados[0] = pai->pt_dados[pos_chave_separadora];
+
+    pai->chave[pos_chave_separadora] = esq->chave[esq->num_chaves - 1];
+    pai->pt_dados[pos_chave_separadora] = esq->pt_dados[esq->num_chaves - 1];
+    escreve_no(file_indices, pai, pos_pai);
+    free(pai);
+
+    r->filho[0] = esq->filho[esq->num_chaves];
+    ARVOREB * filho = ler_no(file_indices, r->filho[0]);
+    if (filho != NULL) {
+        escreve_no(file_indices, filho, r->filho[0]);
+        free(filho);
+    }
+
+    r->num_chaves++;
+
+    esq->filho[esq->num_chaves] = -1;
+    esq->num_chaves--;
+
+    //atualiza os nós no arquivo
+    escreve_no(file_indices, r, pos_r);
+    escreve_no(file_indices, esq, pos_esq);
+}
+
+//redistribui a arvore r com base no irmao dir que pôde fazer emprestimo
+//pre-condição: faz parte de remover, nao pode ser chamada solta
+//pos-condição: redistribui r emprestando do irmao dir
+void redistribuir_pela_dir(FILE* file_indices, ARVOREB * r, ARVOREB * dir){
+    int i, pos_chave_separadora, pos_pai, pos_r, pos_dir;
+
+    pos_r = buscar_no(file_indices, r->chave[0]);
+    pos_dir = buscar_no(file_indices, dir->chave[0]);
+    pos_pai = buscar_pai(file_indices, r->chave[0]);
+    pos_chave_separadora = buscar_pos_chave_separadora(file_indices, r, dir);//posicao da chave que separa os irmãos
+
+    ARVOREB * pai = ler_no(file_indices, pos_pai);
+
+    r->chave[r->num_chaves] = pai->chave[pos_chave_separadora];
+    r->pt_dados[r->num_chaves++] = pai->pt_dados[pos_chave_separadora];
+
+    pai->chave[pos_chave_separadora] = dir->chave[0];
+    pai->pt_dados[pos_chave_separadora] = dir->pt_dados[0];
+    escreve_no(file_indices, pai, pos_pai);
+    free(pai);
+
+    r->filho[r->num_chaves] = dir->filho[0];
+
+    ARVOREB * filho = ler_no(file_indices, r->filho[r->num_chaves]);//rever se realmente precisa disso!!
+    if (filho != NULL) {
+        escreve_no(file_indices, filho, r->filho[r->num_chaves]);
+        free(filho);
+    }
+
+    for (i = 0; i < dir->num_chaves; i++) {
+        dir->chave[i] = dir->chave[i + 1];
+        dir->pt_dados[i] = dir->pt_dados[i + 1];
+        dir->filho[i] = dir->filho[i + 1];
+    }
+
+    dir->filho[dir->num_chaves] = -1;
+    dir->num_chaves--;
+
+    //atualiza os nós no arquivo.
+    escreve_no(file_indices, dir, pos_dir);
+    escreve_no(file_indices, r, pos_r);
+}
+
+
+//redistribui a arvore R com underflow
+//pre-condição: função chamada automaticamente por balancear, nao deve ser chamada solta
+//pos-condição: redistribui a árvore
+void redistribuir(FILE* file_indices, ARVOREB * r) {
+    ARVOREB * esq = encontrar_irmao_esq(file_indices, r);//usa memoria dinamica, liberar
+    ARVOREB * dir = encontrar_irmao_dir(file_indices, r);//usa memoria dinamica, liberar
+    int i = 0;
+
+    if (pode_emprestar(esq)) {
+        redistribuir_pela_esq(file_indices, r, esq);
+        free(esq);
+
+    } else if (pode_emprestar(dir)) {
+        redistribuir_pela_dir(file_indices, r, dir);
+        free(dir);
+
+    }
+}
+
+//adiciona uma posicao às livres
+//pre-condição: posicao válida  a ser adicionada a lista de livres
+//pos-condição: atualiza cabecalho com a inclusao da posição
+void atualizar_pos_livres_indices(FILE* file_indices, int pos) {
+    CABECALHO_INDICES * cab = le_cabecalho_indices(file_indices);
+    ARVOREB * no = ler_no(file_indices, pos);//REVER, era ler produto
+
+    no->filho[0] = cab->pos_livre;
+    escreve_no(file_indices, no, pos);
+    cab->pos_livre = pos;
+    escreve_cabecalho_indices(file_indices, cab);
+    free(no);
+    free(cab);
+}
+
+//adiciona uma posicao às livres
+//pre-condição: posicao válida
+//pos-condição: atualiza cabecalho com a inclusao da posição
+void atualizar_pos_livres_dados(FILE* file_dados, int pos) {
+    CABECALHO_DADOS * cab = le_cabecalho_dados(file_dados);
+    PRODUTO_DATA * p = ler_registro(file_dados, pos);
+
+    if (p != NULL) {
+        p->codigo = cab->pos_livre;
+        escreve_registro(file_dados, p, pos);
+        cab->pos_livre = pos;
+        escreve_cabecalho_dados(file_dados, cab);
+        free(p);
+    }
+    free(cab);
+}
+
+//concatena r com seu irmao esquerdo = esq
+//pré-condiçao: função aux, nunca chmar manualmente, testar se o irmao esq é diferente de null antes
+//pos-condição: concatenação com irmao esquerdo
+void concatenar_pela_esq(FILE* file_indices, ARVOREB * r, ARVOREB * esq) {
+    ARVOREB * aux = r;//guarda o endereco de r para dar free e liberar a posicao depois que fizer a concatenação
+    int pos_chave_separadora, pos_pai, pos_esq, pos_aux;
+
+    pos_esq = buscar_no(file_indices, esq->chave[0]);
+    pos_aux = buscar_no(file_indices, aux->chave[0]);
+    pos_chave_separadora = buscar_pos_chave_separadora(file_indices, esq, r);//posicao da chave separadora.
+    pos_pai = buscar_pai(file_indices, r->chave[0]);
+
+    ARVOREB * pai = ler_no(file_indices, pos_pai);
+
+    esq->chave[esq->num_chaves] = pai->chave[pos_chave_separadora];
+    esq->pt_dados[esq->num_chaves] = pai->pt_dados[pos_chave_separadora];
+    esq->filho[esq->num_chaves + 1] = r->filho[0];
+
+    ARVOREB * filho = ler_no(file_indices, esq->filho[esq->num_chaves + 1]);
+    if (filho != NULL) {
+        escreve_no(file_indices, filho, esq->filho[esq->num_chaves + 1]);
+        free(filho);
+        filho = NULL;
+    }
+
+    esq->num_chaves++;
+
+    for (int i = 0; i < r->num_chaves; i++)
+    {
+        esq->chave[esq->num_chaves] = r->chave[i];
+        esq->pt_dados[esq->num_chaves++] = r->pt_dados[i];
+        filho = ler_no(file_indices, r->filho[i + 1]);
+
+        if (filho != NULL) {
+            escreve_no(file_indices, filho, r->filho[i + 1]);
+            free(filho);
+            filho = NULL;
+        }
+        esq->filho[esq->num_chaves] = r->filho[i + 1];
+    }
+    for (int i = pos_chave_separadora; i < pai->num_chaves; i++) {
+        pai->chave[i] = pai->chave[i + 1];
+        pai->pt_dados[i] = pai->pt_dados[i + 1];
+        pai->filho[i + 1] = pai->filho[i + 2];
+    }
+
+    pai->num_chaves--;
+
+    //atualiza o pai.
+    escreve_no(file_indices, pai, pos_pai);//atualiza o pai
+    free(pai);
+
+    //atualiza irmão esquerdo:
+    escreve_no(file_indices, esq, pos_esq);
+
+    //adiciona a posicao que estava em r para as livres.
+    atualizar_pos_livres_indices(file_indices, pos_aux);
+    //free(aux);
+    // aux = NULL;
+}
+
+//concatena r com seu irmao direito = dir
+//pré-condiçao: função aux, nunca chamar manualmente, testar se o irmao dir é diferente de null antes
+//pos-condição: concatenação com irmao direito
+void concatenar_pela_dir(FILE* file_indices, ARVOREB * r, ARVOREB * dir) {
+    int pos_chave_separadora, pos_pai, pos_r, pos_dir;
+
+    pos_r = buscar_no(file_indices, r->chave[0]);
+    pos_dir = buscar_no(file_indices, dir->chave[0]);
+    pos_pai = buscar_pai(file_indices, r->chave[0]);
+    pos_chave_separadora = buscar_pos_chave_separadora(file_indices, r, dir);//posição da chave separadora.
+
+    ARVOREB * pai = ler_no(file_indices, pos_pai);
+
+    r->chave[r->num_chaves] = pai->chave[pos_chave_separadora];
+    r->pt_dados[r->num_chaves] = pai->pt_dados[pos_chave_separadora];
+    r->filho[r->num_chaves + 1] = dir->filho[0];
+
+    ARVOREB * filho = ler_no(file_indices, r->filho[r->num_chaves + 1]);
+    if (filho != NULL) {
+        escreve_no(file_indices, filho, r->filho[r->num_chaves + 1]);
+        free(filho);
+        filho = NULL;
+    }
+    r->num_chaves++;
+
+
+    for (int i = 0; i < dir->num_chaves; i++) {
+        r->chave[r->num_chaves] = dir->chave[i];
+        r->pt_dados[r->num_chaves++] = dir->pt_dados[i];
+        r->filho[r->num_chaves] = dir->filho[i + 1];
+
+        filho = ler_no(file_indices, r->filho[r->num_chaves]);
+        if (filho != NULL) {
+            escreve_no(file_indices, filho, r->filho[r->num_chaves]);
+            free(filho);
+            filho = NULL;
+        }
+    }
+
+    for (int i = pos_chave_separadora; i < pai->num_chaves; i++) {
+        pai->chave[i] = pai->chave[i + 1];
+        pai->pt_dados[i] = pai->pt_dados[i + 1];
+        pai->filho[i + 1] = pai->filho[i + 2];//2 e 3
+    }
+    pai->num_chaves--;
+
+    //atualiza o pai.
+    escreve_no(file_indices, pai, pos_pai);
+    free(pai);
+
+    //atualiza o r.
+    escreve_no(file_indices, r, pos_r);
+
+    //adiciona a posicao do irmao da direita qeu se juntou com r às livres.
+    atualizar_pos_livres_indices(file_indices, pos_dir);
+    //free(dir);
+    //dir = NULL;
+}
+
+//faz a concatenação, prioritariamente com o irmao esquerdo, se não o possuir, com o direito
+// pré-condição: nó com underflow e que tenha sido redirecionado pela função balancear para fazer concatenação
+//nao chamar esssa função manualmente, so deve ser chamada pela balancear
+//pos-condição: concatena o no com o irmao sequerdo se possuir, ou direito caso nao possua irmao esquerdo
+void concatenar(FILE* file_indices, ARVOREB * r) {
+    ARVOREB * esq = encontrar_irmao_esq(file_indices, r);
+    ARVOREB * dir = encontrar_irmao_dir(file_indices, r);
+
+    if (esq != NULL) {//tem irmão esquerdo, pode concatenar com ele
+        concatenar_pela_esq(file_indices, r, esq);
+        free(esq);//dúvida sobre o free.
+    } else if (dir != NULL) {//tem irmao direito pode concatenar com ele
+        concatenar_pela_dir(file_indices, r, dir);
+        free(dir);//dúvida sobre o free.
+    }
+
+}
+
 //faz redistribuição se possível, ou faz concatenação para ajustar o no com underflow
 //pré-condição: no que ficou com underflow
 //pos-condição: balanceia o nó
@@ -150,60 +427,51 @@ ARVOREB * remover (ARQUIVOS files, ARVOREB * r, int codigo) {
                 if (underflow(filho_i)) {
                     balancear(files.file_indices, filho_i);
                 }
-                if (filho_i != NULL)
-                {
-                    r->filho[i] = filho_i->posicao;
+
+                if (filho_i != NULL) {
+                    r->filho[i] = r->filho[i];
                     free(filho_i);
-                }
-                else
-                {
+                } else {
                     r->filho[i] = -1;
                 }
 
-                int pos = r->posicao;
+                int pos_r = buscar_no(files.file_indices, r->chave[0]);
+                int pos = pos_r;
                 free(r);//libera o nó anterior
-                r = le_no(arqArv, pos);//atualiza o nó que foi mudado pelo balancear.
-                //escreve_no(arqArv, r, r->posicao);
-                //return r;
+                r = ler_no(files.file_indices, pos);//atualiza o nó que foi mudado pelo balancear.
             }
         }
-        if (i >= r->numChaves)
-        { // nao encntrou a chave neste nó,todos os numero aqui sao menores que a chave, por isso procura no filho mais a direita
-            arvoreB* filho_i = le_no(arqArv, r->filho[i]);
-            filho_i = remover(arqProd, arqArv, filho_i, codigo);
-            if (filho_i != NULL)
-            {
-                r->filho[i] = filho_i->posicao;
-            }
-            else
-            {
+        if (i >= r->num_chaves) { // nao encntrou a chave neste nó,todos os numero aqui sao menores que a chave, por isso procura no filho mais a direita
+            ARVOREB * filho_i = ler_no(files.file_indices, r->filho[i]);
+            filho_i = remover(files, filho_i, codigo);
+
+            if (filho_i != NULL) {
+                r->filho[i] = r->filho[i];
+            } else {
                 r->filho[i] = -1;
             }
-            if (underflow(filho_i))
-            {
-                balancear(arqArv, filho_i);
+
+            if (underflow(filho_i)) {
+                balancear(files.file_indices, filho_i);
             }
         }
-        else
-        { //i é menor que núermo de chaves: achou algo neste nó,quando encontra a chave, sempre libera posições do arquivo de produto aqui
-            if (eh_folha(r))
-            {
-                addPosLivreProd(arqProd, r->ptDados[i]);
-                while (i + 1 < r->numChaves)
+        else { //i é menor que núermo de chaves: achou algo neste nó,quando encontra a chave, sempre libera posições do arquivo de produto aqui
+            if (eh_folha(r)) {
+                atualizar_pos_livres_dados(files.file_dados, r->pt_dados[i]);
+                while (i + 1 < r->num_chaves)
                 {
                     r->chave[i] = r->chave[i + 1];
-                    r->ptDados[i] = r->ptDados[i + 1];
+                    r->pt_dados[i] = r->pt_dados[i + 1];
                     i++;
                 }
-                r->numChaves--;//diminui uma chave;
-                escreve_no(arqArv, r, r->posicao);
+                int pos_r = buscar_no(files.file_indices, r->chave[0]);
+                r->num_chaves--;//diminui uma chave;
+                escreve_no(files.file_indices, r, pos_r);
 
-            }
-            else if (!eh_folha(r))
-            { //é no interno, não é folha
-                addPosLivreProd(arqProd, r->ptDados[i]);
+            } else if (!eh_folha(r)) { //é no interno, não é folha
+                atualizar_pos_livres_dados(files.file_dados, r->pt_dados[i]);
 
-                arvoreB* filho_i = le_no(arqArv, r->filho[i]);
+                ARVOREB * filho_i = le_no(arqArv, r->filho[i]);
                 int pt = -1;
                 r->chave[i] = maximoRemove(arqArv, filho_i,&pt);
                 r->ptDados[i] = pt;
