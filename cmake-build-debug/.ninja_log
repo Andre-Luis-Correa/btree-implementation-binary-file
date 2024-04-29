@@ -74,3 +74,16 @@
 104	251	7361139986749730	trabalho_aed_3_bruna_andre.exe	b2d4f863de0f23dc
 4	109	7361140766824464	CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/arvore_utils.c.obj	a7e66e38286e1569
 110	237	7361140768034119	trabalho_aed_3_bruna_andre.exe	b2d4f863de0f23dc
+3	131	7361144452617833	CMakeFiles/trabalho_aed_3_bruna_andre.dir/menu/menu.c.obj	43421c959190b292
+14	148	7361144452758899	CMakeFiles/trabalho_aed_3_bruna_andre.dir/insercao/produto_insercao.c.obj	bbb526a80dea9eb6
+42	151	7361144452818986	CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/arvore_utils.c.obj	a7e66e38286e1569
+4	119	7361149834420453	CMakeFiles/trabalho_aed_3_bruna_andre.dir/main.c.obj	fac8a501521a76cc
+18	158	7361149834805677	CMakeFiles/trabalho_aed_3_bruna_andre.dir/atualizacao/produto_atualizacao.c.obj	32f93fda33960216
+30	167	7361149834935044	CMakeFiles/trabalho_aed_3_bruna_andre.dir/menu/menu.c.obj	43421c959190b292
+45	184	7361149835116224	CMakeFiles/trabalho_aed_3_bruna_andre.dir/impressao/produto_impressao.c.obj	b985e22d932ec8d9
+77	192	7361149835186375	CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/arvore_utils.c.obj	a7e66e38286e1569
+3	128	7361150385059817	CMakeFiles/trabalho_aed_3_bruna_andre.dir/insercao/produto_insercao.c.obj	bbb526a80dea9eb6
+3	116	7361150501519318	CMakeFiles/trabalho_aed_3_bruna_andre.dir/remocao/produto_remocao.c.obj	6778994594d68183
+117	267	7361150502965171	trabalho_aed_3_bruna_andre.exe	b2d4f863de0f23dc
+4	117	7361152462269274	CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/arvore_utils.c.obj	a7e66e38286e1569
+117	266	7361152463719617	trabalho_aed_3_bruna_andre.exe	b2d4f863de0f23dc

@@ -45,31 +45,6 @@ void imprimir_produto(PRODUTO_DATA * produto) {
     printf("Preco: R$ %.2f\n", produto->preco);
 }
 
-// Função para verificar se já existe um determinado código na árvore e retorna a posição do nó onde ele está presente
-int buscar_no(FILE * file_indices, int codigo, int pos){
-
-    if(pos == -1) return -1;
-
-    ARVOREB * r = ler_no(file_indices, pos);
-    int i;
-
-    for(i = 0; i < r->num_chaves; i++){
-        if(r->chave[i] == codigo ){
-            free(r);
-            return pos;
-        } else if (r->chave[i] > codigo ){
-            int pos_atual = r->filho[i];
-            free(r);
-            return buscar_no(file_indices, codigo, pos_atual);
-        }
-    }
-
-    int pos_atual = r->filho[i];
-    free(r);
-
-    return buscar_no(file_indices, codigo, pos_atual);
-}
-
 void cadastrar_produto(ARQUIVOS files){
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
 
@@ -81,7 +56,7 @@ void cadastrar_produto(ARQUIVOS files){
     produto->estoque = 50;
     produto->preco = 59.99;
 
-    if(buscar_no(files.file_indices, produto->codigo, cab_indices->pos_raiz) == -1){
+    if(buscar_no(files.file_indices, produto->codigo) == -1){
         // Realizar a inserção do nó, pois ainda não existe esse código na árvore
         printf("\nNova insercao!\n");
         cadastrar_produto_file(files, produto);

@@ -196,6 +196,23 @@ void buscar(ARQUIVOS files){
     free(pai);
 }
 
+void buscar_pos_no(ARQUIVOS files){
+    printf("\n----> Operacao: BUscar pos no: \n");
+    int codigo;
+
+    printf("\n---> Digite o valor para buscar a pos do no: ");
+    scanf("%d", &codigo);
+
+    int pos_pai = buscar_no(files.file_indices, codigo);
+    printf("\n POS no : %d", pos_pai);
+    ARVOREB * no = ler_no(files.file_indices, pos_pai);
+    if(no != NULL)
+        imprimir_no(no);
+    else
+        printf("\n---> Ta nulo!");
+    free(no);
+}
+
 // Exibe o menu principal e processa a escolha do usu?rio
 // Pr?-condi??es: Nenhuma
 // P?s-condi??o: O usu?rio escolhe uma op??o do menu e a opera??o correspondente ? executada
@@ -243,6 +260,9 @@ void menu_principal(ARQUIVOS files){
                 break;
             case 12:
                 buscar(files);
+                break;
+            case 13:
+                buscar_pos_no(files);
                 break;
             case 0:
                 printf("---> Saindo do programa. Ate mais!\n");

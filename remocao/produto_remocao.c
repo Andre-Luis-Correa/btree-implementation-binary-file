@@ -13,7 +13,7 @@ void remover_produto(ARQUIVOS files) {
     printf ("Insira o codigo a ser removido: ");
     scanf ("%d", &codigo);
 
-    pos_codigo = buscar_no(files.file_indices, codigo, cab_indices->pos_raiz);
+    pos_codigo = buscar_no(files.file_indices, codigo);
 
     if(cab_indices->pos_raiz == -1){
         printf("A arvore encontra-se vazia!\n");
@@ -37,14 +37,16 @@ void remover_produto(ARQUIVOS files) {
 ////pre-condição: arvore do filho que quer achar seu irmão esq, filho deve ter pai != NULL.
 ////pos-condição: no do irmão esquerdo
 //ARVOREB * encontrar_irmao_esq(FILE * file_indices, ARVOREB * filho) {
-//    int pos_pai, pos_chav;
+//    int pos_pai, pos_filho;
+//
 //    pos_pai = buscar_pai(file_indices, filho->chave[0]);
+//    pos_filho = buscar_no(file_indices, filho->chave[0]);
 //
 //    ARVOREB * pai = ler_no(file_indices, pos_pai);
 //
 //    if (!vazia(pai))
 //    {
-//        if (filho->posicao == pai->filho[0])
+//        if (pos_filho == pai->filho[0])
 //        {
 //            free(pai);
 //            return NULL;

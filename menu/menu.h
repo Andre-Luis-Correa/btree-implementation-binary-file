@@ -59,6 +59,7 @@ void realizarOperacoesEmLote();
 
 void imprimir_info_nos(ARQUIVOS files);
 void buscar(ARQUIVOS files);
+void buscar_pos_no(ARQUIVOS files);
 
 // Exibe o menu principal e processa a escolha do usuário
 // Pré-condições: Nenhuma

@@ -59,12 +59,46 @@ int busca_pos_chave(ARVOREB * r, int codigo){
     return -1;
 }
 
-int buscar_pai(FILE * file, int codigo){
-    CABECALHO_INDICES * cab = le_cabecalho_indices(file);
+// Função para verificar se já existe um determinado código na árvore e retorna a posição do nó onde ele está presente
+int buscar_no(FILE * file_indices, int codigo){
+    CABECALHO_INDICES * cab = le_cabecalho_indices(file_indices);
     int pos_raiz = cab->pos_raiz;
     free(cab);
 
-    ARVOREB * r = ler_no(file, pos_raiz);
+    if(pos_raiz == -1) return -1;
+
+    return buscar_no_aux(file_indices, codigo, pos_raiz);
+}
+
+int buscar_no_aux(FILE * file_indices, int codigo, int pos){
+    if(pos == -1) return -1;
+
+    ARVOREB * r = ler_no(file_indices, pos);
+    int i;
+
+    for(i = 0; i < r->num_chaves; i++){
+        if(r->chave[i] == codigo ){
+            free(r);
+            return pos;
+        } else if (r->chave[i] > codigo ){
+            int pos_atual = r->filho[i];
+            free(r);
+            return buscar_no_aux(file_indices, codigo, pos_atual);
+        }
+    }
+
+    int pos_atual = r->filho[i];
+    free(r);
+
+    return buscar_no_aux(file_indices, codigo, pos_atual);
+}
+
+int buscar_pai(FILE * file_indices, int codigo){
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(file_indices);
+    int pos_raiz = cab_indices->pos_raiz;
+    free(cab_indices);
+
+    ARVOREB * r = ler_no(file_indices, pos_raiz);
 
     if ( eh_folha(r) || busca_pos_chave(r, codigo) != -1) { // A propria raiz é o pai, pois nao tem pai acima
         free(r);
@@ -72,7 +106,7 @@ int buscar_pai(FILE * file, int codigo){
     }
 
     free(r);
-    return buscar_pai_aux(file, pos_raiz, codigo);
+    return buscar_pai_aux(file_indices, pos_raiz, codigo);
 }
 
 int buscar_pai_aux(FILE * file_indices, int pos_raiz, int codigo){

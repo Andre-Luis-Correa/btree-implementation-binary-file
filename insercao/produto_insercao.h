@@ -17,7 +17,6 @@ ARVOREB * ler_no(FILE * file_indices, int pos);
 void escreve_no(FILE * file_indices, ARVOREB * no, int pos);
 DADOS_REGISTRO * ler_registro(FILE * file_dados, int pos);
 void escreve_registro(FILE * file_dados, DADOS_REGISTRO * registro, int pos);
-int buscar_no(FILE * file_indices, int codigo, int pos);
 void imprimir_cabecalho_indices(CABECALHO_INDICES * cab);
 void imprimir_cabecalho_dados(CABECALHO_DADOS * cab);
 void cadastrar_produto(ARQUIVOS files);
