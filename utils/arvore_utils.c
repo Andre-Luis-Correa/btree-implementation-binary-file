@@ -24,28 +24,24 @@ int eh_folha(ARVOREB * r) {
 //testa se é raiz
 //pre-condição: r nao pode ser NULL
 //pos-condição: 1 se for raiz, 0 se nao for
-//int eh_raiz(ARQUIVOS files, ARVOREB * r) {
-//    if (r != NULL) {
-//        int pos_pai = buscar_pai(files.file_indices, int pos_raiz, int codigo, int * pos_filho_remocao);
-//
-//        if ( buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int * pos_filho_remocao) == -1) {
-//            return 1;
-//        }
-//    }
-//    return 0;
-//}
+int eh_raiz(FILE * file_indices, ARVOREB * r) {
+    if (r != NULL) {
+        int pos_pai = buscar_pai(file_indices, r->chave[0]);
+        if ( pos_pai == -1) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
-//verifica se deu underflow
-//pre-condiçao: arvore nao nula
-//pos-conidição: 1 se deu, 0 se nao deu, underflow
-//int underflow(ARVOREB * r) {
-//    if (r != NULL) {
-//        if (r->num_chaves < MIN && !eh_raiz(r) )
-//            return 1;
-//        return 0;
-//    }
-//    return 0;
-//}
+int underflow(FILE * file_indices, ARVOREB * r) {
+    if (r != NULL) {
+        if (r->num_chaves < MIN && !eh_raiz(file_indices, r) )
+            return 1;
+        return 0;
+    }
+    return 0;
+}
 
 int buscar_pos_chave(ARVOREB * r, int codigo){
     int pos_codigo;

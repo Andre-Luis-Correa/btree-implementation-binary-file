@@ -27,7 +27,7 @@ void remover_produto(ARQUIVOS files) {
 
     printf("---> Iniciando a remocao da chave %d!\n", codigo);
     ARVOREB * raiz = ler_no(files.file_indices, cab_indices->pos_raiz);
-//    remover(files, raiz, codigo);
+    remover(files, raiz, codigo);
 
     free(raiz);
     free(cab_indices);
@@ -248,10 +248,10 @@ void atualizar_pos_livres_indices(FILE* file_indices, int pos) {
 //pos-condição: atualiza cabecalho com a inclusao da posição
 void atualizar_pos_livres_dados(FILE* file_dados, int pos) {
     CABECALHO_DADOS * cab = le_cabecalho_dados(file_dados);
-    PRODUTO_DATA * p = ler_registro(file_dados, pos);
+    DADOS_REGISTRO * p = ler_registro(file_dados, pos);
 
     if (p != NULL) {
-        p->codigo = cab->pos_livre;
+        p->produto.codigo = cab->pos_livre;
         escreve_registro(file_dados, p, pos);
         cab->pos_livre = pos;
         escreve_cabecalho_dados(file_dados, cab);
@@ -456,7 +456,7 @@ ARVOREB * remover (ARQUIVOS files, ARVOREB * r, int codigo) {
 
                 filho_i = remover(files, filho_i, codigo);
 
-                if (underflow(filho_i)) {
+                if (underflow(files.file_indices, filho_i)) {
                     balancear(files.file_indices, filho_i);
                 }
 
@@ -483,7 +483,7 @@ ARVOREB * remover (ARQUIVOS files, ARVOREB * r, int codigo) {
                 r->filho[i] = -1;
             }
 
-            if (underflow(filho_i)) {
+            if (underflow(files.file_indices, filho_i)) {
                 balancear(files.file_indices, filho_i);
             }
         }
@@ -516,7 +516,7 @@ ARVOREB * remover (ARQUIVOS files, ARVOREB * r, int codigo) {
                 } else {
                     r->filho[i] = -1;
                 }
-                if (underflow(filho_i)) {
+                if (underflow(files.file_indices, filho_i)) {
                     balancear(files.file_indices,filho_i);
                 }
 
@@ -530,7 +530,7 @@ ARVOREB * remover (ARQUIVOS files, ARVOREB * r, int codigo) {
         r = ler_no(files.file_indices, pos);
         if (r != NULL) {
 
-            if (eh_raiz(r) && r->num_chaves <= 0) {
+            if (eh_raiz(files.file_indices, r) && r->num_chaves <= 0) {
                 ARVOREB * aux = ler_no(files.file_indices, r->filho[0]);
 
                 if (aux != NULL) {
