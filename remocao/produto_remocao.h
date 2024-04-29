@@ -51,6 +51,7 @@ void concatenar_pela_esq(FILE* file_indices, ARVOREB * r, ARVOREB * esq);
 void concatenar_pela_dir(FILE* file_indices, ARVOREB * r, ARVOREB * dir);
 void concatenar(FILE* file_indices, ARVOREB * r);
 void balancear(FILE * file_indices, ARVOREB * r);
+void mudar_raiz(FILE* file_indices, int raiz);
 ARVOREB * remover(ARQUIVOS files, ARVOREB * r, int codigo);
 
 #endif //PRODUTO_REMOCAO_H

@@ -409,6 +409,38 @@ void balancear(FILE * file_indices, ARVOREB * r) {
     }
 }
 
+//acha a maior chave da arvore
+//pre-condição: raiz da arvore nao nula
+//pos-condição: o maximo dessa arvoreB e copia a posiçao pt dos dados para pt.
+int remover_maximo(FILE* file_indices, ARVOREB * r, int * pt_dados) {
+    if (r != NULL) {
+        ARVOREB * filho = ler_no(file_indices, r->filho[r->num_chaves]);
+
+        if (filho == NULL) {
+            (*pt_dados) = r->pt_dados[r->num_chaves - 1];
+            r->pt_dados[r->num_chaves - 1] = -1;
+            int pos_r = buscar_no(file_indices, r->chave[0]);
+            escreve_no(file_indices, r, pos_r);//reescreve essa posição com -1 para indicar que não é pra remover.
+            return r->chave[r->num_chaves - 1];
+        }
+        int max = remover_maximo(file_indices, filho, pt_dados);
+        free(filho);
+        return max;
+    }
+    (*pt_dados) = -1;
+    return 0;
+}
+//muda a raiz no cabecalho
+//pré-condiçao: arquivo para arvoreB
+//pos-condição: nenhuma
+void mudar_raiz(FILE* file_indices, int raiz) {
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(file_indices);
+    cab_indices->pos_raiz = raiz;
+    escreve_cabecalho_indices(file_indices, cab_indices);
+    free(cab_indices);
+}
+
+
 //remove um produto
 //pre-condição: arqprod e arqArv, arquivos para produto e chaves respectivamente, válidos, r = leitura da raiz do arquivo de chaves
 //pos-condição retorna a nova raiz;
@@ -471,61 +503,57 @@ ARVOREB * remover (ARQUIVOS files, ARVOREB * r, int codigo) {
             } else if (!eh_folha(r)) { //é no interno, não é folha
                 atualizar_pos_livres_dados(files.file_dados, r->pt_dados[i]);
 
-                ARVOREB * filho_i = le_no(arqArv, r->filho[i]);
-                int pt = -1;
-                r->chave[i] = maximoRemove(arqArv, filho_i,&pt);
-                r->ptDados[i] = pt;
-                escreve_no(arqArv, r, r->posicao);
-                filho_i = remover(arqProd,arqArv,filho_i, r->chave[i]);
-                if (filho_i != NULL)
-                {
-                    r->filho[i] = filho_i->posicao;
-                }
-                else
-                {
+                ARVOREB * filho_i = ler_no(files.file_indices, r->filho[i]);
+                int pt_dadoos = -1;
+
+                r->chave[i] = remover_maximo(files.file_indices, filho_i, &pt_dadoos);
+                r->pt_dados[i] = pt_dadoos;
+                int pos_r = buscar_no(files.file_indices, r->chave[0]);
+                escreve_no(files.file_indices, r, pos_r);
+                filho_i = remover(files,filho_i, r->chave[i]);
+                if (filho_i != NULL) {
+                    r->filho[i] = r->chave[i];
+                } else {
                     r->filho[i] = -1;
                 }
-                if (underflow(filho_i))
-                {
-                    balancear(arqArv,filho_i);
+                if (underflow(filho_i)) {
+                    balancear(files.file_indices,filho_i);
                 }
 
             }
 
         }
+
         //testa se a raiz ficou vazia.
-        int pos = r->posicao;
+        int pos = buscar_no(files.file_indices, r->chave[0]);
         free(r);
-        r = le_no(arqArv, pos);
-        if (r != NULL)
-        {
+        r = ler_no(files.file_indices, pos);
+        if (r != NULL) {
 
-            if (eh_raiz(r) && r->numChaves <= 0)
-            {
-                arvoreB* aux = le_no(arqArv, r->filho[0]);
+            if (eh_raiz(r) && r->num_chaves <= 0) {
+                ARVOREB * aux = ler_no(files.file_indices, r->filho[0]);
 
-                if (aux != NULL)
-                {
-                    aux->pai = -1;
-                    mudarRaiz(arqArv, aux->posicao);
-                    escreve_no(arqArv, aux, aux->posicao);
+                if (aux != NULL) {
+                    //aux->pai = -1;
+                    int pos_aux = buscar_no(files.file_indices, aux->chave[0]);
+                    mudar_raiz(files.file_indices, pos_aux);
+                    escreve_no(files.file_indices, aux, pos_aux);
+                } else {
+                    mudar_raiz(files.file_indices, -1);
                 }
-                else
-                {
-                    mudarRaiz(arqArv, -1);
-                }
-                addPosLivreArv(arqArv, r->posicao);
+                int pos_r = buscar_no(files.file_indices, r->chave[0]);
+                atualizar_pos_livres_indices(files.file_indices, pos_r);
                 free(r);
                 r = NULL;
                 return aux;
             }
         }
 
-        if (r != NULL)
-        {
-
-            escreve_no(arqArv, r, r->posicao);
+        if (r != NULL) {
+            int pos_r = buscar_no(files.file_indices, r->chave[0]);
+            escreve_no(files.file_indices, r, pos_r);
         }
+
         return r;
 
     }
