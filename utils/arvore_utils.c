@@ -4,6 +4,7 @@
 
 #include "arvore_utils.h"
 #include "../cabecalho/cabecalho_indices.h"
+#include "../impressao/produto_impressao.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -55,21 +56,33 @@ int buscar_pos_chave(ARVOREB * r, int codigo){
     return -1;
 }
 
+int mais_chaves_que_min(ARVOREB * r){
+    return r->num_chaves > MIN;
+}
+
+
 // Função para verificar se já existe um determinado código na árvore e retorna a posição do nó onde ele está presente
 int buscar_no(FILE * file_indices, int codigo){
     CABECALHO_INDICES * cab = le_cabecalho_indices(file_indices);
     int pos_raiz = cab->pos_raiz;
     free(cab);
-
-    if(pos_raiz == -1) return -1;
+    printf("\n---> pos raiz = %d", pos_raiz);
+    if(pos_raiz == -1){
+        printf("\n---> a funcao buscra no retornour -1 pos_raiz == -1");
+        return -1;
+    }
 
     return buscar_no_aux(file_indices, codigo, pos_raiz);
 }
 
 int buscar_no_aux(FILE * file_indices, int codigo, int pos){
-    if(pos == -1) return -1;
+    if(pos == -1){
+        printf("\n---> a funcao buscra no retornour -1");
+        return -1;
+    }
 
     ARVOREB * r = ler_no(file_indices, pos);
+    imprimir_no(r);
     int i;
 
     for(i = 0; i < r->num_chaves; i++){
@@ -172,3 +185,45 @@ int buscar_pos_chave_separadora(FILE* file_indices, ARVOREB * esq, ARVOREB * dir
     }
     return -1;
 }
+
+
+//int buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int *pos_filho_remocao) {
+//    ARVOREB *r = ler_no(files.file_indices, pos_raiz);
+//
+//    // Verifica se é uma folha
+//    if (eh_folha(r)) {
+//        *pos_filho_remocao = -1; // Marca o filho de remoção como inexistente
+//        return -1; // Retorna -1 indicando que não foi encontrado
+//    }
+//
+//    int i;
+//    for (i = 0; i < r->num_chaves; i++) {
+//        // Se o código for menor que a chave atual, desce para o filho à esquerda
+//        if (codigo < r->chave[i]) {
+//            ARVOREB *filho = ler_no(files.file_indices, r->filho[i]);
+//            int pos_codigo = busca_pos_chave(filho, codigo);
+//            free(filho);
+//            // Se a chave for encontrada no filho, retorna o nó atual como pai
+//            if (pos_codigo != -1) {
+//                *pos_filho_remocao = i;
+//                return pos_raiz;
+//            }
+//            // Se não, continua a busca descendente
+//            return buscar_pai(files, r->filho[i], codigo, pos_filho_remocao);
+//        }
+//    }
+//
+//    // Se o código for maior que todas as chaves, desce para o último filho
+//    ARVOREB * filho = ler_no(files.file_indices, r->filho[i]);
+//    int pos_codigo = busca_pos_chave(filho, codigo);
+//    free(filho);
+//
+//    // Se a chave for encontrada no último filho, retorna o nó atual como pai
+//    if (pos_codigo != -1) {
+//        *pos_filho_remocao = i;
+//        return pos_raiz;
+//    }
+//
+//    // Se não, continua a busca descendente
+//    return buscar_pai(files, r->filho[i], codigo, pos_filho_remocao);
+//}

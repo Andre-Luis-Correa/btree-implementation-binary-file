@@ -22,4 +22,6 @@ add_executable(trabalho_aed_3_bruna_andre main.c
         impressao/produto_impressao.h
         menu/menu.c
         utils/arvore_utils.c
-        utils/arvore_utils.h)
+        utils/arvore_utils.h
+        utils/exemplo_rem.c
+        utils/exemploooremocao.c)

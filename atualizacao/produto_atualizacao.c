@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "produto_atualizacao.h"
-#include "../insercao/produto_insercao.h"
+#include "../utils/arvore_utils.h"
 
 void atualizar_preco_produto(ARQUIVOS files, int codigo_produto){
     //lendo os cabecalhos de indices e file_dados
@@ -13,7 +13,7 @@ void atualizar_preco_produto(ARQUIVOS files, int codigo_produto){
     CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
 
     //a pos esta guarando o no em que esta elemento que possui esse codigo de produto
-    int pos = buscar_no(files.file_indices, codigo_produto, cab_indices->pos_raiz);
+    int pos = buscar_no(files.file_indices, codigo_produto);
 
     if (pos == -1) {
         printf("Produto com c?digo %d n?o encontrado.\n", codigo_produto);
@@ -63,7 +63,7 @@ void atualizar_estoque_produto(ARQUIVOS files, int codigo_produto) {
     imprimir_cabecalho_indices(cab_indices);
     imprimir_cabecalho_dados(cab_dados);
 
-    int pos = buscar_no(files.file_indices, codigo_produto, cab_indices->pos_raiz);
+    int pos = buscar_no(files.file_indices, codigo_produto);
 
     if (pos == -1) {
         printf("Produto com c?digo %d n?o encontrado.\n", codigo_produto);

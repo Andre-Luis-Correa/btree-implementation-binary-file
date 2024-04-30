@@ -121,6 +121,18 @@ build CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/arvore_utils.c.obj: C_COMP
   OBJECT_DIR = CMakeFiles\trabalho_aed_3_bruna_andre.dir
   OBJECT_FILE_DIR = CMakeFiles\trabalho_aed_3_bruna_andre.dir\utils
 
+build CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/exemplo_rem.c.obj: C_COMPILER__trabalho_aed_3_bruna_andre_unscanned_Debug C$:/Users/andre/CLionProjects/trabalho_aed_3_bruna_andre/utils/exemplo_rem.c || cmake_object_order_depends_target_trabalho_aed_3_bruna_andre
+  DEP_FILE = CMakeFiles\trabalho_aed_3_bruna_andre.dir\utils\exemplo_rem.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\trabalho_aed_3_bruna_andre.dir
+  OBJECT_FILE_DIR = CMakeFiles\trabalho_aed_3_bruna_andre.dir\utils
+
+build CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/exemploooremocao.c.obj: C_COMPILER__trabalho_aed_3_bruna_andre_unscanned_Debug C$:/Users/andre/CLionProjects/trabalho_aed_3_bruna_andre/utils/exemploooremocao.c || cmake_object_order_depends_target_trabalho_aed_3_bruna_andre
+  DEP_FILE = CMakeFiles\trabalho_aed_3_bruna_andre.dir\utils\exemploooremocao.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\trabalho_aed_3_bruna_andre.dir
+  OBJECT_FILE_DIR = CMakeFiles\trabalho_aed_3_bruna_andre.dir\utils
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target trabalho_aed_3_bruna_andre
@@ -129,7 +141,7 @@ build CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/arvore_utils.c.obj: C_COMP
 #############################################
 # Link the executable trabalho_aed_3_bruna_andre.exe
 
-build trabalho_aed_3_bruna_andre.exe: C_EXECUTABLE_LINKER__trabalho_aed_3_bruna_andre_Debug CMakeFiles/trabalho_aed_3_bruna_andre.dir/main.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/cabecalho/cabecalho_dados.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/cabecalho/cabecalho_indices.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/lote/lote.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/mainB.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/atualizacao/produto_atualizacao.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/impressao/produto_impressao.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/insercao/produto_insercao.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/remocao/produto_remocao.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/file/file.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/menu/menu.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/arvore_utils.c.obj
+build trabalho_aed_3_bruna_andre.exe: C_EXECUTABLE_LINKER__trabalho_aed_3_bruna_andre_Debug CMakeFiles/trabalho_aed_3_bruna_andre.dir/main.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/cabecalho/cabecalho_dados.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/cabecalho/cabecalho_indices.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/lote/lote.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/mainB.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/atualizacao/produto_atualizacao.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/impressao/produto_impressao.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/insercao/produto_insercao.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/remocao/produto_remocao.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/file/file.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/menu/menu.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/arvore_utils.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/exemplo_rem.c.obj CMakeFiles/trabalho_aed_3_bruna_andre.dir/utils/exemploooremocao.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\trabalho_aed_3_bruna_andre.dir

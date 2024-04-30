@@ -6,6 +6,7 @@
 #include "stdlib.h"
 #include "produto_impressao.h"
 #include "../insercao/produto_insercao.h"
+#include "../utils/arvore_utils.h"
 
 void imprimir_lista_produtos(ARQUIVOS files, int pos_atual) {
     CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
@@ -35,7 +36,7 @@ void imprimir_lista_produtos(ARQUIVOS files, int pos_atual) {
 void imprimir_informacoes_produto(ARQUIVOS files, int codigo){
     CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
 
-    int pos = buscar_no(files.file_indices, codigo, cab_indices->pos_raiz);
+    int pos = buscar_no(files.file_indices, codigo);
 
     if(pos != -1) {
         ARVOREB * r = ler_no(files.file_indices, pos);
