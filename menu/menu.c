@@ -151,6 +151,8 @@ void imprimirListaLivresIndices(ARQUIVOS files) {
 
     if (cab_indices->pos_raiz == -1) {
         printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
+    } else if(cab_indices->pos_livre == -1) {
+        printf("---> Nao ha posicoes com indices livres!\n");
     } else {
         imprimir_lista_indices_livres(files.file_indices, cab_indices->pos_livre);
     }
@@ -167,10 +169,11 @@ void imprimirListaLivresDados(ARQUIVOS files) {
 
     if(cab_dados->pos_raiz == -1){
         printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
+    } else if(cab_dados->pos_livre == -1 ) {
+        printf("---> Nao ha posicoes com registros de dados livres!\n");
     } else {
         imprimir_lista_registros_livres(files.file_dados, cab_dados->pos_livre);
     }
-
     free(cab_dados);
 }
 
