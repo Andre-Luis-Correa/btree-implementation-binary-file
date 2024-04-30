@@ -45,12 +45,12 @@ void imprimirArvore(ARQUIVOS files);
 // Imprime a lista de nós livres do arquivo de índices
 // Pré-condições: Nenhuma
 // Pós-condições: A lista de nós livres do arquivo de índices é impressa no console
-void imprimirListaLivresIndices();
+void imprimirListaLivresIndices(ARQUIVOS files);
 
 // Imprime a lista de registros livres do arquivo de dados
 // Pré-condições: Nenhuma
 // Pós-condições: A lista de registros livres do arquivo de dados é impressa no console
-void imprimirListaLivresDados();
+void imprimirListaLivresDados(ARQUIVOS files);
 
 // Realiza operações em lote a partir de um arquivo de texto
 // Pré-condições: O arquivo de texto contendo as operações em lote deve existir e estar formatado corretamente

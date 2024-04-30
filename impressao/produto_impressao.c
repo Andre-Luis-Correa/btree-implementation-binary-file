@@ -65,6 +65,64 @@ void imprimir_informacoes_produto(ARQUIVOS files, int codigo){
     free(cab_indices);
 }
 
+void imprimir_lista_indices_livres(FILE * file_indices, int pos_atual){
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(file_indices);
+
+    if (pos_atual == -1) {
+        free(cab_indices);
+        return;
+    }
+
+    int prox;
+
+    printf("+--------------------------------------------------+\n");
+    printf("|  Lista de Posicoes Livres no Arquivo de Indices  |\n");
+    printf("+--------------------------------------------------+\n");
+
+    ARVOREB * no = ler_no(file_indices, pos_atual);
+
+    while(no->prox_livre != -1 ){
+        printf("| %2d                                          |\n", no->prox_livre);
+        prox = no->prox_livre;
+        free(no);;
+        no = ler_no(file_indices, prox);
+    }
+
+    printf("+--------------------------------------------------+\n");
+
+    free(no);
+    free(cab_indices);
+}
+
+void imprimir_lista_registros_livres(FILE * file_dados, int pos_atual){
+    CABECALHO_INDICES * cab_dados = le_cabecalho_indices(file_dados);
+
+    if (pos_atual == -1) {
+        free(cab_dados);
+        return;
+    }
+
+    int prox;
+
+    printf("+--------------------------------------------------+\n");
+    printf("|  Lista de Posicoes Livres no Arquivo de Indices  |\n");
+    printf("+--------------------------------------------------+\n");
+
+    DADOS_REGISTRO * registro = ler_registro(file_dados, pos_atual);
+
+    while(registro->prox_livre != -1 ){
+        printf("| %2d                                          |\n", registro->prox_livre);
+        prox = registro->prox_livre;
+        free(registro);;
+        registro = ler_registro(file_dados, prox);
+    }
+
+    printf("+--------------------------------------------------+\n");
+
+    free(registro);
+    free(cab_dados);
+}
+
 //-----------------------------------IMPRIMIR N?VEIS-----------------------------------------//
 
 //busca o n?vel de uma chave na arvore R.

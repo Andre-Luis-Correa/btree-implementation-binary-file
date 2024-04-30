@@ -25,6 +25,8 @@ typedef struct noFila
 } Fila;
 
 void imprimir_lista_produtos(ARQUIVOS files, int pos_atual);
+void imprimir_lista_indices_livres(FILE * file_indices, int pos_atual);
+void imprimir_lista_registros_livres(FILE * file_dados, int pos_atual);
 void imprimir_informacoes_produto(ARQUIVOS files, int codido);
 void imprimir_no(ARVOREB *r);
 void imprimir_arvore(ARQUIVOS files);

@@ -145,17 +145,33 @@ void imprimirArvore(ARQUIVOS files) {
 // Imprime a lista de n?s livres do arquivo de ?ndices
 // Pr?-condi??es: Nenhuma
 // P?s-condi??o: A lista de n?s livres do arquivo de ?ndices ? impressa no console
-void imprimirListaLivresIndices() {
+void imprimirListaLivresIndices(ARQUIVOS files) {
     printf("\n---> Operacao: Imprimir Lista de Livres do Arquivo de Indices\n");
-    // Implemente a l?gica para imprimir a lista de livres do arquivo de ?ndices
+    CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
+
+    if (cab_indices->pos_raiz == -1) {
+        printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
+    } else {
+        imprimir_lista_indices_livres(files.file_indices, cab_indices->pos_livre);
+    }
+
+    free(cab_indices);
 }
 
 // Imprime a lista de registros livres do arquivo de dados
 // Pr?-condi??es: Nenhuma
 // P?s-condi??o: A lista de registros livres do arquivo de dados ? impressa no console
-void imprimirListaLivresDados() {
+void imprimirListaLivresDados(ARQUIVOS files) {
     printf("\n---> Operacao: Imprimir Lista de Livres do Arquivo de Dados\n");
-    // Implemente a l?gica para imprimir a lista de livres do arquivo de dados
+    CABECALHO_INDICES * cab_dados = le_cabecalho_dados(files.file_dados);
+
+    if(cab_dados->pos_raiz == -1){
+        printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
+    } else {
+        imprimir_lista_registros_livres(files.file_dados, cab_dados->pos_livre);
+    }
+
+    free(cab_dados);
 }
 
 // Realiza opera??es em lote a partir de um arquivo de texto
@@ -247,10 +263,10 @@ void menu_principal(ARQUIVOS files){
                 imprimirArvore(files);
                 break;
             case 8:
-                imprimirListaLivresIndices();
+                imprimirListaLivresIndices(files);
                 break;
             case 9:
-                imprimirListaLivresDados();
+                imprimirListaLivresDados(files);
                 break;
             case 10:
                 realizarOperacoesEmLote();
