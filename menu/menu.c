@@ -165,9 +165,10 @@ void imprimirListaLivresIndices(ARQUIVOS files) {
 // P?s-condi??o: A lista de registros livres do arquivo de dados ? impressa no console
 void imprimirListaLivresDados(ARQUIVOS files) {
     printf("\n---> Operacao: Imprimir Lista de Livres do Arquivo de Dados\n");
-    CABECALHO_INDICES * cab_dados = le_cabecalho_dados(files.file_dados);
+    CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
 
-    if(cab_dados->pos_raiz == -1){
+    if(cab_indices->pos_raiz == -1){
         printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
     } else if(cab_dados->pos_livre == -1 ) {
         printf("---> Nao ha posicoes com registros de dados livres!\n");
