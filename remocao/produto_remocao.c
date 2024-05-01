@@ -682,7 +682,7 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
 
         if( no_sucessor->num_chaves < MIN ){
             printf("\n---> Necessario verificar_balanceamento o no apos remocao caso 2!");
-            ARVOREB * pai_no_sucessor = ler_no(files.file_indices, pos_pai );
+            ARVOREB * pai_no_sucessor = ler_no(files.file_indices, pos_pai);
             int indice_filho = buscar_pos_filho(pai_no_sucessor , pos_no_sucessor);
             free(pai_no_sucessor);
 
@@ -700,17 +700,21 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         // Caso contrário, fazer concatenação
 
         printf("\n--->Entrou aqui CASO 3\n");
+
         //Busca o pai para poder veirificar os filhos irmão e verificar se podem emprestar
-        int pos_filho_remocao;
         int pos_pai = buscar_pai(files.file_indices, codigo);
+        ARVOREB * pai = ler_no(files.file_indices, pos_pai);
+        int indice_filho = buscar_pos_filho(pai , pos_remocao);
+        free(pai);
+
         printf("\n  ----> POS PAI: %d\n", pos_pai);
 
         remover_caso1(files, no_a_remover, codigo, pos_remocao);
 
-        verificar_balanceamento(files, pos_pai, pos_filho_remocao, pos_remocao, codigo);
-        printf("\n---> Chamando caso 4!\n");
-        remover_caso4(files, cab_indices->pos_raiz, pos_pai);
-        imprimir_cabecalho_indices(cab_indices);
+        if( no_a_remover->num_chaves < MIN ){
+            balancear(files, pos_pai, indice_filho, pos_remocao);
+            verificar_pai(files, pos_pai);
+        }
     }
 
     printf("\n---> Remocao realizada com sucesso!\n");
