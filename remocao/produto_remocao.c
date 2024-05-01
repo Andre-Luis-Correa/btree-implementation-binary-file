@@ -567,50 +567,50 @@ void balancear(ARQUIVOS files, int pos_pai, int indice_filho, int pos_remocao) {
     free(cab_indices);
 }
 
-void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
-    ARVOREB * pai_atual = ler_no(files.file_indices, pos_pai);
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-
-    int pos_filho_pai;
-    int pos_pai_do_pai;
-    int pos_nova_raiz;
-    int pos_no_livre;
-
-    while( pai_atual->num_chaves < MIN && !eh_raiz(files.file_indices, pai_atual)){
-        pos_pai_do_pai = buscar_pai(files.file_indices, pai_atual->chave[0]);
-
-        verificar_balanceamento(files, pos_pai_do_pai, pos_filho_pai, pos_pai, pai_atual->chave[0]);
-        pai_atual = ler_no(files.file_indices, pos_pai_do_pai);
-
-        if(pai_atual->num_chaves == 0){
-            break;
-        }
-    }
-
-    if(pai_atual->num_chaves == 0 && eh_raiz(files.file_indices, pai_atual)){
-        printf("\n---> entrou aquii\n");
-        pos_nova_raiz = pai_atual->filho[0];
-        pos_no_livre = pai_atual->filho[1];
-
-        cab_indices->pos_raiz = pos_nova_raiz;
-        escreve_cabecalho_indices(files.file_indices, cab_indices);
-        atualizar_pos_livres_indices(files.file_indices, pos_pai_do_pai);
-        atualizar_pos_livres_indices(files.file_dados, pos_no_livre);
-    }
-
-    free(cab_indices);
-    free(pai_atual);
-}
-
-int equal(ARVOREB * raiz, ARVOREB * no_a_remover){
-    if(raiz->num_chaves != no_a_remover->num_chaves) return 0;
-
-    for(int i = 0; i < raiz->num_chaves; i++){
-        if(raiz->chave[i] != no_a_remover->chave[i]) return 0;
-    }
-
-    return 1;
-}
+//void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
+//    ARVOREB * pai_atual = ler_no(files.file_indices, pos_pai);
+//    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+//
+//    int pos_filho_pai;
+//    int pos_pai_do_pai;
+//    int pos_nova_raiz;
+//    int pos_no_livre;
+//
+//    while( pai_atual->num_chaves < MIN && !eh_raiz(files.file_indices, pai_atual)){
+//        pos_pai_do_pai = buscar_pai(files.file_indices, pai_atual->chave[0]);
+//
+//        verificar_balanceamento(files, pos_pai_do_pai, pos_filho_pai, pos_pai, pai_atual->chave[0]);
+//        pai_atual = ler_no(files.file_indices, pos_pai_do_pai);
+//
+//        if(pai_atual->num_chaves == 0){
+//            break;
+//        }
+//    }
+//
+//    if(pai_atual->num_chaves == 0 && eh_raiz(files.file_indices, pai_atual)){
+//        printf("\n---> entrou aquii\n");
+//        pos_nova_raiz = pai_atual->filho[0];
+//        pos_no_livre = pai_atual->filho[1];
+//
+//        cab_indices->pos_raiz = pos_nova_raiz;
+//        escreve_cabecalho_indices(files.file_indices, cab_indices);
+//        atualizar_pos_livres_indices(files.file_indices, pos_pai_do_pai);
+//        atualizar_pos_livres_indices(files.file_dados, pos_no_livre);
+//    }
+//
+//    free(cab_indices);
+//    free(pai_atual);
+//}
+//
+//int equal(ARVOREB * raiz, ARVOREB * no_a_remover){
+//    if(raiz->num_chaves != no_a_remover->num_chaves) return 0;
+//
+//    for(int i = 0; i < raiz->num_chaves; i++){
+//        if(raiz->chave[i] != no_a_remover->chave[i]) return 0;
+//    }
+//
+//    return 1;
+//}
 
 void verificar_pai(ARQUIVOS files, int pos_pai) {
 
