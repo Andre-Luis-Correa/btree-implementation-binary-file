@@ -614,10 +614,13 @@ int equal(ARVOREB * raiz, ARVOREB * no_a_remover){
 
 void verificar_pai(ARQUIVOS files, int pos_pai) {
 
+    printf("\n---> Verificando pai!");
+
     ARVOREB * pai = ler_no(files.file_indices, pos_pai);
     int pos_pai_do_pai, indice_filho; // pos_no_sucessor = pos_pai
 
-    while ( pai->num_chaves < MIN && pai->num_chaves != 0) {
+    while ( pai->num_chaves < MIN && !eh_raiz(files.file_indices, pos_pai) ) {
+        printf("\n---> entrou no while pos pai < MIN");
         pos_pai_do_pai = buscar_pai_by_pos(files.file_indices, pos_pai);
         ARVOREB * pai_do_pai = ler_no(files.file_indices, pos_pai_do_pai);
         indice_filho = buscar_pos_filho(pai_do_pai, pos_pai);
@@ -632,6 +635,7 @@ void verificar_pai(ARQUIVOS files, int pos_pai) {
     }
 
     if(pai->num_chaves == 0){
+        printf("\n---> ATT cabecalho");
         CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
 
         cab_indices->pos_raiz = pai->filho[0];
@@ -678,23 +682,18 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
 
         if( no_sucessor->num_chaves < MIN ){
             printf("\n---> Necessario verificar_balanceamento o no apos remocao caso 2!");
-
-            printf("\n---> Poa no sucessor: %d  ", pos_no_sucessor);
-            int pos_pai_no_sucessor = buscar_pai_by_pos(files.file_indices, pos_no_sucessor);
-            printf("\n---> Poa no sucessor: %d   Pos pai_no_sucessor: %d ", pos_no_sucessor, pos_pai_no_sucessor);
-
-            ARVOREB * pai_no_sucessor = ler_no(files.file_indices, pos_pai_no_sucessor );
+            ARVOREB * pai_no_sucessor = ler_no(files.file_indices, pos_pai );
             int indice_filho = buscar_pos_filho(pai_no_sucessor , pos_no_sucessor);
-            //free(pai_no_sucessor);
+            free(pai_no_sucessor);
 
             balancear(files, pos_pai, indice_filho, pos_no_sucessor);
 
             // Possivelmente vai se tornar uma função:////////
+            printf("\n---> POS PAI antes de verificar: %d", pos_pai);
             verificar_pai(files, pos_pai);
 
-            printf("\n---> Retornando a funcao remover principal!");
         }
-        printf("\n---> Retornando a funcao remover principal!");
+        printf("\n---> terminou caso 2!");
     } else if ( !mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover) ){
         // CASO 3°: a remoção é feita em um nó com numero minimo de chaves
         // Logo, é necessário verificar, PRIMEIRAMENTE, se pode ser feito a redistribuição

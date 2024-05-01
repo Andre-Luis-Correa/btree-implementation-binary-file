@@ -22,17 +22,31 @@ int eh_folha(ARVOREB * r) {
     return r->filho[0] == -1;
 }
 
-//testa se é raiz
-//pre-condição: r nao pode ser NULL
-//pos-condição: 1 se for raiz, 0 se nao for
-int eh_raiz(FILE * file_indices, ARVOREB * r) {
-    if (r != NULL) {
-        printf("\n---> BUscandao PAI da chave => %d", r->chave[0]);
-        int pos_pai = buscar_pai(file_indices, r->chave[0]);
-        if ( pos_pai == -1) {
-            return 1;
-        }
+////testa se é raiz
+////pre-condição: r nao pode ser NULL
+////pos-condição: 1 se for raiz, 0 se nao for
+//int eh_raiz(FILE * file_indices, ARVOREB * r) {
+//    if (r != NULL) {
+//        printf("\n---> BUscandao PAI da chave => %d", r->chave[0]);
+//        int pos_pai = buscar_pai(file_indices, r->chave[0]);
+//        if ( pos_pai == -1) {
+//            return 1;
+//        }
+//    }
+//    return 0;
+//}
+
+int eh_raiz(FILE * file_indices, int pos) {
+    CABECALHO_INDICES * cab = le_cabecalho_indices(file_indices);
+
+    int pos_pai = buscar_pai_by_pos(file_indices, pos);
+
+    if ( pos_pai == -1) {
+        free(cab);
+        return 1;
     }
+
+    free(cab);
     return 0;
 }
 
