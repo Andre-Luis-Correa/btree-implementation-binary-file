@@ -27,6 +27,7 @@ int eh_folha(ARVOREB * r) {
 //pos-condição: 1 se for raiz, 0 se nao for
 int eh_raiz(FILE * file_indices, ARVOREB * r) {
     if (r != NULL) {
+        printf("\n---> BUscandao PAI da chave => %d", r->chave[0]);
         int pos_pai = buscar_pai(file_indices, r->chave[0]);
         if ( pos_pai == -1) {
             return 1;
@@ -37,8 +38,12 @@ int eh_raiz(FILE * file_indices, ARVOREB * r) {
 
 int underflow(FILE * file_indices, ARVOREB * r) {
     if (r != NULL) {
-        if (r->num_chaves < MIN && !eh_raiz(file_indices, r) )
+        printf("\n---> no nao e nulo para verificar UNDERFLOW!");
+        printf("\n---> Resultado de: (r->num_chaves < MIN = %d) e Resultado de (!eh_raiz(file_indices, r) = %d) ", r->num_chaves < MIN, !eh_raiz(file_indices, r));
+        if (r->num_chaves < MIN && !eh_raiz(file_indices, r) ){
+            printf("\n---> reotnando 1 no UNDERFLOW!");
             return 1;
+        }
         return 0;
     }
     return 0;

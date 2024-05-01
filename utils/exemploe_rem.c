@@ -1,4 +1,4 @@
-
+//
 //int mais_chaves_que_min(ARVOREB * r){
 //    return r->num_chaves > MIN;
 //}
@@ -612,13 +612,13 @@
 //
 //    free(cab_indices);
 //}
-
-
-
-
-
-
-
+//
+//
+//
+//
+//
+//
+//
 //#include <stdio.h>
 //#include <stdlib.h>
 //#include "produto_remocao.h"

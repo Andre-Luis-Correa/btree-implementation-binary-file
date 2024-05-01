@@ -13,7 +13,6 @@ int eh_folha(ARVOREB * r);
 int eh_raiz(FILE * file_indices, ARVOREB * r);
 int underflow(FILE * file_indices, ARVOREB * r);
 int buscar_pos_chave(ARVOREB * r, int codigo);
-int buscar_pos_chave(ARVOREB * r, int codigo);
 int mais_chaves_que_min(ARVOREB * r);
 int buscar_no(FILE * file_indices, int codigo);
 int buscar_no_aux(FILE * file_indices, int codigo, int pos);

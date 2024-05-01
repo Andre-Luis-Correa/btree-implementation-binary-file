@@ -830,7 +830,7 @@
 //
 //
 ////redistribui a arvore R com underflow
-////pre-condição: função chamada automaticamente por balancear, nao deve ser chamada solta
+////pre-condição: função chamada automaticamente por verificar_balanceamento, nao deve ser chamada solta
 ////pos-condição: redistribui a árvore
 //void redistribuir(FILE* file_indices, ARVOREB * r) {
 //    ARVOREB * esq = encontrar_irmao_esq(file_indices, r);//usa memoria dinamica, liberar
@@ -1001,8 +1001,8 @@
 //}
 //
 ////faz a concatenação, prioritariamente com o irmao esquerdo, se não o possuir, com o direito
-//// pré-condição: nó com underflow e que tenha sido redirecionado pela função balancear para fazer concatenação
-////nao chamar esssa função manualmente, so deve ser chamada pela balancear
+//// pré-condição: nó com underflow e que tenha sido redirecionado pela função verificar_balanceamento para fazer concatenação
+////nao chamar esssa função manualmente, so deve ser chamada pela verificar_balanceamento
 ////pos-condição: concatena o no com o irmao sequerdo se possuir, ou direito caso nao possua irmao esquerdo
 //void concatenar(FILE* file_indices, ARVOREB * r) {
 //    ARVOREB * esq = encontrar_irmao_esq(file_indices, r);
