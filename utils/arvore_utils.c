@@ -216,28 +216,41 @@ int buscar_pai_by_pos(FILE * file_indices, int pos){
     }
 
     free(r);
+    printf("\n---> indo para recursao encontrar pai filho");
     return buscar_pai_by_pos_aux(file_indices, pos_raiz, pos);
 
 }
 
-int buscar_pai_by_pos_aux(FILE * file_indices, int pos_raiz, int pos){
-    ARVOREB * r = ler_no(file_indices, pos_raiz);
+int buscar_pai_by_pos_aux(FILE * file_indices, int pos_raiz, int pos) {
+    if( pos_raiz != -1 ) {
 
-    int i;
-    for (i = 0; i <= r->num_chaves; i++) {
-        if (r->filho[i] == pos) {
-            free(r);
-            return pos_raiz;
+        ARVOREB * r = ler_no(file_indices, pos_raiz);
+
+        int i, pai = -1; // Inicialize pai com -1 para indicar que não foi encontrado
+
+        // Verifica se a posição está entre os filhos do nó atual
+        for (i = 0; i <= r->num_chaves; i++) {
+            if (r->filho[i] == pos) {
+                free(r);
+                return pos_raiz;
+            }
         }
+
+        // Caso a posição não seja um dos filhos, procuramos recursivamente nos filhos
+        for (i = 0; i <= r->num_chaves; i++) { // Modificado para <=
+            pai = buscar_pai_by_pos_aux(file_indices, r->filho[i], pos);
+            if (pai != -1) // Se encontrou o pai, encerra o loop
+                break;
+        }
+
+        free(r);
+        return pai;
     }
 
-    for (i = 0; i <= r->num_chaves; i++) {
-        return buscar_pai_aux(file_indices, r->filho[i], pos);
-    }
-
-    free(r);
     return -1;
 }
+
+
 
 //int buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int *pos_filho_remocao) {
 //    ARVOREB *r = ler_no(files.file_indices, pos_raiz);

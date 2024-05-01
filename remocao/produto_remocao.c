@@ -326,11 +326,11 @@ void buscar_filhos_esq_dir(ARQUIVOS files, int pos_pai, int indice_remocao, int 
     // Depois obter os filhos a esquerda e direita
     if (indice_remocao == 0) {
         printf("\n--> entrou aqui:   if (pos_filho_remocao == 0)");
-        *pos_dir = -1;
+        *pos_dir = pai->filho[indice_remocao + 1];
         *pos_esq = pai->filho[indice_remocao];
         free(pai);
         return;
-    } else if (indice_remocao == pai->num_chaves ){
+    } else if (indice_remocao == pai->num_chaves) {
         printf("\n--> entrou aqui:   ( pos_filho_remocao == pai->num_chaves )");
         *pos_esq = pai->filho[pai->num_chaves - 1];
         *pos_dir = -1;
@@ -349,9 +349,9 @@ void concatenar_esquerda(ARQUIVOS files, ARVOREB * pai, ARVOREB * esq, ARVOREB *
     int i;
     printf("\n---> indice filho = %d", indice_filho);
 
-    esq->chave[esq->num_chaves] = pai->chave[indice_filho];
-    printf("\n---> CHAVE: %d", pai->chave[indice_filho]);
-    esq->pt_dados[esq->num_chaves] = pai->pt_dados[indice_filho];
+    esq->chave[esq->num_chaves] = pai->chave[indice_filho - 1];
+    printf("\n---> CHAVE: %d", pai->chave[indice_filho - 1]);
+    esq->pt_dados[esq->num_chaves] = pai->pt_dados[indice_filho - 1];
     esq->num_chaves++;
     printf("\n---> 2 INICIANDO concatenar esq!");
 
@@ -490,7 +490,7 @@ void verificar_balanceamento(ARQUIVOS files, int pos_pai, int pos_filho_remocao,
 
             printf("\n---> Não será feito a redistribuição, mas sim, a concatenação");
             // Aqui será inserido a lógica da concatenação
-            buscar_filhos_esq_dir(files, pos_pai, pos_filho_remocao, &pos_esq, &pos_dir);
+            buscar_filhos_esq_dir(files, pos_remocao, pos_filho_remocao, &pos_esq, &pos_dir);
             printf("\n--> FILHOS a esq e dir\n");
 
 //            ARVOREB * esq = ler_no(files.file_indices, pos_esq);
@@ -678,7 +678,16 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
 
         if( no_sucessor->num_chaves < MIN ){
             printf("\n---> Necessario verificar_balanceamento o no apos remocao caso 2!");
-            balancear(files, pos_pai, 0, pos_no_sucessor);
+
+            printf("\n---> Poa no sucessor: %d  ", pos_no_sucessor);
+            int pos_pai_no_sucessor = buscar_pai_by_pos(files.file_indices, pos_no_sucessor);
+            printf("\n---> Poa no sucessor: %d   Pos pai_no_sucessor: %d ", pos_no_sucessor, pos_pai_no_sucessor);
+
+            ARVOREB * pai_no_sucessor = ler_no(files.file_indices, pos_pai_no_sucessor );
+            int indice_filho = buscar_pos_filho(pai_no_sucessor , pos_no_sucessor);
+            //free(pai_no_sucessor);
+
+            balancear(files, pos_pai, indice_filho, pos_no_sucessor);
 
             // Possivelmente vai se tornar uma função:////////
             verificar_pai(files, pos_pai);
