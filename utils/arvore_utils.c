@@ -61,6 +61,18 @@ int buscar_pos_chave(ARVOREB * r, int codigo){
     return -1;
 }
 
+int buscar_pos_filho(ARVOREB * r, int pos){
+    int filho;
+
+    // Encontra a pos dentro do nó
+    for(filho = 0; filho <= r->num_chaves; filho++){
+        if(r->filho[filho] == pos)
+            return filho;
+    }
+
+    return -1;
+}
+
 int mais_chaves_que_min(ARVOREB * r){
     return r->num_chaves > MIN;
 }
@@ -191,6 +203,41 @@ int buscar_pos_chave_separadora(FILE* file_indices, ARVOREB * esq, ARVOREB * dir
     return -1;
 }
 
+int buscar_pai_by_pos(FILE * file_indices, int pos){
+    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(file_indices);
+    int pos_raiz = cab_indices->pos_raiz;
+    free(cab_indices);
+
+    ARVOREB * r = ler_no(file_indices, pos_raiz);
+
+    if (eh_folha(r) || (pos == pos_raiz) ) { // A propria raiz é o pai, pois nao tem pai acima
+        free(r);
+        return -1; // Retorna -1 indicando que não foi encontrado
+    }
+
+    free(r);
+    return buscar_pai_by_pos_aux(file_indices, pos_raiz, pos);
+
+}
+
+int buscar_pai_by_pos_aux(FILE * file_indices, int pos_raiz, int pos){
+    ARVOREB * r = ler_no(file_indices, pos_raiz);
+
+    int i;
+    for (i = 0; i <= r->num_chaves; i++) {
+        if (r->filho[i] == pos) {
+            free(r);
+            return pos_raiz;
+        }
+    }
+
+    for (i = 0; i <= r->num_chaves; i++) {
+        return buscar_pai_aux(file_indices, r->filho[i], pos);
+    }
+
+    free(r);
+    return -1;
+}
 
 //int buscar_pai(ARQUIVOS files, int pos_raiz, int codigo, int *pos_filho_remocao) {
 //    ARVOREB *r = ler_no(files.file_indices, pos_raiz);

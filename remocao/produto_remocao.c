@@ -567,7 +567,6 @@ void balancear(ARQUIVOS files, int pos_pai, int indice_filho, int pos_remocao) {
     free(cab_indices);
 }
 
-
 void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
     ARVOREB * pai_atual = ler_no(files.file_indices, pos_pai);
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
@@ -613,6 +612,38 @@ int equal(ARVOREB * raiz, ARVOREB * no_a_remover){
     return 1;
 }
 
+void verificar_pai(ARQUIVOS files, int pos_pai) {
+
+    ARVOREB * pai = ler_no(files.file_indices, pos_pai);
+    int pos_pai_do_pai, indice_filho; // pos_no_sucessor = pos_pai
+
+    while ( pai->num_chaves < MIN && pai->num_chaves != 0) {
+        pos_pai_do_pai = buscar_pai_by_pos(files.file_indices, pos_pai);
+        ARVOREB * pai_do_pai = ler_no(files.file_indices, pos_pai_do_pai);
+        indice_filho = buscar_pos_filho(pai_do_pai, pos_pai);
+
+        free(pai_do_pai);
+
+        balancear(files, pos_pai_do_pai, indice_filho, pos_pai);
+
+        free(pai);
+        pai = ler_no(files.file_indices, pos_pai_do_pai);
+        pos_pai = pos_pai_do_pai;
+    }
+
+    if(pai->num_chaves == 0){
+        CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+
+        cab_indices->pos_raiz = pai->filho[0];
+
+        escreve_cabecalho_indices(files.file_indices, cab_indices);
+
+        free(cab_indices);
+    }
+
+    free(pai);
+}
+
 void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
 
@@ -648,6 +679,10 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
         if( no_sucessor->num_chaves < MIN ){
             printf("\n---> Necessario verificar_balanceamento o no apos remocao caso 2!");
             balancear(files, pos_pai, 0, pos_no_sucessor);
+
+            // Possivelmente vai se tornar uma função:////////
+            verificar_pai(files, pos_pai);
+
             printf("\n---> Retornando a funcao remover principal!");
         }
         printf("\n---> Retornando a funcao remover principal!");

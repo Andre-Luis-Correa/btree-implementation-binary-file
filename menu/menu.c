@@ -206,7 +206,7 @@ void buscar(ARQUIVOS files){
     printf("\n---> Digite o valor para buscar o no pai: ");
     scanf("%d", &codigo);
 
-    int pos_pai = buscar_pai(files.file_indices, codigo);
+    int pos_pai = buscar_pai_by_pos(files.file_indices, codigo);
     printf("\n POS PAI : %d", pos_pai);
     ARVOREB * pai = ler_no(files.file_indices, pos_pai);
     if(pai != NULL)
