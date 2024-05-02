@@ -661,7 +661,7 @@ int main() {
 ////    if (sucesso) {
 ////        printf("\n---> Chave %d removida com sucesso!\n", codigo);
 ////    } else {
-////        printf("\n---> Falha ao remover a chave %d!\n", codigo);
+////        printf("\n---> Falha ao remover_lote a chave %d!\n", codigo);
 ////    }
 ////
 ////    return sucesso;
@@ -683,7 +683,7 @@ int main() {
 ////
 ////    // Verifique se o nó precisa ser ajustado após a remoção
 ////    if (!sucesso) {
-////        printf("\n---> Falha ao remover a chave %d!\n", codigo);
+////        printf("\n---> Falha ao remover_lote a chave %d!\n", codigo);
 ////        return 0;
 ////    }
 ////

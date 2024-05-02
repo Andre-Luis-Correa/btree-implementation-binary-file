@@ -742,7 +742,7 @@
 //}
 //
 ////redistribui a arvore r com base no irmao esq que pôde fazer emprestimo
-////pre-condição: faz parte de remover, nao pode ser chamada solta
+////pre-condição: faz parte de remover_lote, nao pode ser chamada solta
 ////pos-condição: redistribui r emprestando do irmao esq
 //void redistribuir_pela_esq(FILE* file_indices, ARVOREB * r, ARVOREB * esq) {
 //    int i, pos_chave_separadora, pos_pai, pos_r, pos_esq;
@@ -786,7 +786,7 @@
 //}
 //
 ////redistribui a arvore r com base no irmao dir que pôde fazer emprestimo
-////pre-condição: faz parte de remover, nao pode ser chamada solta
+////pre-condição: faz parte de remover_lote, nao pode ser chamada solta
 ////pos-condição: redistribui r emprestando do irmao dir
 //void redistribuir_pela_dir(FILE* file_indices, ARVOREB * r, ARVOREB * dir){
 //    int i, pos_chave_separadora, pos_pai, pos_r, pos_dir;

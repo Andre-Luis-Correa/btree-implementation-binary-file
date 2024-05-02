@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "menu.h"
 #include "../insercao/produto_insercao.h"
 #include "../impressao/produto_impressao.h"
 #include "../remocao/produto_remocao.h"
 #include "../atualizacao/produto_atualizacao.h"
 #include "../utils/arvore_utils.h"
+#include "../lote/lote.h"
 
 // Exibe o cabe?alho do menu
 // Pr?-condi??es: Nenhuma
@@ -61,9 +63,13 @@ void atualizarPreco(ARQUIVOS files) {
         printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
     } else {
         int cod;
-        printf("---> Digite o codigo do produto de preco a ser atualizado:\n");
+        printf("---> Digite o codigo do produto a ser atualizado:");
         scanf("%d", &cod);
-        atualizar_preco_produto(files, cod);
+        float novo_preco;
+        printf("\n---> Insira o novo preco: ");
+        scanf("%f", &novo_preco);
+
+        atualizar_preco_produto(files, cod, novo_preco);
     }
     free(cab_indices);
 }
@@ -79,9 +85,12 @@ void atualizarEstoque(ARQUIVOS files) {
         printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
     } else {
         int cod;
-        printf("---> Digite o codigo do produto de estoque a ser atualizado:\n");
+        printf("---> Digite o codigo do produto de estoque a ser atualizado:");
         scanf("%d", &cod);
-        atualizar_estoque_produto(files, cod);
+        int novo_estoque;
+        printf("\n---> Insira o novo estoque");
+        scanf("%d", &novo_estoque);
+        atualizar_estoque_produto(files, cod, novo_estoque);
     }
     free(cab_indices);
 }
@@ -181,9 +190,14 @@ void imprimirListaLivresDados(ARQUIVOS files) {
 // Realiza opera??es em lote a partir de um arquivo de texto
 // Pr?-condi??es: O arquivo de texto contendo as opera??es em lote deve existir e estar formatado corretamente
 // P?s-condi??o: As opera??es em lote s?o executadas
-void realizarOperacoesEmLote() {
+void realizarOperacoesEmLote(ARQUIVOS files) {
     printf("\n---> Operacao: Realizar Operacoes em Lote\n");
-    // Implemente a l?gica para realizar opera??es em lote
+    printf("\n---> Digite o nome do arquivo com extensao (.txt): ");
+
+    char file[MAX_NOME];
+    scanf("%s", file);
+
+    ler_arquivo(files, file);
 }
 
 void imprimir_info_nos(ARQUIVOS files){
@@ -273,7 +287,7 @@ void menu_principal(ARQUIVOS files){
                 imprimirListaLivresDados(files);
                 break;
             case 10:
-                realizarOperacoesEmLote();
+                realizarOperacoesEmLote(files);
                 break;
             case 11:
                 imprimir_info_nos(files);

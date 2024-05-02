@@ -450,7 +450,7 @@ void concatenar(ARQUIVOS files, int pos_pai, int pos_remocao, int indice_filho, 
         imprimir_no(dir);
         printf("\n---> esse é o no pai!");
         imprimir_no(pai);
-        printf("\n---> esse é o no a remover!");
+        printf("\n---> esse é o no a remover_lote!");
         imprimir_no(no_a_remover);
 
         concatenar_direita(files, pai, dir, no_a_remover, indice_filho);
@@ -459,15 +459,15 @@ void concatenar(ARQUIVOS files, int pos_pai, int pos_remocao, int indice_filho, 
         escreve_no(files.file_indices, no_a_remover, pos_remocao);
     }
 
-    printf("\n---> Retornando a funcao remover concatenacao!");
+    printf("\n---> Retornando a funcao remover_lote concatenacao!");
     //free(pai);
-    printf("\n---> Retornando a funcao remover concatenacao!");
+    printf("\n---> Retornando a funcao remover_lote concatenacao!");
     free(no_a_remover);
-    printf("\n---> Retornando a funcao remover concatenacao!");
+    printf("\n---> Retornando a funcao remover_lote concatenacao!");
     free(esq);
-    printf("\n---> Retornando a funcao remover concatenacao!");
+    printf("\n---> Retornando a funcao remover_lote concatenacao!");
     free(dir);
-    printf("\n---> Retornando a funcao remover concatenacao!");
+    printf("\n---> Retornando a funcao remover_lote concatenacao!");
 }
 
 void verificar_balanceamento(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int pos_remocao, int codigo) {
@@ -560,12 +560,12 @@ void balancear(ARQUIVOS files, int pos_pai, int indice_filho, int pos_remocao) {
             }
 
             concatenar(files, pos_pai, pos_remocao, indice_filho, pos_esq, pos_dir);
-            printf("\n---> Retornando a funcao remover principal!");
+            printf("\n---> Retornando a funcao remover_lote principal!");
         }
 
     }
 
-    printf("\n---> Retornando a funcao remover principal!");
+    printf("\n---> Retornando a funcao remover_lote principal!");
     free(cab_indices);
 }
 
