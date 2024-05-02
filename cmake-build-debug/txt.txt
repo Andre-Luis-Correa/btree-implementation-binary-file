@@ -9,7 +9,7 @@ A;80;5;
 A;30;;61,90
 I;11;Impressora Laser;HP;eletronicos e tecnologia;15;779,90
 I;240;Dom Casmurro;Cia das Letras;livro;30;22,90
-I;100;A Condi ?c~ao Humana;Ed. Pensamento; livro;77;96,90
+I;100;A Condicao Humana;Ed. Pensamento; livro;77;96,90
 R;50
 A;100;72;
 I;120;Celular;Apple;eletronicos e tecnologia;25;3200,00
