@@ -103,12 +103,13 @@ void imprimir_lista_registros_livres(FILE * file_dados, int pos_atual){
     }
 
     int prox;
-
+    printf("\n---> Pos atual = %d\n", pos_atual);
     printf("+--------------------------------------------------+\n");
     printf("|  Lista de Posicoes Livres no Arquivo de Indices  |\n");
     printf("+--------------------------------------------------+\n");
 
     DADOS_REGISTRO * registro = ler_registro(file_dados, pos_atual);
+    printf("| %2d                                          |\n", pos_atual);
 
     while(registro->prox_livre != -1 ){
         printf("| %2d                                          |\n", registro->prox_livre);

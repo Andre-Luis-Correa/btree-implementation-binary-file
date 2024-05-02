@@ -38,6 +38,7 @@ void atualizar_pos_livres_indices(FILE * file_indices, int pos) {
     CABECALHO_INDICES * cab = le_cabecalho_indices(file_indices);
     ARVOREB * no = ler_no(file_indices, pos);//REVER, era ler produto
 
+    printf("\n---> Atualizando Lista de dados");
     no->prox_livre = cab->pos_livre;
     escreve_no(file_indices, no, pos);
     cab->pos_livre = pos;
@@ -54,6 +55,7 @@ void atualizar_pos_livres_dados(FILE * file_dados, int pos) {
     DADOS_REGISTRO * p = ler_registro(file_dados, pos);
 
     if (p != NULL) {
+        printf("\n---> Atualizando Lista de dados");
         p->prox_livre = cab->pos_livre;
         escreve_registro(file_dados, p, pos);
         cab->pos_livre = pos;
@@ -70,15 +72,15 @@ void atualiza_no_remocao_folha(ARQUIVOS files, ARVOREB * folha, int pos_remocao,
     // folha->pt_dados[pos_codigo] => posição dos dados no file de dados
     int pos_registro = folha->pt_dados[pos_codigo];
 
-    if(cab_dados->pos_livre == -1){
-        cab_dados->pos_livre = pos_registro;
-        // Atualiza o cab_dados com a posição livre
-        escreve_cabecalho_dados(files.file_dados, cab_dados);
-
-    }else {
-        printf("\n---> Atualizando lista de dados livres!\n");
+//    if(cab_dados->pos_livre == -1){
+//        cab_dados->pos_livre = pos_registro;
+//        // Atualiza o cab_dados com a posição livre
+//        escreve_cabecalho_dados(files.file_dados, cab_dados);
+//
+//    }else {
+//        printf("\n---> Atualizando lista de dados livres!\n");
         atualizar_pos_livres_dados(files.file_dados, pos_registro);
-    }
+    //}
 
     printf("\n ---> CASO 1 - ANTES ATT - REMOCAO: \n");
     imprimir_no(folha);
@@ -650,12 +652,25 @@ void verificar_pai(ARQUIVOS files, int pos_pai) {
 
 void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
+    CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
 
     // Buscar o nó que possui a chave a ser removida a ser removido
     ARVOREB * no_a_remover = ler_no(files.file_indices, pos_remocao);
 
     // 1° CASO: a remoção é feita em um nó folha com número de chaves maior que o mínimo (ORDEM/2)
-    if( mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover) ){
+    if(eh_raiz(files.file_indices, pos_remocao) && eh_folha(no_a_remover)) {
+        remover_caso1(files, no_a_remover, codigo, pos_remocao);
+        if(no_a_remover->num_chaves == 0){
+            cab_indices->pos_raiz = -1;
+            cab_indices->pos_topo = 0;
+            cab_indices->pos_livre = -1;
+            escreve_cabecalho_indices(files.file_indices, cab_indices);
+
+            cab_dados->pos_topo = 0;
+            cab_dados->pos_livre = -1;
+            escreve_cabecalho_dados(files.file_dados, cab_dados);
+        }
+    }else if( (mais_chaves_que_min(no_a_remover) && eh_folha(no_a_remover)) ){
         // Logo, apenas remove a chave do nó, realizando as alterações necessárias e gravando novamente no arquivo
         printf("\n--->Entrou aqui 1\n");
         remover_caso1(files, no_a_remover, codigo, pos_remocao);
