@@ -3,7 +3,7 @@ I;25;Leite;Parmalat;bebidas;358;7,70
 I;200;Microondas;LG;eletrodomesticos;53;690,99
 I;80;Multiprocessador;Arno;eletrodomesticos;7;299,90
 I;50;Guarana;Antartica;bebidas;200;5,50
-I;30;12 Regras para a Vida: um ant ??doto para o caos;Alta Books;livro;54,90
+I;30;12 Regras para a Vida: um antidoto para o caos;Alta Books;livro;54,90
 A;25;340;8,30
 A;80;5;
 A;30;;61,90

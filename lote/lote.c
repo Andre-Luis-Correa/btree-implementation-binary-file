@@ -25,6 +25,7 @@ void atualizar_preco_lote(ARQUIVOS files, int codigo, float preco){
     atualizar_preco_produto(files, codigo, preco);
 
 }
+
 void atualizar_estoque_lote(ARQUIVOS files, int codigo, int novo_estoque){
     if(buscar_no(files.file_indices, codigo) == -1){
         printf("\n---> Nao foi possivel atualizar, pois o codigo do produto e inexistente!");
