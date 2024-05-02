@@ -50,18 +50,18 @@ int eh_raiz(FILE * file_indices, int pos) {
     return 0;
 }
 
-int underflow(FILE * file_indices, ARVOREB * r) {
-    if (r != NULL) {
-        printf("\n---> no nao e nulo para verificar UNDERFLOW!");
-        printf("\n---> Resultado de: (r->num_chaves < MIN = %d) e Resultado de (!eh_raiz(file_indices, r) = %d) ", r->num_chaves < MIN, !eh_raiz(file_indices, r));
-        if (r->num_chaves < MIN && !eh_raiz(file_indices, r) ){
-            printf("\n---> reotnando 1 no UNDERFLOW!");
-            return 1;
-        }
-        return 0;
-    }
-    return 0;
-}
+//int underflow(FILE * file_indices, ARVOREB * r) {
+//    if (r != NULL) {
+//        printf("\n---> no nao e nulo para verificar UNDERFLOW!");
+//        printf("\n---> Resultado de: (r->num_chaves < MIN = %d) e Resultado de (!eh_raiz(file_indices, r) = %d) ", r->num_chaves < MIN, !eh_raiz(file_indices, r));
+//        if (r->num_chaves < MIN && !eh_raiz(file_indices, r) ){
+//            printf("\n---> reotnando 1 no UNDERFLOW!");
+//            return 1;
+//        }
+//        return 0;
+//    }
+//    return 0;
+//}
 
 int buscar_pos_chave(ARVOREB * r, int codigo){
     int pos_codigo;
