@@ -1,0 +1,11 @@
+I;70;Relogio smartwatch;Polar;eletronicos e tecnologia;27;566,70
+I;25;Leite;Parmalat;bebidas;358;7,70
+I;200;Microondas;LG;eletrodomesticos;53;690,99
+I;80;Multiprocessador;Arno;eletrodomesticos;7;299,90
+I;50;Guarana;Antartica;bebidas;200;5,50
+I;30;12 Regras para a Vida: um antidoto para o caos;Alta Books;livro;54,90
+I;11;Impressora Laser;HP;eletronicos e tecnologia;15;779,90
+I;240;Dom Casmurro;Cia das Letras;livro;30;22,90
+I;100;A Condicao Humana;Ed. Pensamento; livro;77;96,90
+I;120;Celular;Apple;eletronicos e tecnologia;25;3200,00
+I;90;Suco de laraja;Del Valle;bebidas;200;9,90

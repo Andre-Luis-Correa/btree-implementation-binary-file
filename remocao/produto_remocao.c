@@ -38,12 +38,14 @@ void atualizar_pos_livres_indices(FILE * file_indices, int pos) {
     CABECALHO_INDICES * cab = le_cabecalho_indices(file_indices);
     ARVOREB * no = ler_no(file_indices, pos);//REVER, era ler produto
 
-    printf("\n---> Atualizando Lista de dados");
-    no->prox_livre = cab->pos_livre;
-    escreve_no(file_indices, no, pos);
-    cab->pos_livre = pos;
-    escreve_cabecalho_indices(file_indices, cab);
-    free(no);
+    if( no != NULL) {
+        printf("\n---> Atualizando Lista de dados");
+        no->prox_livre = cab->pos_livre;
+        escreve_no(file_indices, no, pos);
+        cab->pos_livre = pos;
+        escreve_cabecalho_indices(file_indices, cab);
+        free(no);
+    }
     free(cab);
 }
 

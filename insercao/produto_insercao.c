@@ -101,16 +101,20 @@ int split (ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio, CAB
     //ATENÇÃO: reutilizar pos
     //int pos_y = cab_indices->pos_topo;
     int pos_y = get_pos_livre_indices(files.file_indices, cab_indices);
-    escreve_no(files.file_indices, y, cab_indices->pos_topo);
+    //escreve_no(files.file_indices, y, cab_indices->pos_topo);
+    escreve_no(files.file_indices, y, pos_y);
     free(y);
-    cab_indices->pos_topo++;
+    //cab_indices->pos_topo++;
     escreve_cabecalho_indices(files.file_indices, cab_indices);
     return pos_y;
 }
 
 int get_pos_livre_dados(FILE * file, CABECALHO_DADOS * cab){
-    if(cab->pos_livre == -1)
-        return cab->pos_topo;
+    if(cab->pos_livre == -1){
+        int nova_pos = cab->pos_topo;
+        cab->pos_topo++;
+        return nova_pos;
+    }
 
     int pos_livre = cab->pos_livre;
     DADOS_REGISTRO * registro = ler_registro(file, cab->pos_livre);
@@ -123,8 +127,11 @@ int get_pos_livre_dados(FILE * file, CABECALHO_DADOS * cab){
 }
 
 int get_pos_livre_indices(FILE * file, CABECALHO_INDICES * cab){
-    if(cab->pos_livre == -1)
-        return cab->pos_topo;
+    if(cab->pos_livre == -1){
+        int nova_pos = cab->pos_topo;
+        cab->pos_topo++;
+        return nova_pos;
+    }
 
     int pos_livre = cab->pos_livre;
     ARVOREB * no = ler_no(file, cab->pos_livre);
@@ -158,15 +165,16 @@ void cadastrar_produto_file(ARQUIVOS files, PRODUTO_DATA * produto){
         escreve_registro(files.file_dados, dados, pos_registro);
 
         // Cria a raiz com as informações: código do produto e o ponteiro de dados do arquivo de dados
-        cria_no(r, produto->codigo, cab_dados->pos_topo);
+        //cria_no(r, produto->codigo, cab_dados->pos_topo);
+        cria_no(r, produto->codigo, pos_registro);
 
         // ATENÇÃO: reaproveitamento de posições
         //escreve_no(files.file_indices, r, cab_indices->pos_raiz);
         escreve_no(files.file_indices, r, get_pos_livre_indices(files.file_indices, cab_indices));
 
         // Atualiza os cabeçalhos de AMBOS arquivos
-        cab_indices->pos_topo++;
-        cab_dados->pos_topo++;
+        //cab_indices->pos_topo++;
+        //cab_dados->pos_topo++;
         escreve_cabecalho_indices(files.file_indices, cab_indices);
         escreve_cabecalho_dados(files.file_dados, cab_dados);
     } else { // árvore não vazia
@@ -176,16 +184,16 @@ void cadastrar_produto_file(ARQUIVOS files, PRODUTO_DATA * produto){
         DADOS_REGISTRO * dados_novos = (DADOS_REGISTRO*) malloc(sizeof (DADOS_REGISTRO)); // Cria um registro e escreve no arquivo de dados
         cria_registro(dados_novos, produto);
 
+        // Guarda a informação de onde o novo registro foi inserido no arquivo de dados
+        int pt_dados_atual = get_pos_livre_dados(files.file_dados, cab_dados);
+
         // ATENÇÃO: reaproveitamento de posições
         // escreve_registro(files.file_dados, dados_novos, cab_dados->pos_topo);
-        escreve_registro(files.file_dados, dados_novos, get_pos_livre_dados(files.file_dados, cab_dados));
+        escreve_registro(files.file_dados, dados_novos, pt_dados_atual);
         free(dados_novos);
 
-        // Guarda a informação de onde o novo registro foi inserido no arquivo de dados
-        int pt_dados_atual = cab_dados->pos_topo;
-
         // Atualiza o cabecalho do ARQUIVO de DADOS
-        cab_dados->pos_topo++;
+        //cab_dados->pos_topo++;
         escreve_cabecalho_dados(files.file_dados, cab_dados);
 
         // Chama a função auxiliar de inserção
@@ -227,11 +235,15 @@ void cadastrar_produto_file(ARQUIVOS files, PRODUTO_DATA * produto){
 
             // ATENÇÃO: reaproveitamento de posições
             // escreve_no(files.file_indices, nova_raiz, cab_indices_atual->pos_topo);
-            escreve_no(files.file_indices, nova_raiz, get_pos_livre_indices(files.file_indices, cab_indices_atual));
-            cab_indices_atual->pos_raiz = cab_indices_atual->pos_topo;
+            int pos_nova_raiz = get_pos_livre_indices(files.file_indices, cab_indices_atual);
+            //escreve_no(files.file_indices, nova_raiz, get_pos_livre_indices(files.file_indices, cab_indices_atual));
+            escreve_no(files.file_indices, nova_raiz, pos_nova_raiz);
+            //cab_indices_atual->pos_raiz = cab_indices_atual->pos_topo;
+            cab_indices_atual->pos_raiz = pos_nova_raiz;
+
             printf("\nPosicao da nova raiz: %d\n", cab_indices_atual->pos_topo);
 
-            cab_indices_atual->pos_topo++;
+            //cab_indices_atual->pos_topo++;
 
             printf("\nPosicao da novo topo: %d\n", cab_indices_atual->pos_topo);
 
