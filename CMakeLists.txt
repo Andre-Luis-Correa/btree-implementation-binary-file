@@ -8,7 +8,6 @@ add_executable(trabalho_aed_3_bruna_andre main.c
         cabecalho/cabecalho_indices.c
         lote/lote.h
         lote/lote.c
-        utils/mainB.c
         produto/produto.h
         atualizacao/produto_atualizacao.c
         impressao/produto_impressao.c
@@ -23,5 +22,4 @@ add_executable(trabalho_aed_3_bruna_andre main.c
         menu/menu.c
         utils/arvore_utils.c
         utils/arvore_utils.h
-        utils/exemplo_rem.c
-        utils/exemploooremocao.c)
+)

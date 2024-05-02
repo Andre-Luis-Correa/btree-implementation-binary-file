@@ -1,17 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "menu.h"
 #include "../insercao/produto_insercao.h"
 #include "../impressao/produto_impressao.h"
 #include "../remocao/produto_remocao.h"
 #include "../atualizacao/produto_atualizacao.h"
-#include "../utils/arvore_utils.h"
 #include "../lote/lote.h"
 
-// Exibe o cabe?alho do menu
-// Pr?-condi??es: Nenhuma
-// P?s-condi??o: O cabe?alho do menu ? exibido no console
+// Exibe o cabeçalho do menu
+// Pré-condições: Nenhuma
+// Pós-condições: O cabeçalho do menu é exibido no console
 void header_menu(){
     printf("\n");
     printf("+--------------------------------------------------+\n");
@@ -27,35 +25,31 @@ void header_menu(){
     printf("| 8. Imprimir Lista de Livres do Arquivo de Indices|\n");
     printf("| 9. Imprimir Lista de Livres do Arquivo de Dados  |\n");
     printf("| 10. Realizar Operacoes em Lote                   |\n");
-    printf("| 11. Imprimir infos dos nos                       |\n");
     printf("| 0. Sair                                          |\n");
     printf("+--------------------------------------------------+\n");
 }
 
 
 // Cadastra um novo produto
-// Pr?-condi??es: Nenhuma
-// P?s-condi??o: Um novo produto ? cadastrado
+// Pré-condições: Nenhuma
+// Pós-condições: Um novo produto é cadastrado
 void cadastrarProduto(ARQUIVOS files) {
     printf("\n---> Operacao: Cadastrar Produto\n");
     cadastrar_produto(files);
-    // Implemente a l?gica para cadastrar um produto
 }
 
 // Remove um produto existente
-// Pr?-condi??es: Nenhuma
-// P?s-condi??o: O produto ? removido do cadastro
+// Pré-condições: O produto a ser removido deve existir no cadastro
+// Pós-condições: O produto é removido do cadastro
 void removerProduto(ARQUIVOS files) {
     printf("\n---> Operacao: Remover Produto\n");
     remover_produto(files);
-    // Implemente a l?gica para remover um produto
 }
 
-// Atualiza o pre?o de um produto
-// Pr?-condi??es: Nenhuma
-// P?s-condi??o: O pre?o do produto ? atualizado
+// Atualiza o preço de um produto
+// Pré-condições: O produto a ser atualizado deve existir no cadastro
+// Pós-condições: O preço do produto é atualizado
 void atualizarPreco(ARQUIVOS files) {
-    // Implemente a l?gica para atualizar o pre?o de um produto
     printf("\n---> Operacao: Atualizar Preco\n");
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
 
@@ -75,8 +69,8 @@ void atualizarPreco(ARQUIVOS files) {
 }
 
 // Atualiza o estoque de um produto
-// Pr?-condi??es: Nenhuma
-// P?s-condi??o: O estoque do produto ? atualizado
+// Pré-condições: O produto a ser atualizado deve existir no cadastro
+// Pós-condições: O estoque do produto é atualizado
 void atualizarEstoque(ARQUIVOS files) {
     printf("\n---> Operacao: Atualizar Estoque\n");
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
@@ -95,9 +89,9 @@ void atualizarEstoque(ARQUIVOS files) {
     free(cab_indices);
 }
 
-// Imprime as informa??es de um produto espec?fico
-// Pr?-condi??es: Nenhuma
-// P?s-condi??o: As informa??es do produto s?o impressas no console
+// Imprime as informações de um produto específico
+// Pré-condições: O produto cujas informações serão impressas deve existir no cadastro
+// Pós-condições: As informações do produto são impressas no console
 void imprimirInformacoes(ARQUIVOS files) {
     printf("\n---> Operacao: Imprimir informacoes de um produto\n");
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
@@ -114,8 +108,8 @@ void imprimirInformacoes(ARQUIVOS files) {
 }
 
 // Imprime a lista de todos os produtos cadastrados
-// Pr?-condi??es: Nenhuma
-// P?s-condi??o: A lista de todos os produtos ? impressa no console
+// Pré-condições: Nenhuma
+// Pós-condições: A lista de todos os produtos é impressa no console
 void imprimirListaProdutos(ARQUIVOS files) {
     printf("\n---> Operacao: Imprimir Lista de Produtos\n\n");
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
@@ -134,11 +128,10 @@ void imprimirListaProdutos(ARQUIVOS files) {
     free(cab_indices);
 }
 
-// Imprime a ?rvore de produtos
-// Pr?-condi??es: Nenhuma
-// P?s-condi??o: A ?rvore de produtos ? impressa no console
+// Imprime a árvore de produtos
+// Pré-condições: Nenhuma
+// Pós-condições: A árvore de produtos é impressa no console
 void imprimirArvore(ARQUIVOS files) {
-    // Implemente a l?gica para imprimir a ?rvore de produtos
     printf("\n---> Operacao: Imprimir Arvore\n");
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
 
@@ -151,9 +144,9 @@ void imprimirArvore(ARQUIVOS files) {
     free(cab_indices);
 }
 
-// Imprime a lista de n?s livres do arquivo de ?ndices
-// Pr?-condi??es: Nenhuma
-// P?s-condi??o: A lista de n?s livres do arquivo de ?ndices ? impressa no console
+// Imprime a lista de nós livres do arquivo de índices
+// Pré-condições: Nenhuma
+// Pós-condições: A lista de nós livres do arquivo de índices é impressa no console
 void imprimirListaLivresIndices(ARQUIVOS files) {
     printf("\n---> Operacao: Imprimir Lista de Livres do Arquivo de Indices\n");
     CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
@@ -170,8 +163,8 @@ void imprimirListaLivresIndices(ARQUIVOS files) {
 }
 
 // Imprime a lista de registros livres do arquivo de dados
-// Pr?-condi??es: Nenhuma
-// P?s-condi??o: A lista de registros livres do arquivo de dados ? impressa no console
+// Pré-condições: Nenhuma
+// Pós-condições: A lista de registros livres do arquivo de dados é impressa no console
 void imprimirListaLivresDados(ARQUIVOS files) {
     printf("\n---> Operacao: Imprimir Lista de Livres do Arquivo de Dados\n");
     CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
@@ -187,9 +180,9 @@ void imprimirListaLivresDados(ARQUIVOS files) {
     free(cab_dados);
 }
 
-// Realiza opera??es em lote a partir de um arquivo de texto
-// Pr?-condi??es: O arquivo de texto contendo as opera??es em lote deve existir e estar formatado corretamente
-// P?s-condi??o: As opera??es em lote s?o executadas
+// Realiza operações em lote a partir de um arquivo de texto
+// Pré-condições: O arquivo de texto contendo as operações em lote deve existir e estar formatado corretamente
+// Pós-condições: As operações em lote são executadas
 void realizarOperacoesEmLote(ARQUIVOS files) {
     printf("\n---> Operacao: Realizar Operacoes em Lote\n");
     printf("\n---> Digite o nome do arquivo com extensao (.txt): ");
@@ -200,56 +193,9 @@ void realizarOperacoesEmLote(ARQUIVOS files) {
     ler_arquivo(files, file);
 }
 
-void imprimir_info_nos(ARQUIVOS files){
-    printf("\n----> Operacao: Impressao de infos no no: \n");
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-
-    if(cab_indices->pos_raiz == -1){
-        printf("---> A arvore esta vazia, nao e possivel realizar a operacao!\n");
-    } else {
-        imprimir_info_nos_chaves(files, cab_indices->pos_raiz);
-    }
-
-    free(cab_indices);
-}
-
-void buscar(ARQUIVOS files){
-    printf("\n----> Operacao: BUscar pai: \n");
-    int codigo;
-
-    printf("\n---> Digite o valor para buscar o no pai: ");
-    scanf("%d", &codigo);
-
-    int pos_pai = buscar_pai_by_pos(files.file_indices, codigo);
-    printf("\n POS PAI : %d", pos_pai);
-    ARVOREB * pai = ler_no(files.file_indices, pos_pai);
-    if(pai != NULL)
-        imprimir_no(pai);
-    else
-        printf("\n---> Ta nulo!");
-    free(pai);
-}
-
-void buscar_pos_no(ARQUIVOS files){
-    printf("\n----> Operacao: BUscar pos no: \n");
-    int codigo;
-
-    printf("\n---> Digite o valor para buscar a pos do no: ");
-    scanf("%d", &codigo);
-
-    int pos_pai = buscar_no(files.file_indices, codigo);
-    printf("\n POS no : %d", pos_pai);
-    ARVOREB * no = ler_no(files.file_indices, pos_pai);
-    if(no != NULL)
-        imprimir_no(no);
-    else
-        printf("\n---> Ta nulo!");
-    free(no);
-}
-
-// Exibe o menu principal e processa a escolha do usu?rio
-// Pr?-condi??es: Nenhuma
-// P?s-condi??o: O usu?rio escolhe uma op??o do menu e a opera??o correspondente ? executada
+// Exibe o menu principal e processa a escolha do usuário
+// Pré-condições: Nenhuma
+// Pós-condições: O usuário escolhe uma opção do menu e a operação correspondente é executada
 void menu_principal(ARQUIVOS files){
     int opcao;
 
@@ -289,15 +235,6 @@ void menu_principal(ARQUIVOS files){
             case 10:
                 realizarOperacoesEmLote(files);
                 break;
-            case 11:
-                imprimir_info_nos(files);
-                break;
-            case 12:
-                buscar(files);
-                break;
-            case 13:
-                buscar_pos_no(files);
-                break;
             case 0:
                 printf("---> Saindo do programa. Ate mais!\n");
                 break;
@@ -306,5 +243,4 @@ void menu_principal(ARQUIVOS files){
         }
     } while (opcao != 0);
 
-    return;
 }

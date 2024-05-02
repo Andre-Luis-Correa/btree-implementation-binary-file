@@ -472,52 +472,6 @@ void concatenar(ARQUIVOS files, int pos_pai, int pos_remocao, int indice_filho, 
     printf("\n---> Retornando a funcao remover_lote concatenacao!");
 }
 
-void verificar_balanceamento(ARQUIVOS files, int pos_pai, int pos_filho_remocao, int pos_remocao, int codigo) {
-    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-    // Busca o pai para poder veirificar os filhos irmão e verificar se podem emprestar
-    printf("\n  ----> POS PAI: %d\n", pos_pai);
-
-    if (pos_pai != -1) {
-        // 1° Verifica-se se é possícel realizar a redistribuição
-        int pos_esq, pos_dir;
-        // A função pode_redistribuir() verifica se é possível realizar a redistribuição e indica a partir de qual lado
-        int teste_pode_redistribuir = pode_redistribuir(files, pos_pai, pos_filho_remocao, &pos_esq, &pos_dir);
-        printf("\n-----------Esse é o teste redistribuir: %d\n", teste_pode_redistribuir);
-
-        if (teste_pode_redistribuir) {
-            printf("\n---> Será fieito a redistribuição!\n");
-            // Aqui será inserido a lógica da redistribuição
-            // A função pode_redistribuir guarda a posição no arquivo dos filhos da esq e dir
-            redistribuir(files, pos_pai, pos_remocao, pos_filho_remocao, pos_esq, pos_dir);
-
-        } else {
-
-            printf("\n---> Não será feito a redistribuição, mas sim, a concatenação");
-            // Aqui será inserido a lógica da concatenação
-            buscar_filhos_esq_dir(files, pos_remocao, pos_filho_remocao, &pos_esq, &pos_dir);
-            printf("\n--> FILHOS a esq e dir\n");
-
-//            ARVOREB * esq = ler_no(files.file_indices, pos_esq);
-//            ARVOREB * dir  = ler_no(files.file_indices, pos_dir);
-//            if(esq == NULL) printf("\n---> ESQ NULA");
-//            if(dir == NULL) printf("\n---> DIR NULA");
-//            if(esq != NULL) {
-//                printf("\n---> imprimir no esq");
-//                imprimir_no(esq);
-//                free(esq);
-//            }
-//            if(dir != NULL) {
-//                printf("\n---> imprimir no dir");
-//                imprimir_no(dir);
-//                free(dir);
-//            }
-            concatenar(files, pos_pai, pos_remocao, pos_filho_remocao, pos_esq, pos_dir);
-        }
-    }
-
-    free(cab_indices);
-}
-
 void balancear(ARQUIVOS files, int pos_pai, int indice_filho, int pos_remocao) {
 
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
@@ -570,51 +524,6 @@ void balancear(ARQUIVOS files, int pos_pai, int indice_filho, int pos_remocao) {
     printf("\n---> Retornando a funcao remover_lote principal!");
     free(cab_indices);
 }
-
-//void remover_caso4(ARQUIVOS files, int pos_raiz, int pos_pai){
-//    ARVOREB * pai_atual = ler_no(files.file_indices, pos_pai);
-//    CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-//
-//    int pos_filho_pai;
-//    int pos_pai_do_pai;
-//    int pos_nova_raiz;
-//    int pos_no_livre;
-//
-//    while( pai_atual->num_chaves < MIN && !eh_raiz(files.file_indices, pai_atual)){
-//        pos_pai_do_pai = buscar_pai(files.file_indices, pai_atual->chave[0]);
-//
-//        verificar_balanceamento(files, pos_pai_do_pai, pos_filho_pai, pos_pai, pai_atual->chave[0]);
-//        pai_atual = ler_no(files.file_indices, pos_pai_do_pai);
-//
-//        if(pai_atual->num_chaves == 0){
-//            break;
-//        }
-//    }
-//
-//    if(pai_atual->num_chaves == 0 && eh_raiz(files.file_indices, pai_atual)){
-//        printf("\n---> entrou aquii\n");
-//        pos_nova_raiz = pai_atual->filho[0];
-//        pos_no_livre = pai_atual->filho[1];
-//
-//        cab_indices->pos_raiz = pos_nova_raiz;
-//        escreve_cabecalho_indices(files.file_indices, cab_indices);
-//        atualizar_pos_livres_indices(files.file_indices, pos_pai_do_pai);
-//        atualizar_pos_livres_indices(files.file_dados, pos_no_livre);
-//    }
-//
-//    free(cab_indices);
-//    free(pai_atual);
-//}
-//
-//int equal(ARVOREB * raiz, ARVOREB * no_a_remover){
-//    if(raiz->num_chaves != no_a_remover->num_chaves) return 0;
-//
-//    for(int i = 0; i < raiz->num_chaves; i++){
-//        if(raiz->chave[i] != no_a_remover->chave[i]) return 0;
-//    }
-//
-//    return 1;
-//}
 
 void verificar_pai(ARQUIVOS files, int pos_pai) {
 

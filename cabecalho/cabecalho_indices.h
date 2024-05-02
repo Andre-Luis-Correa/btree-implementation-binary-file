@@ -12,11 +12,6 @@ typedef struct {
     int pos_livre; // Posição do início da lista de nós livres
 } CABECALHO_INDICES;
 
-// Função para imprimir as informações do cabeçalho do arquivo de índices
-// Pré-condição: O ponteiro para o cabeçalho deve ser válido
-// Pós-condição: As informações do cabeçalho são impressas na tela
-void imprimir_cabecalho_indices(CABECALHO_INDICES * cab);
-
 // Função para criar uma árvore nova em arquivo
 // Pré-condição: O arquivo deve estar aberto para leitura/escrita
 // Pós-condição: O arquivo é inicializado com uma árvore vazia

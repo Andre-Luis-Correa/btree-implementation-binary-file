@@ -2,6 +2,7 @@
 #define MENU_H
 
 #include "../file/file.h"
+
 // Exibe o cabeçalho do menu
 // Pré-condições: Nenhuma
 // Pós-condições: O cabeçalho do menu é exibido no console
@@ -56,10 +57,6 @@ void imprimirListaLivresDados(ARQUIVOS files);
 // Pré-condições: O arquivo de texto contendo as operações em lote deve existir e estar formatado corretamente
 // Pós-condições: As operações em lote são executadas
 void realizarOperacoesEmLote(ARQUIVOS files);
-
-void imprimir_info_nos(ARQUIVOS files);
-void buscar(ARQUIVOS files);
-void buscar_pos_no(ARQUIVOS files);
 
 // Exibe o menu principal e processa a escolha do usuário
 // Pré-condições: Nenhuma

@@ -7,6 +7,9 @@
 #include "produto_atualizacao.h"
 #include "../utils/arvore_utils.h"
 
+// Função para atualizar o preço de um produto a partir do seu código
+// Pré-condições: O arquivo de índices e o arquivo de dados devem existir e estar formatados corretamente
+// Pós-condições: O preço do produto é atualizado no arquivo de dados
 void atualizar_preco_produto(ARQUIVOS files, int codigo_produto, float novo_preco){
     //lendo os cabecalhos de indices e file_dados
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
@@ -53,7 +56,9 @@ void atualizar_preco_produto(ARQUIVOS files, int codigo_produto, float novo_prec
     free(cab_indices);
 }
 
-// Fun??o para atualizar o estoque de um produto a partir do seu c?digo
+// Função para atualizar o estoque de um produto a partir do seu código
+// Pré-condições: O arquivo de índices e o arquivo de dados devem existir e estar formatados corretamente
+// Pós-condições: O estoque do produto é atualizado no arquivo de dados
 void atualizar_estoque_produto(ARQUIVOS files, int codigo_produto, int novo_estoque) {
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
     CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);

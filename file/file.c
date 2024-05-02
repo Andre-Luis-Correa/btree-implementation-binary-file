@@ -33,43 +33,9 @@ void fechar_arquivos(ARQUIVOS * files){
     printf("\nFECHANDO ARQUIVO DE DADOS...\n");
 }
 
-//Verifica se um arquivo está vazio ou não, isto é: se contem registros ou não
-//Pré-condição: nenhuma
-//Pós-condição: retorna 1 se há registros e 0 caso não
-int is_vazio(ARQUIVOS files, int getFileIndices){
-
-    if( getFileIndices ){
-        CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-        int pos_raiz = cab_indices->pos_raiz;
-        free(cab_indices);
-        return pos_raiz == -1;
-
-    }
-
-    CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
-    int pos_topo = cab_dados->pos_topo;
-    free(cab_dados);
-    return pos_topo == 0;
-}
-
-int tem_pos_livre(ARQUIVOS files, int getFileIndices){
-    int pos_livre;
-
-    if( getFileIndices ){
-        CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-        pos_livre = cab_indices->pos_livre;
-        free(cab_indices);
-        return pos_livre != -1;
-    }
-
-    CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
-    pos_livre = cab_dados->pos_livre;
-    free(cab_dados);
-
-    return pos_livre != -1;
-}
-
 // Função para ler um nó do arquivo de índices da árvore B de produtos
+// Pré-condições: O arquivo de índices deve existir e estar formatado corretamente
+// Pós-condições: Retorna um ponteiro para o nó lido do arquivo de índices
 ARVOREB * ler_no (FILE * file_indices, int pos){
     if( pos == -1) return NULL;
 
@@ -80,12 +46,16 @@ ARVOREB * ler_no (FILE * file_indices, int pos){
 }
 
 // Função para escrever um nó no arquivo de índices
+// Pré-condições: O arquivo de índices deve existir e estar formatado corretamente
+// Pós-condições: O nó é escrito no arquivo de índices na posição especificada
 void escreve_no (FILE * file_indices, ARVOREB * no, int pos){
     fseek (file_indices, sizeof (CABECALHO_INDICES) + pos * sizeof (ARVOREB), SEEK_SET);
     fwrite (no, sizeof (ARVOREB), 1, file_indices);
 }
 
 // Função para ler um registro de dados de um produto no arquivo de dados
+// Pré-condições: O arquivo de dados deve existir e estar formatado corretamente
+// Pós-condições: Retorna um ponteiro para o registro lido do arquivo de dados
 DADOS_REGISTRO * ler_registro(FILE * file_dados, int pos){
     if( pos == -1) return NULL;
 
@@ -95,7 +65,9 @@ DADOS_REGISTRO * ler_registro(FILE * file_dados, int pos){
     return registro;
 }
 
-// Função para escrever um nó no arquivo de índices
+// Função para escrever um registro no arquivo de dados
+// Pré-condições: O arquivo de dados deve existir e estar formatado corretamente
+// Pós-condições: O registro é escrito no arquivo de dados na posição especificada
 void escreve_registro (FILE * file_dados, DADOS_REGISTRO * registro, int pos){
     fseek (file_dados, sizeof (CABECALHO_DADOS ) + pos * sizeof (DADOS_REGISTRO), SEEK_SET);
     fwrite (registro, sizeof (DADOS_REGISTRO), 1, file_dados);

@@ -1,7 +1,3 @@
-//
-// Created by andre on 08/04/2024.
-//
-
 #include <stdio.h>
 #include "file/file.h"
 #include "menu/menu.h"
@@ -25,9 +21,6 @@ int main() {
 
     // Executa a função com as opções do menu disponíveis
     menu_principal(files);
-
-    // Executa o menu principal, interagindo com o usuário e realizando as operações escolhidas.
-    //menu_principal(files);
 
     // Fecha os arquivos ao final da execução do programa.
     fechar_arquivos(&files);

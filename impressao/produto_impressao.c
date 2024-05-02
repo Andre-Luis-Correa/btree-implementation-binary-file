@@ -113,7 +113,7 @@ void imprimir_lista_registros_livres(FILE * file_dados, int pos_atual){
     printf("| %2d                                               |\n", pos_atual);
 
     while(registro->prox_livre != -1 ){
-        printf("| %2d                                          |\n", registro->prox_livre);
+        printf("| %2d                                               |\n", registro->prox_livre);
         prox = registro->prox_livre;
         free(registro);;
         registro = ler_registro(file_dados, prox);

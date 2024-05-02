@@ -34,7 +34,3 @@ void escreve_cabecalho_dados(FILE* arq, CABECALHO_DADOS * cab){
     fseek(arq, 0, SEEK_SET); // Posiciona no início do arquivo
     fwrite(cab, sizeof(CABECALHO_DADOS), 1, arq);
 }
-
-void imprimir_cabecalho_dados(CABECALHO_DADOS * cab){
-    printf("\nCABECALHO DE DADOS: topo: %d livre: %d\n", cab->pos_topo, cab->pos_livre);
-}
