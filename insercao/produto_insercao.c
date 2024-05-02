@@ -106,6 +106,34 @@ int split (ARQUIVOS files, ARVOREB * x, int pos, int * meio, int * pos_meio, CAB
     return pos_y;
 }
 
+int get_pos_livre_dados(FILE * file, CABECALHO_DADOS * cab){
+    if(cab->pos_livre == -1)
+        return cab->pos_topo;
+
+    int pos_livre = cab->pos_livre;
+    DADOS_REGISTRO * registro = ler_registro(file, cab->pos_livre);
+
+    cab->pos_livre = registro->prox_livre;
+    escreve_cabecalho_dados(file, cab);
+    free(registro);
+
+    return pos_livre;
+}
+
+int get_pos_livre_indices(FILE * file, CABECALHO_INDICES * cab){
+    if(cab->pos_livre == -1)
+        return cab->pos_topo;
+
+    int pos_livre = cab->pos_livre;
+    ARVOREB * no = ler_no(file, cab->pos_livre);
+
+    cab->pos_livre = no->prox_livre;
+    escreve_cabecalho_indices(file, cab);
+    free(no);
+
+    return pos_livre;
+}
+
 void cadastrar_produto_file(ARQUIVOS files, PRODUTO_DATA * produto){
 
     // Faz a leitura dos cabeçalhos
