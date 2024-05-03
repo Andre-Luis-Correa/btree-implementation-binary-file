@@ -1,10 +1,10 @@
 #ifndef PRODUTO_ATUALIZACAO_H
 #define PRODUTO_ATUALIZACAO_H
 
-#include "../produto/produto.h"
-#include "../file/file.h"
-#include "../cabecalho/cabecalho_indices.h"
-#include "../cabecalho/cabecalho_dados.h"
+#include "produto.h"
+#include "file.h"
+#include "cabecalho_indices.h"
+#include "cabecalho_dados.h"
 
 // Função para atualizar o preço de um produto a partir do seu código
 // Pré-condições: O arquivo de índices e o arquivo de dados devem existir e estar formatados corretamente

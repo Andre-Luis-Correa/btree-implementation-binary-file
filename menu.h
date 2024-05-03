@@ -1,7 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "../file/file.h"
+#include "file.h"
 
 // Exibe o cabeçalho do menu
 // Pré-condições: Nenhuma

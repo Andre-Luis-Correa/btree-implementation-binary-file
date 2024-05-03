@@ -1,13 +1,13 @@
-//
-// Created by andre on 08/04/2024.
-//
-
 #include "stdio.h"
 #include "stdlib.h"
 #include "produto_impressao.h"
-#include "../insercao/produto_insercao.h"
-#include "../utils/arvore_utils.h"
+#include "produto_insercao.h"
+#include "arvore_utils.h"
 
+// Função para imprimir a lista de produtos armazenados na árvore B-B
+// Pré-condições: Todos os arquivos e nós devem estar acessíveis e corretamente inicializados.
+//                A posição atual na árvore deve ser válida.
+// Pós-condições: A lista de produtos é impressa na saída padrão, seguindo a estrutura definida.
 void imprimir_lista_produtos(ARQUIVOS files, int pos_atual) {
     CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
 
@@ -33,6 +33,10 @@ void imprimir_lista_produtos(ARQUIVOS files, int pos_atual) {
 
 }
 
+// Função para imprimir as informações de um produto específico na árvore B
+// Pré-condições: Todos os arquivos e nós devem estar acessíveis e corretamente inicializados.
+//                O código do produto a ser buscado deve ser válido e existir na árvore.
+// Pós-condições: As informações do produto são impressas na saída padrão, seguindo a estrutura definida.
 void imprimir_informacoes_produto(ARQUIVOS files, int codigo){
     CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
 
@@ -65,6 +69,10 @@ void imprimir_informacoes_produto(ARQUIVOS files, int codigo){
     free(cab_indices);
 }
 
+// Função para imprimir a lista de índices livres no arquivo de índices
+// Pré-condições: O arquivo de índices deve estar acessível e corretamente inicializado.
+//                A posição atual na lista de índices livres deve ser válida.
+// Pós-condições: A lista de posições livres no arquivo de índices é impressa na saída padrão.
 void imprimir_lista_indices_livres(FILE * file_indices, int pos_atual){
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(file_indices);
 
@@ -85,7 +93,7 @@ void imprimir_lista_indices_livres(FILE * file_indices, int pos_atual){
     while(no->prox_livre != -1 ){
         printf("| %2d                                           |\n", no->prox_livre);
         prox = no->prox_livre;
-        free(no);;
+        free(no);
         no = ler_no(file_indices, prox);
     }
 
@@ -95,6 +103,10 @@ void imprimir_lista_indices_livres(FILE * file_indices, int pos_atual){
     free(cab_indices);
 }
 
+// Função para imprimir a lista de registros livres no arquivo de dados
+// Pré-condições: O arquivo de dados deve estar acessível e corretamente inicializado.
+//                A posição atual na lista de registros livres deve ser válida.
+// Pós-condições: A lista de posições livres no arquivo de dados é impressa na saída padrão.
 void imprimir_lista_registros_livres(FILE * file_dados, int pos_atual){
     CABECALHO_INDICES * cab_dados = le_cabecalho_indices(file_dados);
 
@@ -115,7 +127,7 @@ void imprimir_lista_registros_livres(FILE * file_dados, int pos_atual){
     while(registro->prox_livre != -1 ){
         printf("| %2d                                               |\n", registro->prox_livre);
         prox = registro->prox_livre;
-        free(registro);;
+        free(registro);
         registro = ler_registro(file_dados, prox);
     }
 
@@ -125,13 +137,11 @@ void imprimir_lista_registros_livres(FILE * file_dados, int pos_atual){
     free(cab_dados);
 }
 
-//-----------------------------------IMPRIMIR N?VEIS-----------------------------------------//
-
-//busca o n?vel de uma chave na arvore R.
-//pre-condi??o: arquivo v?lido de arvoreB, count come?a em zero na primeira chamada
-//pos-condi??o: o nivel da chave.
-int buscaNivel(FILE* arq, ARVOREB* r, int chave, int count)
-{
+// Função para buscar o nível de um determinado nó na árvore B-B
+// Pré-condições: O arquivo de índices deve estar acessível e corretamente inicializado.
+//                O nó e a chave a serem buscados devem ser válidos.
+// Pós-condições: O nível do nó na árvore é retornado.
+int buscaNivel(FILE* arq, ARVOREB* r, int chave, int count){
     if ( r!= NULL)
     {
         for (int i = 0; i < r->num_chaves; i++){
@@ -168,8 +178,11 @@ int buscaNivel(FILE* arq, ARVOREB* r, int chave, int count)
     return 0;
 }
 
-ARVOREB * busca(FILE* arq, ARVOREB* r, int info, int * pos)
-{
+// Função para buscar um nó específico na árvore B
+// Pré-condições: O arquivo de índices deve estar acessível e corretamente inicializado.
+//                O nó e a chave a serem buscados devem ser válidos.
+// Pós-condições: O nó contendo a chave é retornado, ou NULL se a chave não for encontrada.
+ARVOREB * busca(FILE* arq, ARVOREB* r, int info, int * pos){
     if (r == NULL)
         return NULL;
     int i = 0;
@@ -188,18 +201,18 @@ ARVOREB * busca(FILE* arq, ARVOREB* r, int info, int * pos)
     return r;
 }
 
-//testa se uma fila ? vazia.
-//pre-condi??o: fila v?lida
-//pos-condi??o: retorna se a fila ? vazia
+// Função para verificar se a fila está vazia
+// Pré-condições: A fila deve estar corretamente inicializada.
+// Pós-condições: Retorna 1 se a fila estiver vazia, caso contrário retorna 0.
 int vaziaFila(Fila* f){
     return (f->inicio == NULL);
 }
 
-//enfileira um elemento na fila
-//pre-condi??o: fila v?lida.
-//pos-condi??o: nenhuma.
-void enqueue(Fila* f, int x)
-{
+
+// Função para enfileirar um elemento na fila
+// Pré-condições: A fila deve estar corretamente inicializada.
+// Pós-condições: O elemento é enfileirado na fila.
+void enqueue(Fila* f, int x) {
     struct noLista* aux = (struct noLista*)malloc(sizeof(struct noLista));
     aux->info = x;
     aux->prox = NULL;
@@ -214,11 +227,11 @@ void enqueue(Fila* f, int x)
     f->fim = aux;
 }
 
-//coloca os filhos na fila.
-//pre-condi??o: arquivo valido para arvoreB.
-//pos-condi??o: coloca os filhos na fila.
-void enfileiraFilhos(FILE* arq, ARVOREB* r, Fila* f)
-{
+// Função para enfileirar os filhos de um nó na fila
+// Pré-condições: O arquivo de índices e o nó devem estar acessíveis e corretamente inicializados.
+//                A fila deve estar corretamente inicializada.
+// Pós-condições: Os filhos do nó são enfileirados na fila.
+void enfileiraFilhos(FILE* arq, ARVOREB* r, Fila* f) {
     ARVOREB* aux = NULL;
     int p = 0;
     aux = busca(arq,r, f->inicio->info,&p);
@@ -242,11 +255,12 @@ void enfileiraFilhos(FILE* arq, ARVOREB* r, Fila* f)
         }
     }
 }
-//desinfileira uma fila.
-int* dequeue(Fila* f)
-{
-    if (!vaziaFila(f))
-    {
+
+// Função para desenfileirar um elemento da fila
+// Pré-condições: A fila deve estar corretamente inicializada e não vazia.
+// Pós-condições: O elemento é desenfileirado da fila e retornado.
+int * dequeue(Fila* f) {
+    if (!vaziaFila(f)) {
         int* x = (int*)malloc(sizeof(int));
 
         struct noLista* aux = f->inicio;
@@ -265,22 +279,22 @@ int* dequeue(Fila* f)
         return NULL;
     }
 }
-//cria fila vazia
-//pre-condi?ao: nenhuma
-//pos-condi??o: fila vazia criada.
-Fila* cria_fila_vazia()
-{
+
+// Função para criar uma fila vazia
+// Pré-condições: Nenhuma.
+// Pós-condições: Retorna a fila vazia.
+Fila* cria_fila_vazia() {
     Fila* f = (Fila*)malloc(sizeof(Fila));
     f->inicio = NULL;
     f->fim = NULL;
     return f;
 }
 
-//imprimr as chave da arvoreB por n?veis.
-//pr?-condi??o: raiz lida e arquivo valido para arvoreB.
-//pos-condi??o: impressao da arvore por n?veis.
-void imprimir_por_niveis(ARQUIVOS files, ARVOREB* r)
-{
+// Função para imprimir a árvore B-B por níveis
+// Pré-condições: Todos os arquivos e nós devem estar acessíveis e corretamente inicializados.
+//                O nó raiz da árvore deve ser válido.
+// Pós-condições: A árvore B-B é impressa por níveis na saída padrão.
+void imprimir_por_niveis(ARQUIVOS files, ARVOREB* r) {
     Fila* f = cria_fila_vazia();
     int atual = 0, ant = 0;
     if (r != NULL)
@@ -309,7 +323,9 @@ void imprimir_por_niveis(ARQUIVOS files, ARVOREB* r)
     }
 }
 
-
+// Função para imprimir a árvore B-B
+// Pré-condições: O arquivo de índices deve estar acessível e corretamente inicializado.
+// Pós-condições: A árvore B-B é impressa na saída padrão.
 void imprimir_arvore(ARQUIVOS files) {
     CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
     int pos =  cab_indices->pos_raiz;
@@ -321,54 +337,5 @@ void imprimir_arvore(ARQUIVOS files) {
         printf("---> Imprimindo Arvore por niveis :\n\n");
         imprimir_por_niveis(files, no);
         printf("\n\n");
-    }
-}
-
-void imprimir_no(ARVOREB *r) {
-    printf("\n");
-    printf("+-------------------------------------+\n");
-    printf("|    O no analisado foi:             |\n");
-    printf("+-------------------------------------+\n");
-
-    printf("| Chaves: ");
-    for(int i = 0; i < r->num_chaves; i++){
-        printf("%d ", r->chave[i]);
-    }
-    printf("\n");
-
-    printf("| Pt. Dados: ");
-    for(int i = 0; i < r->num_chaves; i++){
-        printf("%d ", r->pt_dados[i]);
-    }
-    printf("\n");
-
-    printf("| Filhos: ");
-    for(int i = 0; i <= r->num_chaves; i++){
-        printf("%d ", r->filho[i]);
-    }
-    printf("\n");
-
-    printf("+-------------------------------------+\n");
-}
-
-
-
-void imprimir_info_nos_chaves(ARQUIVOS files, int pos){
-    CABECALHO_INDICES *cab_indices = le_cabecalho_indices(files.file_indices);
-
-    if (pos == -1) {
-        //printf("Arvore vazia!\n");
-        free(cab_indices);
-        return;
-    }else{
-        ARVOREB * no = ler_no(files.file_indices, pos);
-        imprimir_no(no);
-
-        for(int i = 0; i <= no->num_chaves; i++){
-            imprimir_info_nos_chaves(files, no->filho[i]);
-        }
-
-        free(no);
-        free(cab_indices);
     }
 }

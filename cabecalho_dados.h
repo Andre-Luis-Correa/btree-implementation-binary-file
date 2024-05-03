@@ -1,7 +1,3 @@
-//
-// Created by andre on 08/04/2024.
-//
-
 #ifndef CABECALHO_DADOS_H
 #define CABECALHO_DADOS_H
 

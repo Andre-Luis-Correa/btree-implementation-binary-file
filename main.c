@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "file/file.h"
-#include "menu/menu.h"
+#include "file.h"
+#include "menu.h"
 
 // adicione comentários no seguinte formato:
 // Descreva o que a função faz

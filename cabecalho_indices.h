@@ -1,7 +1,3 @@
-//
-// Created by andre on 08/04/2024.
-//
-
 #ifndef CABECALHO_INDICES_H
 #define CABECALHO_INDICES_H
 

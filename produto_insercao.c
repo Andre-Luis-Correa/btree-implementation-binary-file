@@ -1,13 +1,7 @@
-//
-// Created by andre on 08/04/2024.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "produto_insercao.h"
-#include "../utils/arvore_utils.h"
-#include "../impressao/produto_impressao.h"
+#include "arvore_utils.h"
 
 // Função para ler os dados de um produto
 // Pré-condição: nenhuma

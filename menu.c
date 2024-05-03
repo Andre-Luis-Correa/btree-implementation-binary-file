@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "menu.h"
-#include "../insercao/produto_insercao.h"
-#include "../impressao/produto_impressao.h"
-#include "../remocao/produto_remocao.h"
-#include "../atualizacao/produto_atualizacao.h"
-#include "../lote/lote.h"
+#include "produto_insercao.h"
+#include "produto_impressao.h"
+#include "produto_remocao.h"
+#include "produto_atualizacao.h"
+#include "lote.h"
 
 // Exibe o cabeçalho do menu
 // Pré-condições: Nenhuma

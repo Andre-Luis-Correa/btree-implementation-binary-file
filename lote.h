@@ -1,11 +1,11 @@
 #ifndef LOTE_H
 #define LOTE_H
 
-#include "../produto/produto.h"
-#include "../utils/arvore_utils.h"
-#include "../insercao/produto_insercao.h"
-#include "../atualizacao/produto_atualizacao.h"
-#include "../remocao/produto_remocao.h"
+#include "produto.h"
+#include "arvore_utils.h"
+#include "produto_insercao.h"
+#include "produto_atualizacao.h"
+#include "produto_remocao.h"
 
 // Insere um lote de produtos no sistema
 // Pré-condições: Os arquivos de índices e de dados devem existir e estar formatados corretamente

@@ -1,6 +1,5 @@
 #include "arvore_utils.h"
-#include "../cabecalho/cabecalho_indices.h"
-#include "../impressao/produto_impressao.h"
+#include "cabecalho_indices.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -98,7 +97,6 @@ int buscar_no_aux(FILE * file_indices, int codigo, int pos){
     }
 
     ARVOREB * r = ler_no(file_indices, pos);
-    imprimir_no(r);
     int i;
 
     for(i = 0; i < r->num_chaves; i++){

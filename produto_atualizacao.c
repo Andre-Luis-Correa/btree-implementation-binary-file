@@ -1,11 +1,7 @@
-//
-// Created by andre on 08/04/2024.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "produto_atualizacao.h"
-#include "../utils/arvore_utils.h"
+#include "arvore_utils.h"
 
 // Função para atualizar o preço de um produto a partir do seu código
 // Pré-condições: O arquivo de índices e o arquivo de dados devem existir e estar formatados corretamente
@@ -13,7 +9,6 @@
 void atualizar_preco_produto(ARQUIVOS files, int codigo_produto, float novo_preco){
     //lendo os cabecalhos de indices e file_dados
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
-    CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
 
     //a pos esta guarando o no em que esta elemento que possui esse codigo de produto
     int pos = buscar_no(files.file_indices, codigo_produto);
@@ -62,9 +57,6 @@ void atualizar_preco_produto(ARQUIVOS files, int codigo_produto, float novo_prec
 void atualizar_estoque_produto(ARQUIVOS files, int codigo_produto, int novo_estoque) {
     CABECALHO_INDICES * cab_indices = le_cabecalho_indices(files.file_indices);
     CABECALHO_DADOS * cab_dados = le_cabecalho_dados(files.file_dados);
-
-    imprimir_cabecalho_indices(cab_indices);
-    imprimir_cabecalho_dados(cab_dados);
 
     int pos = buscar_no(files.file_indices, codigo_produto);
 

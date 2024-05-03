@@ -1,14 +1,10 @@
-//
-// Created by andre on 09/04/2024.
-//
-
 #ifndef PRODUTO_INSERCAO_H
 #define PRODUTO_INSERCAO_H
 
-#include "../produto/produto.h"
-#include "../file/file.h"
-#include "../cabecalho/cabecalho_indices.h"
-#include "../cabecalho/cabecalho_dados.h"
+#include "produto.h"
+#include "file.h"
+#include "cabecalho_indices.h"
+#include "cabecalho_dados.h"
 
 // Função para ler os dados de um produto
 // Pré-condição: nenhuma

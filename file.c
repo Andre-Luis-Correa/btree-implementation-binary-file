@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "file.h"
-#include "../cabecalho/cabecalho_indices.h"
-#include "../cabecalho/cabecalho_dados.h"
+#include "cabecalho_indices.h"
+#include "cabecalho_dados.h"
 
 //Verificar se os arquivos binários já existem ou não
 //Pré-condição: nenhuma

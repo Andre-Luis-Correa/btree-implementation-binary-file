@@ -1,13 +1,9 @@
-//
-// Created by andre on 08/04/2024.
-//
-
 #ifndef FILE_H
 #define FILE_H
 
-#include "../produto/produto.h"
+#include "produto.h"
 #include <stdio.h>
-#include "../file/file.h"
+#include "file.h"
 
 // Definição da estrutura ARQUIVOS
 typedef struct {
