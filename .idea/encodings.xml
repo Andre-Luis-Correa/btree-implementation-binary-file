@@ -3,8 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/cmake-build-debug/file_dados.bin" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/cmake-build-debug/file_indices.bin" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/insercao/produto_insercao.c" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/produto/produto.h" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/produto.h" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/produto_insercao.c" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/utils/mainB.c" charset="windows-1252" />
     <file url="PROJECT" charset="windows-1252" />
   </component>

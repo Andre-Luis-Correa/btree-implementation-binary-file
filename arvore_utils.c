@@ -78,9 +78,7 @@ int buscar_no(FILE * file_indices, int codigo){
     CABECALHO_INDICES * cab = le_cabecalho_indices(file_indices);
     int pos_raiz = cab->pos_raiz;
     free(cab);
-    printf("\n---> pos raiz = %d", pos_raiz);
     if(pos_raiz == -1){
-        printf("\n---> a funcao buscra no retornour -1 pos_raiz == -1");
         return -1;
     }
 
@@ -92,7 +90,6 @@ int buscar_no(FILE * file_indices, int codigo){
 // Pós-condição: retorna a posição do nó se encontrado, -1 caso contrário
 int buscar_no_aux(FILE * file_indices, int codigo, int pos){
     if(pos == -1){
-        printf("\n---> a funcao buscra no retornour -1");
         return -1;
     }
 
@@ -187,7 +184,6 @@ int buscar_pai_by_pos(FILE * file_indices, int pos){
     }
 
     free(r);
-    printf("\n---> indo para recursao encontrar pai filho");
     return buscar_pai_by_pos_aux(file_indices, pos_raiz, pos);
 
 }

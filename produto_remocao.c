@@ -28,7 +28,6 @@ void remover_produto(ARQUIVOS files){
         return;
     }
 
-    printf("---> Iniciando a remocao da chave %d!\n", codigo);
     ARVOREB * raiz = ler_no(files.file_indices, cab_indices->pos_raiz);
     remover(files, codigo, cab_indices->pos_raiz, pos_codigo);
 
@@ -562,6 +561,7 @@ void remover(ARQUIVOS files, int codigo, int pos_raiz, int pos_remocao){
             verificar_pai(files, pos_pai);
         }
     }
+    printf("\n---> Remocao realizada com sucesso.\n");
 
     free(cab_indices);
 }

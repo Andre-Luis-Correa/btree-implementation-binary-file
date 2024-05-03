@@ -82,7 +82,7 @@ void atualizarEstoque(ARQUIVOS files) {
         printf("---> Digite o codigo do produto de estoque a ser atualizado:");
         scanf("%d", &cod);
         int novo_estoque;
-        printf("\n---> Insira o novo estoque");
+        printf("\n---> Insira o novo estoque: ");
         scanf("%d", &novo_estoque);
         atualizar_estoque_produto(files, cod, novo_estoque);
     }
@@ -185,7 +185,7 @@ void imprimirListaLivresDados(ARQUIVOS files) {
 // Pós-condições: As operações em lote são executadas
 void realizarOperacoesEmLote(ARQUIVOS files) {
     printf("\n---> Operacao: Realizar Operacoes em Lote\n");
-    printf("\n---> Digite o nome do arquivo com extensao (.txt): ");
+    printf("\n---> Digite o nome do arquivo com extensao (.txt):  ");
 
     char file[MAX_NOME];
     scanf("%s", file);
